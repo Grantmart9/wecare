@@ -10,39 +10,195 @@ import { createClient } from "@supabase/supabase-js";
 import Dialog from '@mui/material/Dialog';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { SUPABASE_URL, API_KEY } from "../supabase";
+import { SUPABASE_URL, API_KEY, FontType } from "../supabase";
+import Input from "@mui/material";
 
 const supabase = createClient(SUPABASE_URL, API_KEY);
 
 const AddServiceDialog = ({
-    handleServiceName,
-    handleServiceRate,
-    handleServiceDescription,
     handleImage,
     handleClose,
     handleAddService,
     open,
     image,
-    handleUnit,
-    unit,
     category,
     handleCategory,
     handleCategory2,
     category2 }) => {
+
+    const ClothingDialog = () => {
+        return (
+            <>{category === "Clothing" ?
+                <>
+                    <div>
+                        <FormControl fullWidth>
+                            <InputLabel color="success">Type</InputLabel>
+                            <Select
+                                color="success"
+                                value={category2}
+                                onChange={(handleCategory2)}
+                                label="Service Category"
+                            >
+                                <MenuItem value={"Pants"}>Pants</MenuItem>
+                                <MenuItem value={"Shirt"}>Shirt</MenuItem>
+                                <MenuItem value={"Jacket"}>Jacket</MenuItem>
+                                <MenuItem value={"Jersey"}>Jersey</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div> {category2 === "Pants" ?
+                        <div>
+                            <FormControl fullWidth>
+                                <InputLabel color="success">Size</InputLabel>
+                                <Select
+                                    color="success"
+                                    label="Service Category"
+                                >
+                                    <MenuItem value={"Clothing"}>XS</MenuItem>
+                                    <MenuItem value={"Shoes"}>S</MenuItem>
+                                    <MenuItem value={"Accessories"}>M</MenuItem>
+                                    <MenuItem value={"Accessories"}>L</MenuItem>
+                                    <MenuItem value={"Accessories"}>XL</MenuItem>
+                                    <MenuItem value={"Accessories"}>XXL</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div> : null}
+                    {category2 === "Shirt" ?
+                        <div>
+                            <FormControl fullWidth>
+                                <InputLabel color="success">Size</InputLabel>
+                                <Select
+                                    color="success"
+                                    label="Service Category"
+                                >
+                                    <MenuItem value={"Clothing"}>XS</MenuItem>
+                                    <MenuItem value={"Shoes"}>S</MenuItem>
+                                    <MenuItem value={"Accessories"}>M</MenuItem>
+                                    <MenuItem value={"Accessories"}>L</MenuItem>
+                                    <MenuItem value={"Accessories"}>XL</MenuItem>
+                                    <MenuItem value={"Accessories"}>XXL</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div> : null}
+                    {category2 === "Jacket" ?
+                        <div>
+                            <FormControl fullWidth>
+                                <InputLabel color="success">Size</InputLabel>
+                                <Select
+                                    color="success"
+                                    label="Service Category"
+                                >
+                                    <MenuItem value={"Clothing"}>XS</MenuItem>
+                                    <MenuItem value={"Shoes"}>S</MenuItem>
+                                    <MenuItem value={"Accessories"}>M</MenuItem>
+                                    <MenuItem value={"Accessories"}>L</MenuItem>
+                                    <MenuItem value={"Accessories"}>XL</MenuItem>
+                                    <MenuItem value={"Accessories"}>XXL</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div> : null}
+                    {category2 === "Jersey" ?
+                        <div>
+                            <FormControl fullWidth>
+                                <InputLabel color="success">Size</InputLabel>
+                                <Select
+                                    color="success"
+                                    label="Service Category"
+                                >
+                                    <MenuItem value={"Clothing"}>XS</MenuItem>
+                                    <MenuItem value={"Shoes"}>S</MenuItem>
+                                    <MenuItem value={"Accessories"}>M</MenuItem>
+                                    <MenuItem value={"Accessories"}>L</MenuItem>
+                                    <MenuItem value={"Accessories"}>XL</MenuItem>
+                                    <MenuItem value={"Accessories"}>XXL</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div> : null}
+                </>
+                : null}</>)
+    }
+
+    const ShoeDialog = () => {
+        return (
+            <>
+                {category === "Shoes" ?
+                    <div>
+                        <FormControl fullWidth>
+                            <InputLabel color="success">Size</InputLabel>
+                            <Select
+                                color="success"
+                                label="Service Category"
+                            >
+                                <MenuItem value={"3.5"}>3.5</MenuItem>
+                                <MenuItem value={"4"}>4</MenuItem>
+                                <MenuItem value={"4.5"}>4.5</MenuItem>
+                                <MenuItem value={"5"}>5</MenuItem>
+                                <MenuItem value={"5.5"}>5.5</MenuItem>
+                                <MenuItem value={"6"}>6</MenuItem>
+                                <MenuItem value={"6.5"}>6.5</MenuItem>
+                                <MenuItem value={"7"}>7</MenuItem>
+                                <MenuItem value={"8"}>8</MenuItem>
+                                <MenuItem value={"9"}>9</MenuItem>
+                                <MenuItem value={"10"}>10</MenuItem>
+                                <MenuItem value={"11"}>11</MenuItem>
+                                <MenuItem value={"12"}>12</MenuItem>
+                                <MenuItem value={"13"}>13</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                    : null}
+            </>)
+    }
+
+    const AccessoriesDialog = () => {
+        return (<>
+            {category === "Accessories" ?
+                <div>
+                    <FormControl fullWidth>
+                        <InputLabel color="success">Type</InputLabel>
+                        <Select
+                            color="success"
+                            label="Service Category"
+                        >
+                            <MenuItem value={"Scarf"}>Scarf</MenuItem>
+                            <MenuItem value={"Winter Gloves"}>Winter Gloves</MenuItem>
+                            <MenuItem value={"Belt"}>Belt</MenuItem>
+                            <MenuItem value={"Hat"}>Hat</MenuItem>
+                            <MenuItem value={"Wallet"}>Wallet</MenuItem>
+                            <MenuItem value={"Sunglasses"}>Sunglasses</MenuItem>
+                        </Select>
+                    </FormControl>
+                </div>
+                : null}
+        </>)
+    }
+
+    const GenderDialog = () => {
+        return (<div>
+            <FormControl fullWidth>
+                <InputLabel color="success" >Gender</InputLabel>
+                <Select
+                    color="success"
+                    value={category}
+                    label="Service Category"
+                >
+                    <MenuItem value={"Male"}>Male</MenuItem>
+                    <MenuItem value={"Female"}>Female</MenuItem>
+                </Select>
+            </FormControl>
+        </div>)
+    }
+
     return (
         <Dialog
-            onClose={handleClose} open={open}>
-            <div className="grid grid-flow-row gap-1 p-4">
+            onClose={handleClose} open={open} >
+            <div className="grid grid-flow-row gap-1 p-4 bg-[url(./background2.svg)]">
                 <TextField placeholder="Product Title" color="success" size="medium" />
                 <TextField placeholder="Product description" color="success" size="medium" />
-                <TextField placeholder="Cost Before vat" color="success" size="medium" />
-                <TextField placeholder="Mark up %" color="success" size="medium" />
-                <div className="grid grid-flow-col">
+                <div className="grid grid-flow-col mt-5">
                     <div>
                         <FormControl fullWidth>
                             <InputLabel color="success">Category</InputLabel>
@@ -58,121 +214,45 @@ const AddServiceDialog = ({
                             </Select>
                         </FormControl>
                     </div>
-                    {category === "Clothing" ?
-                        <><div>
-                            <FormControl fullWidth>
-                                <InputLabel color="success">Type</InputLabel>
-                                <Select
-                                    color="success"
-                                    value={category2}
-                                    onChange={(handleCategory2)}
-                                    label="Service Category"
-                                >
-                                    <MenuItem value={"Pants"}>Pants</MenuItem>
-                                    <MenuItem value={"Shirt"}>Shirt</MenuItem>
-                                    <MenuItem value={"Jacket"}>Jacket</MenuItem>
-                                    <MenuItem value={"Jersey"}>Jersey</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div> {category2 === "Pants" ?
-                            <div>
-                                <FormControl fullWidth>
-                                    <InputLabel color="success">Size</InputLabel>
-                                    <Select
-                                        color="success"
-                                        label="Service Category"
-                                    >
-                                        <MenuItem value={"Clothing"}>XS</MenuItem>
-                                        <MenuItem value={"Shoes"}>S</MenuItem>
-                                        <MenuItem value={"Accessories"}>M</MenuItem>
-                                        <MenuItem value={"Accessories"}>L</MenuItem>
-                                        <MenuItem value={"Accessories"}>XL</MenuItem>
-                                        <MenuItem value={"Accessories"}>XXL</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </div> : null}
-                            {category2 === "Shirt" ?
-                                <div>
-                                    <FormControl fullWidth>
-                                        <InputLabel color="success">Size</InputLabel>
-                                        <Select
-                                            color="success"
-                                            label="Service Category"
-                                        >
-                                            <MenuItem value={"Clothing"}>XS</MenuItem>
-                                            <MenuItem value={"Shoes"}>S</MenuItem>
-                                            <MenuItem value={"Accessories"}>M</MenuItem>
-                                            <MenuItem value={"Accessories"}>L</MenuItem>
-                                            <MenuItem value={"Accessories"}>XL</MenuItem>
-                                            <MenuItem value={"Accessories"}>XXL</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div> : null}
-                            {category2 === "Jacket" ?
-                                <div>
-                                    <FormControl fullWidth>
-                                        <InputLabel color="success">Size</InputLabel>
-                                        <Select
-                                            color="success"
-                                            label="Service Category"
-                                        >
-                                            <MenuItem value={"Clothing"}>XS</MenuItem>
-                                            <MenuItem value={"Shoes"}>S</MenuItem>
-                                            <MenuItem value={"Accessories"}>M</MenuItem>
-                                            <MenuItem value={"Accessories"}>L</MenuItem>
-                                            <MenuItem value={"Accessories"}>XL</MenuItem>
-                                            <MenuItem value={"Accessories"}>XXL</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div> : null}
-                            {category2 === "Jersey" ?
-                                <div>
-                                    <FormControl fullWidth>
-                                        <InputLabel color="success">Size</InputLabel>
-                                        <Select
-                                            color="success"
-                                            label="Service Category"
-                                        >
-                                            <MenuItem value={"Clothing"}>XS</MenuItem>
-                                            <MenuItem value={"Shoes"}>S</MenuItem>
-                                            <MenuItem value={"Accessories"}>M</MenuItem>
-                                            <MenuItem value={"Accessories"}>L</MenuItem>
-                                            <MenuItem value={"Accessories"}>XL</MenuItem>
-                                            <MenuItem value={"Accessories"}>XXL</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div> : null}</>
-                        : null}
-
+                    <ClothingDialog />
+                    <ShoeDialog />
+                    <AccessoriesDialog />
                 </div>
-                <div>
-                    <FormControl fullWidth>
-                        <InputLabel color="success" >Gender</InputLabel>
-                        <Select
-                            color="success"
-                            value={category}
-                            label="Service Category"
-                        >
-                            <MenuItem value={"Male"}>Male</MenuItem>
-                            <MenuItem value={"Female"}>Female</MenuItem>
-                        </Select>
-                    </FormControl>
-                </div>
-                <div className="flex text-center justify-center">Upload a picture</div>
-                <Button>
-                    <FileUploadIcon />
-                    <input accept="image/*" type="file" onChange={handleImage} />
+                <GenderDialog />
+                <Button
+                    sx={{
+                        textTransform: "none", bgcolor: "#05e6c0", color: "whitesmoke",
+                        '&:hover': {
+                            backgroundColor: "#96ffed",
+                            color: 'gray',
+                        }
+                    }}>
+                    <label style={{ cursor: 'pointer' }}>
+                        Upload a picture
+                        <input
+                            accept="image/*"
+                            type="file"
+                            onChange={handleImage}
+                            style={{ display: 'none' }}
+                        />
+                    </label>
                 </Button>
                 <div className="flex align-center justify-center">
                     <img width={150} alt={image} src={image} />
                 </div>
                 <div className="flex align-center justify-center pb-4 pt-4">
                     <Button
-                        sx={{ textTransform: "none" }}
+                        sx={{
+                            textTransform: "none", bgcolor: "#05e6c0", color: "whitesmoke",
+                            '&:hover': {
+                                backgroundColor: "#96ffed",
+                                color: 'gray',
+                            }
+                        }}
+                        className={`${FontType}`}
                         onClick={handleAddService}
-                        size="small"
-                        className="bg-gradient-to-r from-gray-100 to-gray-100 via-gray-300 shadow-gray-700 shadow-md">
-                        <div className="text-gray-700 font-serif">Donate</div>
+                        size="large">
+                        Donate
                     </Button>
                 </div>
             </div>
