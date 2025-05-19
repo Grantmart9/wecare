@@ -9,17 +9,64 @@ import IconButton from "@mui/material/IconButton";
 import { createClient } from "@supabase/supabase-js";
 import Dialog from '@mui/material/Dialog';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { SUPABASE_URL, API_KEY, FontType } from "../supabase";
-import Input from "@mui/material";
+import { ClothingDialog } from "./components/Clothing";
+import { ShoeDialog } from "./components/shoes";
+import { AccessoriesDialog } from "./components/accessories";
 
 const supabase = createClient(SUPABASE_URL, API_KEY);
 
-const AddServiceDialog = ({
+
+
+
+const GenderDialog = ({ Gender, handleGender }) => {
+    return (<div>
+        <FormControl fullWidth>
+            <InputLabel color="success" >Gender</InputLabel>
+            <Select
+                color="success"
+                value={Gender}
+                onChange={handleGender}
+            >
+                <MenuItem value={"Male"}>Male</MenuItem>
+                <MenuItem value={"Female"}>Female</MenuItem>
+            </Select>
+        </FormControl>
+    </div>)
+}
+
+
+const ImageDialog = ({ image, handleImage }) => {
+    return (
+        <>
+            <Button
+                sx={{
+                    textTransform: "none", bgcolor: "#05e6c0", color: "whitesmoke",
+                    '&:hover': {
+                        backgroundColor: "#96ffed",
+                        color: 'gray',
+                    }
+                }}>
+                <label style={{ cursor: 'pointer' }}>
+                    Upload a picture
+                    <input
+                        accept="image/*"
+                        type="file"
+                        onChange={handleImage}
+                        style={{ display: 'none' }}
+                    />
+                </label>
+            </Button>
+            <div className="flex align-center justify-center">
+                <img width={150} alt={image} src={image} />
+            </div></>)
+}
+
+const DonationDialog = ({
     handleImage,
     handleClose,
     handleAddService,
@@ -27,175 +74,16 @@ const AddServiceDialog = ({
     image,
     category,
     handleCategory,
-    handleCategory2,
-    category2 }) => {
-
-    const ClothingDialog = () => {
-        return (
-            <>{category === "Clothing" ?
-                <>
-                    <div>
-                        <FormControl fullWidth>
-                            <InputLabel color="success">Type</InputLabel>
-                            <Select
-                                color="success"
-                                value={category2}
-                                onChange={(handleCategory2)}
-                                label="Service Category"
-                            >
-                                <MenuItem value={"Pants"}>Pants</MenuItem>
-                                <MenuItem value={"Shirt"}>Shirt</MenuItem>
-                                <MenuItem value={"Jacket"}>Jacket</MenuItem>
-                                <MenuItem value={"Jersey"}>Jersey</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </div> {category2 === "Pants" ?
-                        <div>
-                            <FormControl fullWidth>
-                                <InputLabel color="success">Size</InputLabel>
-                                <Select
-                                    color="success"
-                                    label="Service Category"
-                                >
-                                    <MenuItem value={"Clothing"}>XS</MenuItem>
-                                    <MenuItem value={"Shoes"}>S</MenuItem>
-                                    <MenuItem value={"Accessories"}>M</MenuItem>
-                                    <MenuItem value={"Accessories"}>L</MenuItem>
-                                    <MenuItem value={"Accessories"}>XL</MenuItem>
-                                    <MenuItem value={"Accessories"}>XXL</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div> : null}
-                    {category2 === "Shirt" ?
-                        <div>
-                            <FormControl fullWidth>
-                                <InputLabel color="success">Size</InputLabel>
-                                <Select
-                                    color="success"
-                                    label="Service Category"
-                                >
-                                    <MenuItem value={"Clothing"}>XS</MenuItem>
-                                    <MenuItem value={"Shoes"}>S</MenuItem>
-                                    <MenuItem value={"Accessories"}>M</MenuItem>
-                                    <MenuItem value={"Accessories"}>L</MenuItem>
-                                    <MenuItem value={"Accessories"}>XL</MenuItem>
-                                    <MenuItem value={"Accessories"}>XXL</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div> : null}
-                    {category2 === "Jacket" ?
-                        <div>
-                            <FormControl fullWidth>
-                                <InputLabel color="success">Size</InputLabel>
-                                <Select
-                                    color="success"
-                                    label="Service Category"
-                                >
-                                    <MenuItem value={"Clothing"}>XS</MenuItem>
-                                    <MenuItem value={"Shoes"}>S</MenuItem>
-                                    <MenuItem value={"Accessories"}>M</MenuItem>
-                                    <MenuItem value={"Accessories"}>L</MenuItem>
-                                    <MenuItem value={"Accessories"}>XL</MenuItem>
-                                    <MenuItem value={"Accessories"}>XXL</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div> : null}
-                    {category2 === "Jersey" ?
-                        <div>
-                            <FormControl fullWidth>
-                                <InputLabel color="success">Size</InputLabel>
-                                <Select
-                                    color="success"
-                                    label="Service Category"
-                                >
-                                    <MenuItem value={"Clothing"}>XS</MenuItem>
-                                    <MenuItem value={"Shoes"}>S</MenuItem>
-                                    <MenuItem value={"Accessories"}>M</MenuItem>
-                                    <MenuItem value={"Accessories"}>L</MenuItem>
-                                    <MenuItem value={"Accessories"}>XL</MenuItem>
-                                    <MenuItem value={"Accessories"}>XXL</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div> : null}
-                </>
-                : null}</>)
-    }
-
-    const ShoeDialog = () => {
-        return (
-            <>
-                {category === "Shoes" ?
-                    <div>
-                        <FormControl fullWidth>
-                            <InputLabel color="success">Size</InputLabel>
-                            <Select
-                                color="success"
-                                label="Service Category"
-                            >
-                                <MenuItem value={"3.5"}>3.5</MenuItem>
-                                <MenuItem value={"4"}>4</MenuItem>
-                                <MenuItem value={"4.5"}>4.5</MenuItem>
-                                <MenuItem value={"5"}>5</MenuItem>
-                                <MenuItem value={"5.5"}>5.5</MenuItem>
-                                <MenuItem value={"6"}>6</MenuItem>
-                                <MenuItem value={"6.5"}>6.5</MenuItem>
-                                <MenuItem value={"7"}>7</MenuItem>
-                                <MenuItem value={"8"}>8</MenuItem>
-                                <MenuItem value={"9"}>9</MenuItem>
-                                <MenuItem value={"10"}>10</MenuItem>
-                                <MenuItem value={"11"}>11</MenuItem>
-                                <MenuItem value={"12"}>12</MenuItem>
-                                <MenuItem value={"13"}>13</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </div>
-                    : null}
-            </>)
-    }
-
-    const AccessoriesDialog = () => {
-        return (<>
-            {category === "Accessories" ?
-                <div>
-                    <FormControl fullWidth>
-                        <InputLabel color="success">Type</InputLabel>
-                        <Select
-                            color="success"
-                            label="Service Category"
-                        >
-                            <MenuItem value={"Scarf"}>Scarf</MenuItem>
-                            <MenuItem value={"Winter Gloves"}>Winter Gloves</MenuItem>
-                            <MenuItem value={"Belt"}>Belt</MenuItem>
-                            <MenuItem value={"Hat"}>Hat</MenuItem>
-                            <MenuItem value={"Wallet"}>Wallet</MenuItem>
-                            <MenuItem value={"Sunglasses"}>Sunglasses</MenuItem>
-                        </Select>
-                    </FormControl>
-                </div>
-                : null}
-        </>)
-    }
-
-    const GenderDialog = () => {
-        return (<div>
-            <FormControl fullWidth>
-                <InputLabel color="success" >Gender</InputLabel>
-                <Select
-                    color="success"
-                    value={category}
-                    label="Service Category"
-                >
-                    <MenuItem value={"Male"}>Male</MenuItem>
-                    <MenuItem value={"Female"}>Female</MenuItem>
-                </Select>
-            </FormControl>
-        </div>)
-    }
-
+    Type,
+    handleType,
+    Size,
+    handleSize,
+    Gender,
+    handleGender }) => {
     return (
         <Dialog
-            onClose={handleClose} open={open} >
-            <div className="grid grid-flow-row gap-1 p-4 bg-[url(./background2.svg)]">
+            onClose={handleClose} open={open}>
+            <div className="grid grid-flow-row gap-1 p-4 bg-[url(./background2.svg)]" style={{ minWidth: "340px" }}>
                 <TextField placeholder="Product Title" color="success" size="medium" />
                 <TextField placeholder="Product description" color="success" size="medium" />
                 <div className="grid grid-flow-col mt-5">
@@ -214,32 +102,12 @@ const AddServiceDialog = ({
                             </Select>
                         </FormControl>
                     </div>
-                    <ClothingDialog />
-                    <ShoeDialog />
-                    <AccessoriesDialog />
+                    <ClothingDialog Type={Type} handleType={handleType} Size={Size} handleSize={handleSize} category={category} />
+                    <ShoeDialog Size={Size} handleSize={handleSize} category={category} />
+                    <AccessoriesDialog Type={Type} handleType={handleType} category={category} />
                 </div>
-                <GenderDialog />
-                <Button
-                    sx={{
-                        textTransform: "none", bgcolor: "#05e6c0", color: "whitesmoke",
-                        '&:hover': {
-                            backgroundColor: "#96ffed",
-                            color: 'gray',
-                        }
-                    }}>
-                    <label style={{ cursor: 'pointer' }}>
-                        Upload a picture
-                        <input
-                            accept="image/*"
-                            type="file"
-                            onChange={handleImage}
-                            style={{ display: 'none' }}
-                        />
-                    </label>
-                </Button>
-                <div className="flex align-center justify-center">
-                    <img width={150} alt={image} src={image} />
-                </div>
+                <GenderDialog Gender={Gender} handleGender={handleGender} />
+                <ImageDialog image={image} handleImage={handleImage} />
                 <div className="flex align-center justify-center pb-4 pt-4">
                     <Button
                         sx={{
@@ -259,7 +127,7 @@ const AddServiceDialog = ({
         </Dialog >
     )
 }
-const ServiceSearchBar = ({
+const Donate = ({
     handleServiceName,
     handleServiceRate,
     handleServiceDescription,
@@ -270,12 +138,14 @@ const ServiceSearchBar = ({
     open,
     handleFilter,
     image,
-    handleUnit,
-    unit,
     category,
     handleCategory,
-    category2,
-    handleCategory2
+    Type,
+    handleType,
+    Size,
+    handleSize,
+    Gender,
+    handleGender
 }) => {
     return (
         <div>
@@ -297,7 +167,7 @@ const ServiceSearchBar = ({
                     <AddCircleOutlineIcon sx={{ fontSize: "50pt", color: "steelblue" }} />
                 </IconButton>
             </motion.div>
-            <AddServiceDialog
+            <DonationDialog
                 handleServiceName={handleServiceName}
                 handleServiceRate={handleServiceRate}
                 handleServiceDescription={handleServiceDescription}
@@ -307,12 +177,14 @@ const ServiceSearchBar = ({
                 handleAddService={handleAddService}
                 open={open}
                 image={image}
-                handleUnit={handleUnit}
-                unit={unit}
                 category={category}
                 handleCategory={handleCategory}
-                category2={category2}
-                handleCategory2={handleCategory2} />
+                Type={Type}
+                handleType={handleType}
+                size={Size}
+                handleSize={handleSize}
+                Gender={Gender}
+                handleGender={handleGender} />
         </div>
     )
 }
@@ -386,15 +258,11 @@ const Service = () => {
     const [ServiceRate, setServiceRate] = useState("");
     const [ServiceDescription, setServiceDescription] = useState("");
     const [open, setOpen] = useState(false);
-    const [unit, setUnit] = React.useState('');
     const [category, setCategory] = useState('');
-    const [category2, setCategory2] = useState('');
+    const [Type, setType] = useState('');
+    const [Size, setSize] = useState('');
+    const [Gender, setGender] = useState('');
 
-
-    /// Event hadnlers ///
-    const handleUnit = (event) => {
-        setUnit(event.target.value);
-    };
 
     const handleFilter = () => {
         setOpen(true);
@@ -405,8 +273,14 @@ const Service = () => {
     const handleCategory = (e) => {
         setCategory(e.target.value)
     }
-    const handleCategory2 = (e) => {
-        setCategory2(e.target.value)
+    const handleType = (e) => {
+        setType(e.target.value)
+    }
+    const handleSize = (e) => {
+        setSize(e.target.value)
+    }
+    const handleGender = (e) => {
+        setGender(e.target.value)
     }
 
     const handleServiceName = (e) => {
@@ -431,7 +305,6 @@ const Service = () => {
                     price: ServiceRate,
                     service_description: ServiceDescription,
                     person_logo: file,
-                    rate_unit: unit,
                     user_id: user_details.user.id,
                     category: category
                 })
@@ -478,7 +351,7 @@ const Service = () => {
                 <div className="block align-center justify-center">
                     <div>
                         <div className="flex align-center justify-center">
-                            <ServiceSearchBar
+                            <Donate
                                 handleServiceName={handleServiceName}
                                 handleServiceRate={handleServiceRate}
                                 handleServiceDescription={handleServiceDescription}
@@ -489,12 +362,14 @@ const Service = () => {
                                 handleAddService={handleAddService}
                                 open={open}
                                 handleFilter={handleFilter}
-                                handleUnit={handleUnit}
-                                unit={unit}
                                 category={category}
                                 handleCategory={handleCategory}
-                                category2={category2}
-                                handleCategory2={handleCategory2}
+                                Type={Type}
+                                size={Size}
+                                handleType={handleType}
+                                handleSize={handleSize}
+                                Gender={Gender}
+                                handleGender={handleGender}
                                 className="flex align-center justify-center" />
                         </div>
                         <ServiceMap Data={Data} />
