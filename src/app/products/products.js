@@ -10,7 +10,7 @@ import Slider from '@mui/material/Slider';
 import List from '@mui/material/List';
 import Dialog from '@mui/material/Dialog';
 import ClearIcon from '@mui/icons-material/Clear';
-import { SUPABASE_URL_WECARE, API_KEY_WECARE, TextColor, FontType, DrawerBackgroundHoverColor } from "../supabase";
+import { SUPABASE_URL_WECARE, API_KEY_WECARE, FontType, DrawerBackgroundHoverColor } from "../supabase";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import SnackbarContent from "@mui/material/SnackbarContent";
@@ -207,7 +207,7 @@ const SupDataMap = ({
                                 <Rating
                                     style={{ color: "gold" }}
                                     name="Avg rating"
-                                    value={Data[productIndex].rating}
+                                    value={Product.rating}
                                     sx={{ alignItems: "center", justifyItems: "center", fontSize: "14px" }}
                                 />
                             </div>

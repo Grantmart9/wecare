@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
- //output: "export",
+ output: "export",
   trailingSlash: true,
   webpack: (config, { isServer }) => {
     // Add file-loader for font files

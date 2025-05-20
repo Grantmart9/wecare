@@ -106,7 +106,7 @@
   "scripts": {
     "dev": "next dev -p 3018",
     "build": "next build",
-    "start": "next start -p 3018",
+    "start": "NODE_ENV=production node server.js",
     "lint": "next lint"
   },
   "eslintConfig": {

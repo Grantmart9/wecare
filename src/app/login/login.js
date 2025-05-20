@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'; // Change this to `next/navigation`
 import KeyIcon from '@mui/icons-material/Key';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/Visibilityoff';
-import { BackgroundColor, DrawerBackgroundColor, SUPABASE_URL_WECARE, API_KEY_WECARE } from "../supabase";
+import { SUPABASE_URL_WECARE, API_KEY_WECARE } from "../supabase";
 import * as motion from "motion/react-client"
 import validator from "validator";
 

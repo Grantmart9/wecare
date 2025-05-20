@@ -39,15 +39,10 @@ export const MainMenuList = [
       { "name": "Books & Toys", "path": "/products" },
       ]
   },
-  {
-    "name": 'New Arrivals', "path": '/products', "menu":
-      [{ "name": "Recently Added productss", "path": "/products" },
-      ]
-  },
 ]
 
 export const SubMenuList = [
-  { "name": "Donate", "path": "/add_products" },
+  { "name": "My Donations", "path": "/add_products" },
   { "name": 'Orders', "path": "/orders" },
   { "name": 'Account', "path": "/account" },
   { "name": 'Login / Sign Up', "path": "/login" },

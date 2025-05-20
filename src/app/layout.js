@@ -74,7 +74,7 @@ export default function RootLayout({ children }) {
         sx={{ textTransform: "none", padding: 0 }}
         href="/"
       >
-        <div className="bg-linear-180 from-cyan-900 to-cyan-700 via-cyan-800 w-full">
+        <div className="bg-gradient-to-r from-emerald-600 to-emerald-600 via-emerald-500 w-full">
           <div
             style={{ fontFamily: "cursive", fontWeight: "bolder", fontStyle: "italic", fontSize: "63px", rotate: "-7deg" }}
             className={`text-center justify-center text-cyan-50`}
@@ -202,7 +202,7 @@ export default function RootLayout({ children }) {
       >
         <div
           style={{ height: "44px" }}
-          className={`fixed ${TopBarColor} opacity-95 w-full z-30`}
+          className={`fixed bg-gradient-to-r from-emerald-600 to-emerald-600 via-emerald-400 opacity-95 w-full z-30`}
         >
         </div>
         <div className="z-50 fixed my-auto left-1">
@@ -214,7 +214,7 @@ export default function RootLayout({ children }) {
           </IconButton>
         </div>
         <Drawer
-          transitionDuration={{ enter: 400, exit: 500 }}
+          transitionDuration={{ enter: 600, exit: 600 }}
           disableScrollLock={true}
           open={open}
           onClose={toggleDrawer(false)}
