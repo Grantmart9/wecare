@@ -4,7 +4,7 @@ export const AccessoriesDialog = ({ category, Type, handleType }) => {
     return (
         <>
             {category === "Accessories" ?
-                <div>
+                <div className="ml-1">
                     <FormControl fullWidth>
                         <InputLabel color="success">Type</InputLabel>
                         <Select

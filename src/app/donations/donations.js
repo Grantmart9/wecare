@@ -1,21 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import * as motion from "motion/react-client"
-import Rating from '@mui/material/Rating';
 import { Dialog, Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import { createClient } from "@supabase/supabase-js";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { SUPABASE_URL_WECARE, API_KEY_WECARE, DrawerBackgroundHoverColor, FontType } from "../supabase";
+import { SUPABASE_URL_WECARE, API_KEY_WECARE } from "../supabase";
 import { DonationDialog } from "./components/donation";
 import Image from "next/image";
 import CloseIcon from '@mui/icons-material/Close';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
+import { useRouter } from 'next/navigation'; // Change this to `next/navigation` for client-side navigation
 
 
 const supabase = createClient(SUPABASE_URL_WECARE, API_KEY_WECARE);
+
 
 const Donate = ({
     handleServiceName,
@@ -110,13 +108,7 @@ const SupDataMap = ({
     handleCloseProduct,
     product,
     productIndex, }) => {
-    const [quantity, setQuantity] = useState(1);
 
-    const handleAddQuantity = () => { setQuantity(quantity + 1) }
-    const handleSubtractQuantity = () => {
-        if (quantity <= 0) { setQuantity(0) }
-        else { setQuantity(quantity - 1) }
-    }
 
     // Trancatuate if title is more than 4 words //
     function truncateWords(text, wordLimit) {
@@ -158,7 +150,7 @@ const SupDataMap = ({
     };
 
     return (
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 mx-4 pb-5 mt-5">
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 mx-4 pb-5 mt-10">
             {Data.map((Product, index) => (
                 <motion.div
                     key={index} // assuming each Product has a unique id
@@ -237,7 +229,7 @@ const SupDataMap = ({
 };
 
 
-const Service = () => {
+const Donations = () => {
     const [file, setFile] = useState();
     const [image, setImage] = useState();
     const [Data, setData] = useState([]);
@@ -253,6 +245,8 @@ const Service = () => {
     const [condition, setCondition] = useState('');
     const [color, setColor] = useState('');
     const [brand, setBrand] = useState('');
+
+    const router = useRouter();
 
     const handleFilter = () => {
         setOpen(true);
@@ -321,6 +315,7 @@ const Service = () => {
                 .insert(InsertData)
         console.log(InsertData)
         setOpen(false);
+        getInstruments();
     }
 
 
@@ -343,19 +338,20 @@ const Service = () => {
             reader.readAsDataURL(file);
         }
     }
+    async function getInstruments() {
+        const user_details = JSON.parse(localStorage.getItem("sb-sdsejsyrecrffnjqevfm-auth-token"));
+        const { data } = await
+            supabase
+                .from("products")
+                .select()
+                .eq("doner", localStorage.getItem("user_id"))
+        setData(data)
+    }
 
     /// Run this before mounting the component ////
     useEffect(() => {
         getInstruments();
-        async function getInstruments() {
-            const user_details = JSON.parse(localStorage.getItem("sb-sdsejsyrecrffnjqevfm-auth-token"));
-            const { data } = await
-                supabase
-                    .from("products")
-                    .select()
-                    .eq("doner", localStorage.getItem("user_id"))
-            setData(data)
-        }
+
     }, []);
 
     return (
@@ -404,4 +400,4 @@ const Service = () => {
     );
 };
 
-export default Service;
+export default Donations;

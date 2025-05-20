@@ -42,7 +42,7 @@ export const MainMenuList = [
 ]
 
 export const SubMenuList = [
-  { "name": "My Donations", "path": "/add_products" },
+  { "name": "My Donations", "path": "/donations" },
   { "name": 'Orders', "path": "/orders" },
   { "name": 'Account', "path": "/account" },
   { "name": 'Login / Sign Up', "path": "/login" },

@@ -7,6 +7,7 @@ import { ImageDialog } from "./image";
 import { ColorDialog } from "./color";
 import { ConditionDialog } from "./condition";
 import { BrandDialog } from "./brand";
+import { CategoryDialog } from "./category";
 
 export const DonationDialog = ({
     handleImage,
@@ -51,25 +52,10 @@ export const DonationDialog = ({
                     color="success"
                     size="medium" />
                 <div className="grid grid-flow-col mt-5">
-                    <div>
-                        <FormControl fullWidth>
-                            <InputLabel color="success">Category</InputLabel>
-                            <Select
-                                color="success"
-                                value={category}
-                                onChange={(handleCategory)}
-                                label="Service Category"
-                            >
-                                <MenuItem value={"Clothing"}>Clothing</MenuItem>
-                                <MenuItem value={"Shoes"}>Shoes</MenuItem>
-                                <MenuItem value={"Accessories"}>Accessories</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </div>
+                    <CategoryDialog category={category} handleCategory={handleCategory} />
                     <ClothingDialog Type={Type} handleType={handleType} Size={Size} handleSize={handleSize} category={category} />
                     <ShoeDialog Size={Size} handleSize={handleSize} category={category} />
                     <AccessoriesDialog Type={Type} handleType={handleType} category={category} />
-
                 </div>
                 <div className={`grid grid-cols-2 gap-1`}>
                     <ConditionDialog conditon={condition} handleCondition={handleCondition} />

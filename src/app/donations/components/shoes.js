@@ -3,7 +3,7 @@ export const ShoeDialog = ({ category, Size, handleSize }) => {
     return (
         <>
             {category === "Shoes" ?
-                <div>
+                <div className="ml-1">
                     <FormControl fullWidth>
                         <InputLabel color="success">Size</InputLabel>
                         <Select
