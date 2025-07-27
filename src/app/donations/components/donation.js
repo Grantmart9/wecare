@@ -2,7 +2,7 @@ import { TextField, Dialog, FormControl, MenuItem, InputLabel, Select, Button } 
 import { ClothingDialog } from "./clothing";
 import { ShoeDialog } from "./shoes";
 import { AccessoriesDialog } from "./accessories";
-import { GenderDialog } from "./gender";
+import { QuantityDialog } from "./quantity";
 import { ImageDialog } from "./image";
 import { ColorDialog } from "./color";
 import { ConditionDialog } from "./condition";
@@ -21,8 +21,8 @@ export const DonationDialog = ({
     handleType,
     Size,
     handleSize,
-    Gender,
-    handleGender,
+    quantity,
+    handleQuantity,
     ServiceName,
     handleServiceName,
     ServiceDescription,
@@ -39,31 +39,18 @@ export const DonationDialog = ({
         <Dialog
             onClose={handleClose} open={open}>
             <div className="grid grid-flow-row gap-1 p-4 bg-[url(./background2.svg)]" style={{ minWidth: "340px" }}>
-                <TextField
-                    placeholder="Product Title"
-                    color="success"
-                    value={ServiceName}
-                    onChange={handleServiceName}
-                    size="medium" />
-                <TextField
-                    placeholder="Product description"
-                    value={ServiceDescription}
-                    onChange={handleServiceDescription}
-                    color="success"
-                    size="medium" />
                 <div className="grid grid-flow-col mt-5">
-                    <CategoryDialog category={category} handleCategory={handleCategory} />
                     <ClothingDialog Type={Type} handleType={handleType} Size={Size} handleSize={handleSize} category={category} />
                     <ShoeDialog Size={Size} handleSize={handleSize} category={category} />
                     <AccessoriesDialog Type={Type} handleType={handleType} category={category} />
                 </div>
                 <div className={`grid grid-cols-2 gap-1`}>
                     <ConditionDialog conditon={condition} handleCondition={handleCondition} />
-                    <GenderDialog Gender={Gender} handleGender={handleGender} />
+                    <ColorDialog color={color} handleColor={handleColor} />
                 </div>
                 <div className={`grid grid-cols-2 gap-1`}>
-                    <ColorDialog color={color} handleColor={handleColor} />
                     <BrandDialog brand={brand} handleBrand={handleBrand} />
+                    <QuantityDialog brand={quantity} handleBrand={handleQuantity} />
                 </div>
                 <ImageDialog image={image} handleImage={handleImage} />
                 <div className="flex align-center justify-center pb-4 pt-4">

@@ -3,14 +3,13 @@ import React, { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import Button from "@mui/material/Button";
 import { TextField, InputAdornment, Box } from "@mui/material";
-import { AccountCircle } from "@mui/icons-material";
 import { useRouter } from 'next/navigation'; // Change this to `next/navigation` for client-side navigation
-import KeyIcon from '@mui/icons-material/Key';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/Visibilityoff';
-import { SUPABASE_URL_WECARE, API_KEY_WECARE } from "../supabase";
+import { SUPABASE_URL_WECARE, API_KEY_WECARE, Colors } from "../supabase";
 import * as motion from "motion/react-client"
 import validator from "validator";
+import Switch from '@mui/material/Switch';
 
 const supabase = createClient(SUPABASE_URL_WECARE, API_KEY_WECARE);
 
@@ -20,8 +19,21 @@ const LoginDialog = ({
     showPassword,
     handleSignIn,
     open,
-    handleSignUp
+    handleSignUp,
+    handleClientType,
+    ClientType
+
 }) => {
+
+    const SwitchColor = () => {
+
+        if (ClientType === true) {
+            return ("#8FE6BA")
+        }
+        if (ClientType === false) {
+            return ("#F68C9E")
+        }
+    }
     return (
         <motion.div
             initial={{ opacity: 0, y: 0 }}
@@ -37,24 +49,52 @@ const LoginDialog = ({
             className="flex align-center justify-center" style={{ marginTop: "25vh" }}>
             <Box sx={{ maxWidth: 400 }}>
                 <div className="grid grid-flow-row gap-2 rounded-lg p-4 shadow-md shadow-cyan-950 bg-[url(./background4.svg)]">
+                    <div className="grid grid-cols-3 gap-1 mx-auto">
+                        <div className="text-teal-600 text-md text-center my-auto">Doner</div>
+                        <Switch onClick={handleClientType}
+                            sx={{
+                                "& .MuiSwitch-switchBase": {
+                                    color: SwitchColor, // Applies to both checked and unchecked thumb
+                                },
+                                "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+                                    backgroundColor: "transparent", // Ensures transparent track when checked
+                                },
+                                "& .MuiSwitch-switchBase.Mui-unchecked + .MuiSwitch-track": {
+                                    backgroundColor: "transparent", // Ensures transparent track when unchecked
+                                },
+                                "& .MuiSwitch-track": {
+                                    opacity: 1, // Ensures no default opacity effects
+                                    backgroundColor: "transparent", // Overrides any remaining default styles
+                                },
+                            }} />
+                        <div className="text-red-700 text-md text-center my-auto">Buyer</div>
+                    </div>
+                    <div className="text-center text-lg text-teal-400 font-bold">Log in as a {ClientType ? "Doner" : "Buyer"}</div>
                     <TextField
                         id="input-with-icon-textfield"
-                        label="email"
+                        label="email or Mobile Number"
                         size="small"
-                        color="success"
                         onChange={handleUsername}
-                        style={{
-                            background: "rgba(128, 128, 128, 0.25)", // Set the background with 15% opacity
-                        }}
-                        sx={{ input: { color: 'black' }, label: { color: "black" } }}
                         variant="outlined"
-                        slotProps={{
-                            input: {
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <AccountCircle className={`text-cyan-950`} />
-                                    </InputAdornment>
-                                ),
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "25px", // Rounds the left and right sides
+                                "& fieldset": {
+                                    borderColor: Colors.yellow, // Yellow border color
+                                    borderWidth: "2px", // Thickness of the border
+                                },
+                                "&:hover fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow on hover
+                                },
+                                "&.Mui-focused fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow when focused
+                                },
+                            },
+                            "& .MuiInputLabel-root": {
+                                color: "black", // Black label color
+                            },
+                            "& .MuiInputBase-input": {
+                                color: "black", // Black input text color
                             },
                         }}
                     />
@@ -64,90 +104,125 @@ const LoginDialog = ({
                         size="small"
                         color="success"
                         onChange={handlePassword}
-                        style={{
-                            background: "rgba(128, 128, 128, 0.25)", // Set the background with 15% opacity
-                        }}
                         type={open ? "password" : "text"}
-                        sx={{ input: { color: 'black' }, label: { color: "black" } }}
                         variant="outlined"
-                        slotProps={{
-                            input: {
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <KeyIcon className={`text-cyan-950`} />
-                                    </InputAdornment>
-                                ),
-                                endAdornment: (
-                                    <div>
-                                        {open ? (
-                                            <InputAdornment position="end">
-                                                <Button onClick={showPassword}><VisibilityIcon className={`text-cyan-950`} sx={{ bgcolor: "transparent" }} /></Button>
-                                            </InputAdornment>
-                                        ) : (
-                                            <InputAdornment position="end">
-                                                <Button onClick={showPassword}><VisibilityOffIcon className={`text-cyan-950`} sx={{ bgcolor: "transparent" }} /></Button>
-                                            </InputAdornment>
-                                        )}
-                                    </div>
-                                ),
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "25px", // Rounds the left and right sides
+                                "& fieldset": {
+                                    borderColor: Colors.yellow, // Yellow border color
+                                    borderWidth: "2px", // Thickness of the border
+                                },
+                                "&:hover fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow on hover
+                                },
+                                "&.Mui-focused fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow when focused
+                                },
+                            },
+                            "& .MuiInputLabel-root": {
+                                color: "black", // Black label color
+                            },
+                            "& .MuiInputBase-input": {
+                                color: "black", // Black input text color
                             },
                         }}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <Button onClick={showPassword} sx={{ minWidth: 0, padding: 0 }}>
+                                        {open ? (
+                                            <VisibilityIcon className={`text-cyan-950`} />
+                                        ) : (
+                                            <VisibilityOffIcon className={`text-cyan-950`} />
+                                        )}
+                                    </Button>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
-                    <div className="grid grid-flow-col gap-1 mt-2">
-                        <Button
-                            size="small"
-                            onClick={handleSignIn}
-                            fullWidth={false}
-                            sx={{
-                                textTransform: "none", bgcolor: "#05e6c0", color: "whitesmoke",
-                                '&:hover': {
-                                    backgroundColor: "#96ffed",
-                                    color: 'black',
-                                }
-                            }}
 
-                        >
-                            Login
-                        </Button>
-                        <Button
-                            size="small"
-                            fullWidth={false}
-                            onClick={handleSignUp}
-                            sx={{
-                                textTransform: "none", bgcolor: "#05e6c0", color: "whitesmoke",
-                                '&:hover': {
-                                    backgroundColor: "#96ffed",
-                                    color: 'black',
-                                }
-                            }}
-                        >
-                            Sign Up
-                        </Button>
+                    <Button
+                        size="small"
+                        onClick={handleSignIn}
+                        fullWidth={true}
+                        className="rounded-3xl mx-auto"
+                        sx={{
+                            textTransform: "none", bgcolor: Colors.red, color: "white", maxWidth: "200px",
+                            '&:hover': {
+                                backgroundColor: Colors.green,
+                                color: 'white',
+                            }
+                        }}
 
-                    </div>
+                    >
+                        LOG IN
+                    </Button>
+                    <Button
+                        size="small"
+                        fullWidth={true}
+                        className="rounded-3xl mx-auto"
+                        sx={{
+                            textTransform: "none", bgcolor: Colors.orange, color: "white", maxWidth: "200px",
+                            '&:hover': {
+                                backgroundColor: Colors.green,
+                                color: 'white',
+                            }
+                        }}
+                    >
+                        OTP LOG IN
+                    </Button>
+                    <Button
+                        size="small"
+                        fullWidth={true}
+                        onClick={handleSignUp}
+                        className="rounded-3xl mx-auto"
+                        sx={{
+                            textTransform: "none", bgcolor: "transparent", color: "darkgray", maxWidth: "200px",
+                            '&:hover': {
+                                backgroundColor: Colors.green,
+                                color: 'darkgray',
+                            }
+                        }}
+                    >
+                        Sign me up
+                    </Button>
+                    <Button
+                        size="small"
+                        fullWidth={true}
+                        onClick={handleSignUp}
+                        className="rounded-3xl mx-auto"
+                        sx={{
+                            textTransform: "none", bgcolor: "transparent", color: "darkgray", maxWidth: "200px",
+                            '&:hover': {
+                                backgroundColor: Colors.green,
+                                color: 'darkgray',
+                            }
+                        }}
+                    >
+                        Forgot your password?
+                    </Button>
                 </div>
             </Box>
         </motion.div>)
 }
 
-const SignUpDialog = ({
-    handleConfirmPassword,
-    handlePasswordEdit,
-    handleEmail,
-    handleLastName,
-    handleFirstName,
-    handleSignUpBack,
-    handleSignUpSubmit,
-    ErrorMessage,
-    password,
-    handleCell,
-    ConfirmPassword }) => {
-    var Error_description = ErrorMessage.code
+const SignUpDialog = ({ ClientType, open, handlePassword, showPassword }) => {
+
+    const SwitchColor = () => {
+
+        if (ClientType === true) {
+            return ("#F68C9E")
+        }
+        if (ClientType === false) {
+            return ("#8FE6BA")
+        }
+    }
 
     return (
         <motion.div
             initial={{ opacity: 0, y: 0 }}
-            animate={{ opacity: 1, y: 40 }}
+            animate={{ opacity: 1, y: 25 }}
             transition={{
                 type: "spring",
                 bounce: 0.02,
@@ -156,90 +231,268 @@ const SignUpDialog = ({
                 mass: 10,
                 duration: 2,
             }}
-            className="flex align-center justify-center" style={{ marginTop: "15vh" }}>
-            <Box sx={{ minWidth: 400 }}>
-                <div className="grid grid-flow-row gap-2 rounded-lg shadow-md shadow-cyan-950 p-4 bg-[url(./background4.svg)]">
-                    <TextField
-                        id="input-with-icon-textfield"
-                        label="First Name"
-                        size="small"
-                        onChange={handleFirstName}
-                        variant="standard"
-                    />
-                    <TextField
-                        id="input-with-icon-textfield"
-                        label="Last Name"
-                        size="small"
-                        onChange={handleLastName}
-                        variant="standard"
-                    />
-                    <TextField
-                        id="input-with-icon-textfield"
-                        onChange={handleCell}
-                        label="Cell"
-                        size="small"
-                        variant="standard"
-                    />
-                    <TextField
-                        id="input-with-icon-textfield"
-                        label="Address"
-                        size="small"
-                        variant="standard"
-                    />
-                    <TextField
-                        id="input-with-icon-textfield"
-                        label="email"
-                        size="small"
-                        onChange={handleEmail}
-                        variant="standard"
-                    />
-                    <TextField
-                        id="input-with-icon-textfield"
-                        label="Password"
-                        size="small"
-                        onChange={handlePasswordEdit}
-                        variant="standard"
-                    />
-                    <TextField
-                        id="input-with-icon-textfield"
-                        label="Confirm Password"
-                        onChange={handleConfirmPassword}
-                        size="small"
-                        variant="standard"
-                        color={ConfirmPassword === password ? "success" : "error"}
-                    />
-                    {ErrorMessage === "" ? null : <div className="text-sm text-cyan-900 font-bold text-center justify-center">{Error_description}</div>}
-                    <div className="grid grid-cols-2 gap-1 mt-2">
-                        <Button
-                            size="small"
-                            fullWidth={false}
-                            onClick={handleSignUpSubmit}
+            className="flex align-center justify-center" style={{ marginTop: "25vh" }}>
+            <Box sx={{ maxWidth: 400 }}>
+                <div className="grid grid-flow-row gap-2 rounded-lg p-4 shadow-md shadow-cyan-950 bg-[url(./background4.svg)]">
+                    <div className="grid grid-cols-3 gap-1 mx-auto">
+                        <div className="text-teal-600 text-md text-center my-auto">Doner</div>
+                        <Switch
                             sx={{
-                                textTransform: "none", bgcolor: "#05e6c0", color: "whitesmoke",
-                                '&:hover': {
-                                    backgroundColor: "#96ffed",
-                                    color: 'black',
-                                }
-                            }}
-                        >
-                            Sign Up
-                        </Button>
-                        <Button
-                            size="small"
-                            fullWidth={false}
-                            onClick={handleSignUpBack}
-                            sx={{
-                                textTransform: "none", bgcolor: "#05e6c0", color: "whitesmoke",
-                                '&:hover': {
-                                    backgroundColor: "#96ffed",
-                                    color: 'black',
-                                }
-                            }}
-                        >
-                            Back
-                        </Button>
-
+                                "& .MuiSwitch-switchBase": {
+                                    color: SwitchColor, // Applies to both checked and unchecked thumb
+                                },
+                                "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+                                    backgroundColor: "transparent", // Ensures transparent track when checked
+                                },
+                                "& .MuiSwitch-switchBase.Mui-unchecked + .MuiSwitch-track": {
+                                    backgroundColor: "transparent", // Ensures transparent track when unchecked
+                                },
+                                "& .MuiSwitch-track": {
+                                    opacity: 1, // Ensures no default opacity effects
+                                    backgroundColor: "transparent", // Overrides any remaining default styles
+                                },
+                            }} />
+                        <div className="text-red-700 text-md text-center my-auto">Buyer</div>
                     </div>
+                    <div className="text-center text-lg text-teal-400 font-bold">Register as a {ClientType ? "Doner" : "Buyer"}</div>
+                    <div className="text-teal-950 text-sm text-center"> Let's get started by filling out the form below.</div>
+                    <TextField
+                        id="input-with-icon-textfield"
+                        label="Name"
+                        size="small"
+                        variant="outlined"
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "25px", // Rounds the left and right sides
+                                "& fieldset": {
+                                    borderColor: Colors.yellow, // Yellow border color
+                                    borderWidth: "2px", // Thickness of the border
+                                },
+                                "&:hover fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow on hover
+                                },
+                                "&.Mui-focused fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow when focused
+                                },
+                            },
+                            "& .MuiInputLabel-root": {
+                                color: "black", // Black label color
+                            },
+                            "& .MuiInputBase-input": {
+                                color: "black", // Black input text color
+                            },
+                        }}
+                    />
+                    <TextField
+                        id="input-with-icon-textfield"
+                        label="Email"
+                        size="small"
+                        variant="outlined"
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "25px", // Rounds the left and right sides
+                                "& fieldset": {
+                                    borderColor: Colors.yellow, // Yellow border color
+                                    borderWidth: "2px", // Thickness of the border
+                                },
+                                "&:hover fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow on hover
+                                },
+                                "&.Mui-focused fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow when focused
+                                },
+                            },
+                            "& .MuiInputLabel-root": {
+                                color: "black", // Black label color
+                            },
+                            "& .MuiInputBase-input": {
+                                color: "black", // Black input text color
+                            },
+                        }}
+                    />
+                    <TextField
+                        id="input-with-icon-textfield"
+                        label="Contact Number"
+                        size="small"
+                        variant="outlined"
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "25px", // Rounds the left and right sides
+                                "& fieldset": {
+                                    borderColor: Colors.yellow, // Yellow border color
+                                    borderWidth: "2px", // Thickness of the border
+                                },
+                                "&:hover fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow on hover
+                                },
+                                "&.Mui-focused fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow when focused
+                                },
+                            },
+                            "& .MuiInputLabel-root": {
+                                color: "black", // Black label color
+                            },
+                            "& .MuiInputBase-input": {
+                                color: "black", // Black input text color
+                            },
+                        }}
+                    />
+                    <TextField
+                        id="input-with-icon-textfield"
+                        label="Collection Address"
+                        size="small"
+                        variant="outlined"
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "25px", // Rounds the left and right sides
+                                "& fieldset": {
+                                    borderColor: Colors.yellow, // Yellow border color
+                                    borderWidth: "2px", // Thickness of the border
+                                },
+                                "&:hover fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow on hover
+                                },
+                                "&.Mui-focused fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow when focused
+                                },
+                            },
+                            "& .MuiInputLabel-root": {
+                                color: "black", // Black label color
+                            },
+                            "& .MuiInputBase-input": {
+                                color: "black", // Black input text color
+                            },
+                        }}
+                    />
+                    <TextField
+                        id="input-with-icon-textfield"
+                        label="password"
+                        size="small"
+                        color="success"
+                        onChange={handlePassword}
+                        type={open ? "password" : "text"}
+                        variant="outlined"
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "25px", // Rounds the left and right sides
+                                "& fieldset": {
+                                    borderColor: Colors.yellow, // Yellow border color
+                                    borderWidth: "2px", // Thickness of the border
+                                },
+                                "&:hover fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow on hover
+                                },
+                                "&.Mui-focused fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow when focused
+                                },
+                            },
+                            "& .MuiInputLabel-root": {
+                                color: "black", // Black label color
+                            },
+                            "& .MuiInputBase-input": {
+                                color: "black", // Black input text color
+                            },
+                        }}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <Button onClick={showPassword} sx={{ minWidth: 0, padding: 0 }}>
+                                        {open ? (
+                                            <VisibilityIcon className={`text-cyan-950`} />
+                                        ) : (
+                                            <VisibilityOffIcon className={`text-cyan-950`} />
+                                        )}
+                                    </Button>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <div style={{ color: Colors.red }} className=" text-md text-center mt-0.5 mb-0.5">OR</div>
+                    <TextField
+                        id="input-with-icon-textfield"
+                        label="OTP (Enter your Mobile Number)"
+                        size="small"
+                        color="success"
+                        type={"text"}
+                        variant="outlined"
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "25px", // Rounds the left and right sides
+                                "& fieldset": {
+                                    borderColor: Colors.yellow, // Yellow border color
+                                    borderWidth: "2px", // Thickness of the border
+                                },
+                                "&:hover fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow on hover
+                                },
+                                "&.Mui-focused fieldset": {
+                                    borderColor: Colors.yellow, // Maintain yellow when focused
+                                },
+                            },
+                            "& .MuiInputLabel-root": {
+                                color: "black", // Black label color
+                            },
+                            "& .MuiInputBase-input": {
+                                color: "black", // Black input text color
+                            },
+                        }}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <Button onClick={showPassword} sx={{ minWidth: 0, padding: 0 }}>
+                                        {open ? (
+                                            <VisibilityIcon className={`text-cyan-950`} />
+                                        ) : (
+                                            <VisibilityOffIcon className={`text-cyan-950`} />
+                                        )}
+                                    </Button>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <Button
+                        size="small"
+                        fullWidth={true}
+                        className="rounded-3xl mx-auto"
+                        sx={{
+                            textTransform: "none", bgcolor: Colors.red, color: "white", maxWidth: "200px",
+                            '&:hover': {
+                                backgroundColor: Colors.green,
+                                color: 'white',
+                            }
+                        }}
+
+                    >
+                        SUBMIT
+                    </Button>
+                    <Button
+                        size="small"
+                        fullWidth={true}
+                        className="rounded-3xl mx-auto"
+                        sx={{
+                            textTransform: "none", bgcolor: Colors.yellow, color: "white", maxWidth: "200px",
+                            '&:hover': {
+                                backgroundColor: Colors.green,
+                                color: 'white',
+                            }
+                        }}
+                    >
+                        SKIP
+                    </Button>
+                    <Button
+                        size="small"
+                        fullWidth={true}
+                        className="rounded-3xl mx-auto"
+                        sx={{
+                            textTransform: "none", bgcolor: Colors.green, color: "white", maxWidth: "200px",
+                            '&:hover': {
+                                backgroundColor: Colors.green,
+                                color: 'white',
+                            }
+                        }}
+                    >
+                        CANCEL
+                    </Button>
                 </div>
             </Box>
         </motion.div>
@@ -258,6 +511,7 @@ const Login = () => {
     const [ErrorMessage, setErrorMessage] = useState("");
     const [FirstName, setFirstName] = useState("");
     const [LastName, setLastName] = useState("");
+    const [ClientType, setClientType] = useState(true);
 
 
     const router = useRouter(); // Use useRouter from next/navigation for client-side routing
@@ -334,6 +588,10 @@ const Login = () => {
     const handleFirstName = (e) => { setFirstName(e.target.value); };
     const handleSignUp = () => { setAuth(false) }
     const handleSignUpBack = () => { setAuth(true) }
+    const handleClientType = () => {
+        setClientType(!ClientType);
+        localStorage.setItem("user_type", ClientType)
+    }
 
     return (
         <React.Fragment>
@@ -344,6 +602,8 @@ const Login = () => {
                     showPassword={showPassword}
                     handleSignIn={handleSignIn}
                     handleSignUp={handleSignUp}
+                    handleClientType={handleClientType}
+                    ClientType={ClientType}
                     open={open} />
                 :
                 <SignUpDialog
@@ -358,6 +618,10 @@ const Login = () => {
                     password={password}
                     ConfirmPassword={ConfirmPassword}
                     handleCell={handleCell}
+                    ClientType={ClientType}
+                    open={open}
+                    handlePassword={handlePassword}
+                    showPassword={showPassword}
                 />
             }
         </React.Fragment>

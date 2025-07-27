@@ -5,7 +5,7 @@ import { Dialog, Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import { createClient } from "@supabase/supabase-js";
-import { SUPABASE_URL_WECARE, API_KEY_WECARE } from "../supabase";
+import { SUPABASE_URL_WECARE, API_KEY_WECARE, FontType } from "../supabase";
 import { DonationDialog } from "./components/donation";
 import Image from "next/image";
 import CloseIcon from '@mui/icons-material/Close';
@@ -33,8 +33,8 @@ const Donate = ({
     handleType,
     Size,
     handleSize,
-    Gender,
-    handleGender,
+    quantity,
+    handleQuantity,
     condition,
     handleCondition,
     color,
@@ -86,8 +86,8 @@ const Donate = ({
                 handleType={handleType}
                 size={Size}
                 handleSize={handleSize}
-                Gender={Gender}
-                handleGender={handleGender}
+                quantity={quantity}
+                handleQuantity={handleQuantity}
                 condition={condition}
                 handleCondition={handleCondition}
                 color={color}
@@ -239,7 +239,7 @@ const Donations = () => {
     const [category, setCategory] = useState('');
     const [Type, setType] = useState('');
     const [Size, setSize] = useState('');
-    const [Gender, setGender] = useState('');
+    const [quantity, setQuantity] = useState('');
     const [product, setProduct] = useState('');
     const [productIndex, setProductIndex] = useState(0);
     const [condition, setCondition] = useState('');
@@ -263,8 +263,8 @@ const Donations = () => {
     const handleSize = (e) => {
         setSize(e.target.value)
     }
-    const handleGender = (e) => {
-        setGender(e.target.value)
+    const handleQuantity = (e) => {
+        setQuantity(e.target.value)
     }
     const handleCondition = (e) => {
         setCondition(e.target.value)
@@ -300,7 +300,6 @@ const Donations = () => {
             title: ServiceName,
             description: ServiceDescription,
             category: category,
-            gender: Gender,
             type: Type,
             doner: localStorage.getItem("user_id"),
             color: color,
@@ -311,7 +310,7 @@ const Donations = () => {
         }
         const { data } = await
             supabase
-                .from("products")
+                .from("donations")
                 .insert(InsertData)
         console.log(InsertData)
         setOpen(false);
@@ -342,7 +341,7 @@ const Donations = () => {
         const user_details = JSON.parse(localStorage.getItem("sb-sdsejsyrecrffnjqevfm-auth-token"));
         const { data } = await
             supabase
-                .from("products")
+                .from("donations")
                 .select()
                 .eq("doner", localStorage.getItem("user_id"))
         setData(data)
@@ -359,6 +358,7 @@ const Donations = () => {
             <div className="mt-14">
                 <div className="block align-center justify-center">
                     <Donate
+                        className="mt-3"
                         ServiceName={ServiceName}
                         handleServiceName={handleServiceName}
                         ServiceDescription={ServiceDescription}
@@ -376,16 +376,17 @@ const Donations = () => {
                         size={Size}
                         handleType={handleType}
                         handleSize={handleSize}
-                        Gender={Gender}
-                        handleGender={handleGender}
                         condition={condition}
                         handleContion={handleCondition}
                         color={color}
                         handleColor={handleColor}
                         brand={brand}
                         handleBrand={handleBrand}
-                        className="flex align-center justify-center" />
+                        quantity={quantity}
+                        handleQuantity={handleQuantity}
+                    />
                     <div>
+                        <div className="ml-4 text-cyan-950 text-2xl text-left" style={{ fontFamily: FontType }}>My donations</div>
                         <SupDataMap
                             Data={Data}
                             handleProduct={handleProduct}

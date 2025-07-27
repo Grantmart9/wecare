@@ -18,6 +18,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@lottiefiles/lottie-player": "^2.0.12",
     "@material-ui/core": "^4.9.9",
     "@material-ui/data-grid": "^4.0.0-alpha.34",
     "@material-ui/pickers": "4.0.0-alpha.10",
@@ -62,7 +63,7 @@
     "npm": "^11.1.0",
     "or": "^0.2.0",
     "postcss": "^8.5.1",
-    "prop-types": "^15.7.2",
+    "prop-types": "^15.8.1",
     "rc-datepicker": "^5.0.17",
     "react": "^19",
     "react-circular-progressbar": "^2.1.0",
@@ -75,6 +76,7 @@
     "react-infinite-calendar": "^2.3.1",
     "react-liquid-gauge": "^1.2.4",
     "react-loader-spinner": "^6.1.6",
+    "react-lottie": "^1.2.10",
     "react-native-maps": "^1.20.1",
     "react-preloaders": "^3.0.3",
     "react-router-dom": "^7.1.5",
@@ -106,7 +108,7 @@
   "scripts": {
     "dev": "next dev -p 3018",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "next start -p 3018",
     "lint": "next lint"
   },
   "eslintConfig": {

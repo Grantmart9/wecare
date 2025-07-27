@@ -10,45 +10,89 @@ export const NEXT_PUBLIC_GOOGLE_API_KEY = "AIzaSyDFqp0PGp-vOy_BLx-ljnGZcUks9VbJg
 
 export const MainMenuList = [
   {
-    "name": 'Women', "path": "/products", "data": "",
-    "menu":
-      [{ "name": 'Clothing', "path": "/products" },
-      { "name": 'Shoes', "path": "/products" },
-      { "name": 'Accessories', "path": "/products" }]
+    "name": "Clothing & Accessories",
+    "path": "/donations",
+    "menu": [
+      { "name": "Women", "path": "/donations" },
+      { "name": "Men", "path": "/donations" },
+      { "name": "Kids", "path": "/donations" },
+      { "name": "Baby", "path": "/donations" }
+    ]
   },
   {
-    "name": 'Men', "path": '/products', "menu":
-      [{ "name": "Clothing", "path": "/products" },
-      { "name": "Smart", "path": "/products" },
-      { "name": "Accessories", "path": "/products" },
-      { "name": "Shoes", "path": "/products" }]
+    "name": "Electronics",
+    "path": "/donations",
+    "menu": [
+      { "name": "Laptops & Tablets", "path": "/donations" },
+      { "name": "Mobile Phones", "path": "/donations" },
+      { "name": "Other Devices", "path": "/donations" }
+    ]
   },
   {
-    "name": 'Kids', "path": '/products', "menu":
-      [
-        { "name": "Boys (2-15)", "path": "/products" },
-        { "name": "Girls (2-15)", "path": "/products" },
-        { "name": "Schoolware", "path": "/products" },
-        { "name": "Toiletries & Food", "path": "/products" },
-      ]
+    "name": "Household Items",
+    "path": "/donations",
+    "menu": [
+      { "name": "Furniture", "path": "/donations" },
+      { "name": "Kitchenware", "path": "/donations" },
+      { "name": "Decor & Essentials", "path": "/donations" }
+    ]
   },
   {
-    "name": 'Baby', "path": '/products', "menu":
-      [{ "name": "Girl & Boys clothing (0-36)", "path": "/products" },
-      { "name": "Nursary", "path": "/products" },
-      { "name": "Books & Toys", "path": "/products" },
-      ]
+    "name": "Books & Stationery",
+    "path": "/donations",
+    "menu": [
+      { "name": "School Supplies", "path": "/donations" },
+      { "name": "Books for All Ages", "path": "/donations" },
+      { "name": "Art & Craft Supplies", "path": "/donations" }
+    ]
   },
+  {
+    "name": "Medical Items",
+    "path": "/donations",
+    "menu": [
+      { "name": "First Aid Supplies", "path": "/donations" },
+      { "name": "Mobility Aids", "path": "/donations" },
+      { "name": "Health & Wellness Products", "path": "/donations" }
+    ]
+  },
+  {
+    "name": "Food & Beverages",
+    "path": "/donations",
+    "menu": [
+      { "name": "Non-Perishables", "path": "/donations" },
+      { "name": "Beverages", "path": "/donations" },
+      { "name": "Baby Food", "path": "/donations" }
+    ]
+  },
+  {
+    "name": "Time & Money",
+    "path": "/donations",
+    "menu": [
+      { "name": "Volenteer", "path": "/donations" },
+      { "name": "Donate money", "path": "/donations" }
+    ]
+  }
 ]
+
 
 export const SubMenuList = [
-  { "name": "My Donations", "path": "/donations" },
-  { "name": 'Orders', "path": "/orders" },
-  { "name": 'Account', "path": "/account" },
-  { "name": 'Login / Sign Up', "path": "/login" },
+  { "name": "About Us", "path": "/donations" },
+  { "name": "Contact Us", "path": "/donations" },
+  { "name": 'Meet Our Team', "path": "/donations" },
+  { "name": 'Vission & Mission', "path": "/donations" },
+  { "name": 'My Donations', "path": "/donations" },
 ]
 
-export const AppName = "We care";
+export const Colors = {
+  orange: "rgba(248, 185, 134,0.72)",
+  red: "rgba(235, 92, 92,0.72)",
+  green: "rgba(143, 230, 187,0.72)",
+  blue: "rgba(114, 219, 209,0.72)",
+  pink: "rgba(246, 140, 158,0.72)",
+  yellow: "rgba(248, 215, 96,0.72)"
+}
+
+export const AppName = "WeCare";
 export const Address = "21 welgemoed street, welgemoed"
 export const phone_number = "+27 61 417 0615"
 export const email_address = "www.wecare@gmail.com"
