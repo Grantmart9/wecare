@@ -3,13 +3,11 @@ import React, { useState, useEffect, useCallback } from "react";
 import { SUPABASE_URL_WECARE, API_KEY_WECARE, Colors } from "./supabase";
 import { createClient } from "@supabase/supabase-js";
 import LoadingThreeDotsJumping from "./components/loading";
-import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
-import SendIcon from "@mui/icons-material/Send";
+import { Button, IconButton, Switch } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import Image from "next/image";
 import * as motion from "motion/react-client"
-import { Picture2, Picture4, Picture9 } from "./Image";
+import { Picture2 } from "./Image";
 import Lottie from 'react-lottie';
 import animationData1 from './animations/goods.json';
 import animationData2 from './animations/service.json';
@@ -25,24 +23,15 @@ import WavyText from "./components/Wavy";
 import InstagramIcon from '@mui/icons-material/Instagram';
 import EventIcon from '@mui/icons-material/Event';
 import FolderCopyIcon from '@mui/icons-material/FolderCopy';
-import { green } from "@mui/material/colors";
+import LockIcon from '@mui/icons-material/Lock';
+import PersonIcon from '@mui/icons-material/Person';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import SettingsIcon from '@mui/icons-material/Settings';
+import DescriptionIcon from '@mui/icons-material/Description';
+import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 const supabase = createClient(SUPABASE_URL_WECARE, API_KEY_WECARE);
 
-
-/// Data ///
-
-const Categorries = [
-  { "title": "Clothing", "image": Picture4, "color": Colors.green },
-  { "title": "Services", "image": Picture4, "color": Colors.green },
-  { "title": "Meals", "image": Picture4, "color": Colors.green },
-  { "title": "Bedding", "image": Picture4, "color": Colors.yellow },
-  { "title": "Homeware", "image": Picture4, "color": Colors.yellow },
-  { "title": "Furniture", "image": Picture4, "color": Colors.yellow },
-  { "title": "Appliances", "image": Picture4, "color": Colors.orange },
-  { "title": "Electronics", "image": Picture4, "color": Colors.orange },
-  { "title": "Office", "image": Picture4, "color": Colors.orange },
-  { "title": "School", "image": Picture4, "color": Colors.red }
-]
 
 const DonationTypes = [
   { name: "Goods", json: animationData1, color: Colors.red },
@@ -50,65 +39,7 @@ const DonationTypes = [
   { name: "Service", json: animationData2, color: Colors.yellow },
 ];
 
-const SearchBar = () => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 0 }}
-      animate={{ opacity: 1, y: -3 }}
-      transition={{
-        delay: 0.2,
-        type: "tween",
-        stiffness: 200,
-        damping: 40,
-        mass: 8,
-        duration: 0.5,
-      }}
-      className="flex align-center justify-center mx-4 mt-5">
-      <TextField
-        size="small"
-        fullWidth={true}
-        label="Search..."
-        className="rounded-2xl"
-        sx={{
-          maxWidth: "800px",
-          "& .MuiOutlinedInput-root": {
-            borderRadius: "20px",
-            "& fieldset": {
-              borderColor: "teal",
-              borderWidth: "2px",
-            },
-            "&:hover fieldset": {
-              borderColor: "orange",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "teal",
-            },
-          },
-        }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon color="action" sx={{ color: "teal" }} />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton size="small" sx={{ color: "#F8D760" }}>
-                <SendIcon />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-      />
-    </motion.div>
-  )
-}
-
-/////////
-
-
 /// Pages ///
-
 const Homepage = ({ handlePage }) => {
   const defaultOptions = {
     loop: true,
@@ -175,136 +106,6 @@ const Homepage = ({ handlePage }) => {
         className="mx-auto"
       />
     </div>
-  )
-}
-
-const Shoppage = () => {
-  const [category, setCategory] = useState("none")
-
-  const Categorries2 = [
-    { "title": "Nike Air Shoes", "image": Picture4, "color": Colors.green },
-    { "title": "Nike Air Shoes", "image": Picture4, "color": Colors.green },
-    { "title": "Nike Air Shoes", "image": Picture4, "color": Colors.green },
-    { "title": "Nike Air Shoes", "image": Picture4, "color": Colors.yellow },
-    { "title": "Nike Air Shoes", "image": Picture4, "color": Colors.yellow },
-    { "title": "Nike Air Shoes", "image": Picture4, "color": Colors.yellow },
-    { "title": "Nike Air Shoes", "image": Picture4, "color": Colors.orange },
-    { "title": "Nike Air Shoes", "image": Picture4, "color": Colors.orange },
-    { "title": "Nike Air Shoes", "image": Picture4, "color": Colors.orange },
-    { "title": "Nike Air Shoes", "image": Picture4, "color": Colors.red }
-  ]
-
-  const handleCategory = (cat) => { setCategory(cat); console.log(cat) }
-
-  const GoBack = () => {
-    return (
-      <motion.div
-        initial={{ opacity: 0, x: 0 }}
-        animate={{ opacity: 1, x: 3 }}
-        transition={{
-          delay: 0.2,
-          type: "tween",
-          stiffness: 200,
-          damping: 40,
-          mass: 8,
-          duration: 0.5,
-        }}>
-        <div className="flex-inline text-lg text-red-400 text-left ml-2 font-bold mt-2">
-          <Button size="small" fullWidth={false} className="font-bold" disableRipple={true} sx={{ backgroundColor: "transparent", textTransform: "none", color: Colors.red }} onClick={() => setCategory("none")}>Back</Button>Categories | {category}
-        </div>
-      </motion.div>
-    )
-  }
-  const Stay = () => {
-    return (
-      <motion.div
-        initial={{ opacity: 0, x: 0 }}
-        animate={{ opacity: 1, x: 3 }}
-        transition={{
-          delay: 0.2,
-          type: "tween",
-          stiffness: 200,
-          damping: 40,
-          mass: 8,
-          duration: 0.5,
-        }}>
-        <div className="flex-inline text-lg text-red-400 text-left ml-2 font-bold mt-2">Categories</div>
-      </motion.div>
-    )
-  }
-
-  const CategorySelected = ({ item, index }) => {
-    return (
-      <motion.div
-        key={index} // assuming each Product has a unique id
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{
-          delay: index * 0.13, // Add staggered delay based on index
-          type: "spring",
-          stiffness: 300,
-          damping: 55,
-          mass: 10,
-          duration: 0.3,
-        }}
-        className={`rounded-md`} style={{ backgroundColor: item.color }}>
-        <Button className={`block`} sx={{ textTransform: "none" }}  >
-          <Image className="mx-auto p-2 rounded-md" width={90} height={100} src={`data:image/jpeg;base64,${item.image}`} />
-          <div className="text-md text-teal-950 text-center">{item.title}</div>
-        </Button>
-      </motion.div>
-    )
-  }
-  const CategoryNotSelected = ({ item, index }) => {
-    return (
-      <motion.div
-        key={index} // assuming each Product has a unique id
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{
-          delay: index * 0.13, // Add staggered delay based on index
-          type: "spring",
-          stiffness: 300,
-          damping: 55,
-          mass: 10,
-          duration: 0.3,
-        }}
-        className={`rounded-md`} style={{ backgroundColor: item.color }}>
-        <Button
-          onClick={() => handleCategory(item.title)}
-          className={`block`}
-          sx={{ textTransform: "none" }}  >
-          <Image className="mx-auto p-2 rounded-md" width={90} height={100} src={`data:image/jpeg;base64,${item.image}`} />
-          <div className="text-md text-teal-950 text-center">{item.title}</div>
-        </Button>
-      </motion.div>)
-  }
-
-  return (
-    <>
-      {category !== "none" ?
-        <><GoBack /></>
-        :
-        <><Stay /></>
-      }
-      <>
-        <SearchBar />
-      </>
-      {
-        category === "none" ?
-          <div className="grid grid-cols-3 gap-3 mx-2 mt-6">
-            {Categorries.map((item, index) =>
-              <CategoryNotSelected index={index} item={item} />
-            )}
-          </div>
-          :
-          <div className="grid grid-cols-3 gap-3 mx-2 mt-6">
-            {Categorries2.map((item, index) =>
-              <CategorySelected index={index} item={item} />
-            )}
-          </div>
-      }
-    </>
   )
 }
 
@@ -532,7 +333,8 @@ const DonatePage = ({ handlePage }) => {
           <div className="flex align-center justify-center">
             <img width={150} alt={image} src={image} />
           </div>
-        </>)
+        </>
+      )
     }
 
     const DeliveryType = () => {
@@ -560,6 +362,7 @@ const DonatePage = ({ handlePage }) => {
         description: "",
         brand: "",
       });
+
       const [loading, setLoading] = useState(false);
 
       const handleChange = (e) => {
@@ -1200,7 +1003,6 @@ const DonatePage = ({ handlePage }) => {
         {selectedGoods === "Toys & games" ? <div><DonateToysAndGames /></div> : null}
         {selectedGoods === "Hygiene" ? <div><DonateHygiene /></div> : null}
         {selectedGoods === "Household" ? <div><DonateHousehold /></div> : null}
-
       </div>
     )
   }
@@ -1311,7 +1113,7 @@ const DonatePage = ({ handlePage }) => {
         <>
           <Button
             sx={{
-              textTransform: "none", bgcolor: Colors.blue, color: "white",
+              textTransform: "none", bgcolor: Colors.blue, color: "gray",
               '&:hover': {
                 backgroundColor: Colors.green,
                 color: "white",
@@ -1392,14 +1194,6 @@ const DonatePage = ({ handlePage }) => {
   )
 }
 
-const VolunteerPage = () => {
-  return (<>
-
-    <div className="mt-5 text-5xl text-center"> This Page is Under construction !!!</div>
-  </>
-  )
-}
-
 const CommunityPage = () => {
   return (<>
 
@@ -1415,22 +1209,74 @@ const SupportPage = () => {
 }
 
 const DashboardPage = () => {
-  return (
-    <>
-      <div style={{ backgroundColor: Colors.yellow }} className="text-teal-950 font-bold text-center p-2 w-full">Welcome back to your dashboard.</div>
-      <div
-        style={{ backgroundColor: Colors.red }}
-        className="grid grid-flow-col gap-0 rounded-md p-2 mx-2 mt-2">
-        <Image src={`data:image/jpeg;base64,${Picture9}`} width={90} height={100} alt={"No Image found"} />
-        <div className="grid grid-flow-row gap-0">
-          <div className="text-teal-950 text-sm text-center">Ready, set, COLLECT! Your collection dat is coming up.</div>
-          <div className="text-white text-sm font-bold text-center">Wednesday, 16 August 2023, 2PM<div />
-          </div>
-        </div>
-      </div>
-    </>)
-}
 
+  const ProfileSettings = [
+    {
+      name: "Account",
+      buttons: [
+        { icon: <PersonIcon fontSize="large" />, name: "Account Details", description: "Manage your personal information" },
+        { icon: <LockIcon fontSize="large" />, name: "Password", description: "Change your password" },
+        { icon: <DashboardIcon fontSize="large" />, name: "Dashboard", description: "Keep track of your donations" }
+      ]
+    },
+    {
+      name: "Notifications",
+      buttons: [
+        { icon: <NotificationsIcon fontSize="large" />, name: "Notification Settings", description: "Customize your notification preferences" }
+      ],
+      hasToggle: true
+    },
+    {
+      name: "App Settings",
+      buttons: [
+        { icon: <SettingsIcon fontSize="large" />, name: "App Preferences", description: "Manage your app preferences" }
+      ]
+    },
+    {
+      name: "Legal",
+      buttons: [
+        { icon: <DescriptionIcon fontSize="large" />, name: "Terms of Service", description: "View our terms of service" },
+        { icon: <PrivacyTipIcon fontSize="large" />, name: "Privacy Policy", description: "Read our privacy policy" }
+      ]
+    }
+  ];
+
+  return (
+    <div className="pb-8">
+      <div className="flex items-center justify-between px-4 py-2">
+        <h2 className="text-black font-semibold text-lg text-center flex-1">My Profile</h2>
+      </div>
+      <div className="flex flex-col px-4 py-2">
+        {ProfileSettings.map((section, i) => (
+          <div key={i} className="mb-6">
+            <h3 className="text-black font-bold mb-2">{section.name}</h3>
+            <div className="flex flex-col gap-2">
+              {section.buttons.map((item, j) => (
+                <Button
+                  key={j}
+                  startIcon={item.icon}
+                  className="justify-start text-left"
+                  sx={{ textTransform: "none", color: "black" }}
+                >
+                  <div className="flex flex-col items-start">
+                    <span className="font-medium">{item.name}</span>
+                    <span className="text-gray-500 text-sm">{item.description}</span>
+                  </div>
+                </Button>
+              ))}
+              {section.hasToggle && (
+                <div className="flex justify-between items-center mt-2 px-2">
+                  <span className="text-black">Push Notifications</span>
+                  <Switch />
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 /////
 
 export default function Home() {
@@ -1469,9 +1315,7 @@ export default function Home() {
             </> :
             <>
               {CurrentPage === "Home" ? <Homepage handlePage={handlePage} CurrentPage={CurrentPage} /> : null}
-              {CurrentPage === "Shop" ? <Shoppage handlePage={handlePage} CurrentPage={CurrentPage} /> : null}
               {CurrentPage === "Donate" ? <DonatePage handlePage={handlePage} CurrentPage={CurrentPage} /> : null}
-              {CurrentPage === "Volunteer" ? <VolunteerPage handlePage={handlePage} CurrentPage={CurrentPage} /> : null}
               {CurrentPage === "Community" ? <CommunityPage handlePage={handlePage} CurrentPage={CurrentPage} /> : null}
               {CurrentPage === "Support" ? <SupportPage handlePage={handlePage} CurrentPage={CurrentPage} /> : null}
               {CurrentPage === "Dashboard" ? <DashboardPage handlePage={handlePage} CurrentPage={CurrentPage} /> : null}
