@@ -25,6 +25,7 @@ import WavyText from "./components/Wavy";
 import InstagramIcon from '@mui/icons-material/Instagram';
 import EventIcon from '@mui/icons-material/Event';
 import FolderCopyIcon from '@mui/icons-material/FolderCopy';
+import { green } from "@mui/material/colors";
 const supabase = createClient(SUPABASE_URL_WECARE, API_KEY_WECARE);
 
 
@@ -314,6 +315,8 @@ const DonatePage = ({ handlePage }) => {
   const handleGoods = (selected) => { setSelectedGoods(selected) && setDonationType(selected) }
   const handleGoods1 = (selected) => { setDonationType(selected) }
 
+  const PopUpMessage = "Donation submitted successfully ! \nCheck out your dashboard to view your donations"
+
   const DonationAnimation = () => {
     return (
       <motion.div
@@ -388,6 +391,7 @@ const DonatePage = ({ handlePage }) => {
       </motion.div>
     )
   }
+
   const GoBackMain = () => {
     return (
       <motion.div
@@ -413,6 +417,19 @@ const DonatePage = ({ handlePage }) => {
           Donate | {donationType}
         </div>
       </motion.div>
+    )
+  }
+
+  const DonateButton = ({ loading }) => {
+    return (
+      <Button
+        type="submit"
+        variant="contained"
+        sx={{ bgcolor: Colors.red }}
+        disabled={loading}
+      >
+        {loading ? "Submitting..." : "Donate"}
+      </Button>
     )
   }
 
@@ -496,7 +513,7 @@ const DonatePage = ({ handlePage }) => {
         <>
           <Button
             sx={{
-              textTransform: "none", bgcolor: Colors.blue, color: "whitesmoke",
+              textTransform: "none", bgcolor: Colors.blue, color: "gray",
               '&:hover': {
                 backgroundColor: Colors.green,
                 color: 'whitesmoke',
@@ -519,14 +536,21 @@ const DonatePage = ({ handlePage }) => {
     }
 
     const DeliveryType = () => {
+      const [deliveryType, setDeliveryType] = useState("Pick");
+
+      const handleDeliveryType = (type) => { setDeliveryType(type) }
+
       return (
-        <div className="flex gap-4">
-          <Button className="text-cyan-950" variant="contained" sx={{ bgcolor: Colors.yellow, textTransform: "none" }}>
-            I will deliver the goods
-          </Button>
-          <Button className="text-cyan-950" variant="contained" sx={{ bgcolor: Colors.green, textTransform: "none" }}>
-            Request a pickup
-          </Button>
+        <div className="grid grid-flow-row">
+          <div className="text-left text-gray-600 pb-3">Delivery Type</div>
+          <div className="grid grid-cols-2 gap-3">
+            <Button onClick={() => handleDeliveryType("Drop")} className="text-cyan-950" variant="contained" sx={{ bgcolor: deliveryType === "Drop" ? Colors.red : Colors.blue, textTransform: "none" }}>
+              I will deliver the goods
+            </Button>
+            <Button onClick={() => handleDeliveryType("Pick")} className="text-cyan-950" variant="contained" sx={{ bgcolor: deliveryType === "Pick" ? Colors.red : Colors.blue, textTransform: "none" }}>
+              Request a pickup
+            </Button>
+          </div>
         </div>)
     }
 
@@ -534,7 +558,7 @@ const DonatePage = ({ handlePage }) => {
       const [formData, setFormData] = useState({
         deliveryType: "",
         description: "",
-        brandModel: "",
+        brand: "",
       });
       const [loading, setLoading] = useState(false);
 
@@ -555,13 +579,13 @@ const DonatePage = ({ handlePage }) => {
           if (error) {
             console.error("Error submitting donation:", error.message);
           } else {
-            alert("Donation submitted successfully!");
+            alert(PopUpMessage);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
         } finally {
           setLoading(false);
-          setFormData({ deliveryType: "", description: "", brandModel: "" });
+          setFormData({ deliveryType: "", description: "", brand: "" });
         }
       };
 
@@ -585,22 +609,15 @@ const DonatePage = ({ handlePage }) => {
           ></textarea>
           <input
             type="text"
-            name="brandModel"
+            name="brand"
             placeholder="Brand and Model"
-            value={formData.brandModel}
+            value={formData.brand}
             onChange={handleChange}
             required
             className="w-full max-w-md p-2 border border-gray-300 rounded"
           />
 
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ bgcolor: Colors.red }}
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Donate"}
-          </Button>
+          <DonateButton loading={loading} />
         </form>
       );
     };
@@ -630,7 +647,7 @@ const DonatePage = ({ handlePage }) => {
           if (error) {
             console.error("Error submitting donation:", error.message);
           } else {
-            alert("Donation submitted successfully!");
+            alert(PopUpMessage);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
@@ -672,14 +689,7 @@ const DonatePage = ({ handlePage }) => {
             <option value="Other">Other</option>
           </select>
 
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ bgcolor: Colors.red }}
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Donate"}
-          </Button>
+          <DonateButton loading={loading} />
         </form>
       );
     };
@@ -709,7 +719,7 @@ const DonatePage = ({ handlePage }) => {
           if (error) {
             console.error("Error submitting donation:", error.message);
           } else {
-            alert("Donation submitted successfully!");
+            alert(PopUpMessage);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
@@ -747,14 +757,7 @@ const DonatePage = ({ handlePage }) => {
             className="w-full max-w-md p-2 border border-gray-300 rounded"
           />
 
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ bgcolor: Colors.red }}
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Donate"}
-          </Button>
+          <DonateButton loading={loading} />
         </form>
       );
     };
@@ -784,7 +787,7 @@ const DonatePage = ({ handlePage }) => {
           if (error) {
             console.error("Error submitting donation:", error.message);
           } else {
-            alert("Donation submitted successfully!");
+            alert(PopUpMessage);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
@@ -821,14 +824,7 @@ const DonatePage = ({ handlePage }) => {
             className="w-full max-w-md p-2 border border-gray-300 rounded"
           />
 
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ bgcolor: Colors.red }}
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Donate"}
-          </Button>
+          <DonateButton loading={loading} />
         </form>
       );
     };
@@ -858,7 +854,7 @@ const DonatePage = ({ handlePage }) => {
           if (error) {
             console.error("Error submitting donation:", error.message);
           } else {
-            alert("Donation submitted successfully!");
+            alert(PopUpMessage);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
@@ -896,14 +892,7 @@ const DonatePage = ({ handlePage }) => {
             className="w-full max-w-md p-2 border border-gray-300 rounded"
           />
 
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ bgcolor: Colors.red }}
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Donate"}
-          </Button>
+          <DonateButton loading={loading} />
         </form>
       );
     };
@@ -933,7 +922,7 @@ const DonatePage = ({ handlePage }) => {
           if (error) {
             console.error("Error submitting donation:", error.message);
           } else {
-            alert("Donation submitted successfully!");
+            alert(PopUpMessage);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
@@ -970,14 +959,7 @@ const DonatePage = ({ handlePage }) => {
             className="w-full max-w-md p-2 border border-gray-300 rounded"
           />
 
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ bgcolor: Colors.red }}
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Donate"}
-          </Button>
+          <DonateButton loading={loading} />
         </form>
       );
     };
@@ -1006,7 +988,7 @@ const DonatePage = ({ handlePage }) => {
           if (error) {
             console.error("Error submitting donation:", error.message);
           } else {
-            alert("Donation submitted successfully!");
+            alert(PopUpMessage);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
@@ -1035,14 +1017,7 @@ const DonatePage = ({ handlePage }) => {
             className="w-full max-w-md p-2 border border-gray-300 rounded"
           ></textarea>
 
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ bgcolor: Colors.red }}
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Donate"}
-          </Button>
+          <DonateButton loading={loading} />
         </form>
       );
     };
@@ -1071,7 +1046,7 @@ const DonatePage = ({ handlePage }) => {
           if (error) {
             console.error("Error submitting donation:", error.message);
           } else {
-            alert("Donation submitted successfully!");
+            alert(PopUpMessage);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
@@ -1099,14 +1074,7 @@ const DonatePage = ({ handlePage }) => {
             required
             className="w-full max-w-md p-2 border border-gray-300 rounded"
           ></textarea>
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ bgcolor: Colors.red }}
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Donate"}
-          </Button>
+          <DonateButton loading={loading} />
         </form>
       );
     };
@@ -1136,7 +1104,7 @@ const DonatePage = ({ handlePage }) => {
           if (error) {
             console.error("Error submitting donation:", error.message);
           } else {
-            alert("Donation submitted successfully!");
+            alert(PopUpMessage);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
@@ -1173,19 +1141,10 @@ const DonatePage = ({ handlePage }) => {
             className="w-full max-w-md p-2 border border-gray-300 rounded"
           />
 
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ bgcolor: Colors.red }}
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Donate"}
-          </Button>
+          <DonateButton loading={loading} />
         </form>
       );
     };
-
-
 
     return (
       <div className="text-center">
@@ -1210,7 +1169,7 @@ const DonatePage = ({ handlePage }) => {
           </div>
         }
         {selectedGoods === "none" ?
-          <div className="grid grid-cols-2 gap-3 mx-2">
+          <div className="grid grid-cols-2 gap-3 mx-2 pt-5">
             {AllGoodsDonations.map((item, index) =>
               <motion.button
                 key={index} // assuming each Product has a unique id
@@ -1297,7 +1256,7 @@ const DonatePage = ({ handlePage }) => {
             damping: 55,
             mass: 10,
             duration: 0.3,
-          }} style={{ backgroundColor: Colors.orange }} className="mx-2 rounded-md p-3 text-teal-950 text-center font-bold text-xl">Please sellect a payment option
+          }} className="mx-2  text-gray-600 text-center text-xl mt-5">Please sellect a payment option bellow
         </motion.div>
         <div className="grid grid-flow-row gap-3 mt-5">
           {paymentTypes.map((item, index) =>

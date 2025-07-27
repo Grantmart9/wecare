@@ -591,6 +591,9 @@
 .bg-gray-100 {
   background-color: var(--color-gray-100);
 }
+.bg-gray-500 {
+  background-color: var(--color-gray-500);
+}
 .bg-lime-400 {
   background-color: var(--color-lime-400);
 }
@@ -1139,6 +1142,9 @@
 .text-gray-500 {
   color: var(--color-gray-500);
 }
+.text-gray-600 {
+  color: var(--color-gray-600);
+}
 .text-lime-600 {
   color: var(--color-lime-600);
 }
@@ -1197,6 +1203,9 @@
 }
 .opacity-0 {
   opacity: 0%;
+}
+.opacity-30 {
+  opacity: 30%;
 }
 .opacity-95 {
   opacity: 95%;
