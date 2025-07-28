@@ -80,9 +80,6 @@
 .bottom-0 {
   bottom: calc(var(--spacing) * 0);
 }
-.left-0 {
-  left: calc(var(--spacing) * 0);
-}
 .left-1 {
   left: calc(var(--spacing) * 1);
 }
@@ -375,9 +372,6 @@
 .flex-1 {
   flex: 1;
 }
-.flex-auto {
-  flex: auto;
-}
 .flex-shrink {
   flex-shrink: 1;
 }
@@ -461,9 +455,6 @@
 }
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-.grid-rows-subgrid {
-  grid-template-rows: subgrid;
 }
 .flex-col {
   flex-direction: column;
@@ -1008,9 +999,6 @@
 .p-6 {
   padding: calc(var(--spacing) * 6);
 }
-.p-8 {
-  padding: calc(var(--spacing) * 8);
-}
 .p-10 {
   padding: calc(var(--spacing) * 10);
 }
@@ -1058,9 +1046,6 @@
 }
 .pb-5 {
   padding-bottom: calc(var(--spacing) * 5);
-}
-.pb-6 {
-  padding-bottom: calc(var(--spacing) * 6);
 }
 .pb-8 {
   padding-bottom: calc(var(--spacing) * 8);
@@ -1186,9 +1171,6 @@
 }
 .text-red-700 {
   color: var(--color-red-700);
-}
-.text-red-900 {
-  color: var(--color-red-900);
 }
 .text-teal-400 {
   color: var(--color-teal-400);

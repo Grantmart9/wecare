@@ -32,7 +32,6 @@ import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 const supabase = createClient(SUPABASE_URL_WECARE, API_KEY_WECARE);
 
-
 const DonationTypes = [
   { name: "Goods", json: animationData1, color: Colors.red },
   { name: "Cash", json: animationData3, color: Colors.blue },
@@ -1210,33 +1209,40 @@ const SupportPage = () => {
 
 const DashboardPage = () => {
 
+  const [DashPage, setDashPage] = useState("none")
+
+  const handleDashPage = (selected) => { setDashPage(selected) }
+
+  const DetailsPage = () => { return (<div className="text-center">Details</div>) }
+  const PasswordPage = () => { return (<div className="text-center">Password page</div>) }
+
   const ProfileSettings = [
     {
       name: "Account",
       buttons: [
-        { icon: <PersonIcon fontSize="large" />, name: "Account Details", description: "Manage your personal information" },
-        { icon: <LockIcon fontSize="large" />, name: "Password", description: "Change your password" },
-        { icon: <DashboardIcon fontSize="large" />, name: "Dashboard", description: "Keep track of your donations" }
+        { icon: <PersonIcon fontSize="large" />, name: "Account Details", description: "Manage your personal information", page: "Details" },
+        { icon: <LockIcon fontSize="large" />, name: "Password", description: "Change your password", page: "Password" },
+        { icon: <DashboardIcon fontSize="large" />, name: "Dashboard", description: "Keep track of your donations", page: "Dashboard" }
       ]
     },
     {
       name: "Notifications",
       buttons: [
-        { icon: <NotificationsIcon fontSize="large" />, name: "Notification Settings", description: "Customize your notification preferences" }
+        { icon: <NotificationsIcon fontSize="large" />, name: "Notification Settings", description: "Customize your notification preferences", page: "Notifications" }
       ],
       hasToggle: true
     },
     {
       name: "App Settings",
       buttons: [
-        { icon: <SettingsIcon fontSize="large" />, name: "App Preferences", description: "Manage your app preferences" }
+        { icon: <SettingsIcon fontSize="large" />, name: "App Preferences", description: "Manage your app preferences", page: "Preferneces" }
       ]
     },
     {
       name: "Legal",
       buttons: [
-        { icon: <DescriptionIcon fontSize="large" />, name: "Terms of Service", description: "View our terms of service" },
-        { icon: <PrivacyTipIcon fontSize="large" />, name: "Privacy Policy", description: "Read our privacy policy" }
+        { icon: <DescriptionIcon fontSize="large" />, name: "Terms of Service", description: "View our terms of service", page: "Terms" },
+        { icon: <PrivacyTipIcon fontSize="large" />, name: "Privacy Policy", description: "Read our privacy policy", page: "Policy" }
       ]
     }
   ];
@@ -1246,7 +1252,7 @@ const DashboardPage = () => {
       <div className="flex items-center justify-between px-4 py-2">
         <h2 className="text-black font-semibold text-lg text-center flex-1">My Profile</h2>
       </div>
-      <div className="flex flex-col px-4 py-2">
+      {DashPage === "none" ? <div className="flex flex-col px-4 py-2">
         {ProfileSettings.map((section, i) => (
           <div key={i} className="mb-6">
             <h3 className="text-black font-bold mb-2">{section.name}</h3>
@@ -1254,6 +1260,7 @@ const DashboardPage = () => {
               {section.buttons.map((item, j) => (
                 <Button
                   key={j}
+                  onClick={() => handleDashPage(item.page)}
                   startIcon={item.icon}
                   className="justify-start text-left"
                   sx={{ textTransform: "none", color: "black" }}
@@ -1264,20 +1271,20 @@ const DashboardPage = () => {
                   </div>
                 </Button>
               ))}
-              {section.hasToggle && (
-                <div className="flex justify-between items-center mt-2 px-2">
-                  <span className="text-black">Push Notifications</span>
-                  <Switch />
-                </div>
-              )}
             </div>
           </div>
         ))}
-      </div>
+      </div> : null}
+      {DashPage === "Details" ? <><DetailsPage /></> : null}
+      {DashPage === "Password" ? <><PasswordPage /></> : null}
+      {DashPage === "Dashboard" ? <div className="text-center">Dashboard</div> : null}
+      {DashPage === "Notifications" ? <div className="text-center">Notifications</div> : null}
+      {DashPage === "Preferences" ? <div className="text-center">Preferences</div> : null}
+      {DashPage === "Terms" ? <div className="text-center">Terms</div> : null}
+      {DashPage === "Policy" ? <div className="text-center">Policy</div> : null}
     </div>
   )
 }
-/////
 
 export default function Home() {
   const [Data, setData] = useState([]);
