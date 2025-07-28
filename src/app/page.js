@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { SUPABASE_URL_WECARE, API_KEY_WECARE, Colors } from "./supabase";
 import { createClient } from "@supabase/supabase-js";
 import LoadingThreeDotsJumping from "./components/loading";
-import { Button, IconButton, Switch } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import Image from "next/image";
 import * as motion from "motion/react-client"
@@ -30,6 +30,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import DescriptionIcon from '@mui/icons-material/Description';
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import LoginIcon from '@mui/icons-material/Login';
 const supabase = createClient(SUPABASE_URL_WECARE, API_KEY_WECARE);
 
 const DonationTypes = [
@@ -116,42 +117,6 @@ const DonatePage = ({ handlePage }) => {
   const handleGoods1 = (selected) => { setDonationType(selected) }
 
   const PopUpMessage = "Donation submitted successfully ! \nCheck out your dashboard to view your donations"
-
-  const DonationAnimation = () => {
-    return (
-      <motion.div
-        initial={{ scale: 0.65 }}
-        animate={{ scale: 1 }}
-        transition={{
-          type: "spring",
-          stiffness: 300,
-          damping: 100,
-          mass: 10,
-          duration: 0.3,
-        }}
-        className="inline-flex mt-2 ml-2">
-        <div style={{ position: "relative" }}>
-          {/* Image */}
-          <Image
-            className="mx-auto"
-            width={90} height={100}
-            style={{ zIndex: 1, position: "relative" }}
-            src={`data:image/jpeg;base64,${Picture2}`}
-            alt="Hello"
-          />
-        </div>
-        <div
-          className="text-red-400 flex text-lg justify-center font-bold"
-          style={{
-            alignItems: "flex-end", // Aligns text at the bottom
-            height: "100px", // Set container height to visualize alignment
-          }}
-        >
-          Donate
-        </div>
-      </motion.div>
-    )
-  }
 
   const defaultOptions1 = (donation) => {
     return {
@@ -245,10 +210,6 @@ const DonatePage = ({ handlePage }) => {
               animate={{ opacity: 1, }}
               transition={{
                 delay: index * 0.13, // Add staggered delay based on index
-                type: "spring",
-                stiffness: 300,
-                damping: 55,
-                mass: 10,
                 duration: 0.3,
               }} className="mx-auto">
               <Button
@@ -1184,7 +1145,22 @@ const DonatePage = ({ handlePage }) => {
 
   return (
     <>
-      {donationType === "none" ? <DonationAnimation /> : null}
+      {donationType === "none" ?
+        <motion.div
+          initial={{ opacity: 0, x: 0 }}
+          animate={{ opacity: 1, x: 3 }}
+          transition={{
+            delay: 0.2,
+            type: "tween",
+            stiffness: 200,
+            damping: 40,
+            mass: 8,
+            duration: 0.5,
+          }}>
+          <div className="flex-inline text-lg text-red-400 text-center ml-2 font-bold mt-4">
+            Donate
+          </div>
+        </motion.div> : null}
       {donationType === "none" ? <><NoDonationTypeSelected /></> : null}
       {donationType === "Goods" ? <><DonationTypeGoods handleDonationType={handleDonationType} handleGoods={handleGoods} /></> : null}
       {donationType === "Cash" ? <><DonationTypeCash /></> : null}
@@ -1194,10 +1170,25 @@ const DonatePage = ({ handlePage }) => {
 }
 
 const CommunityPage = () => {
-  return (<>
-
-    <div className="mt-5 text-5xl text-center"> This Page is Under construction !!!</div>
-  </>)
+  return (
+    <>
+      <motion.div
+        initial={{ opacity: 0, x: 0 }}
+        animate={{ opacity: 1, x: 3 }}
+        transition={{
+          delay: 0.2,
+          type: "tween",
+          stiffness: 200,
+          damping: 40,
+          mass: 8,
+          duration: 0.5,
+        }}>
+        <div className="flex-inline text-lg text-red-400 text-center ml-2 font-bold mt-4">
+          Our Community
+        </div>
+      </motion.div>
+      <div className="mt-5 text-5xl text-center"> This Page is Under construction !!!</div>
+    </>)
 }
 
 const SupportPage = () => {
@@ -1215,6 +1206,11 @@ const DashboardPage = () => {
 
   const DetailsPage = () => { return (<div className="text-center">Details</div>) }
   const PasswordPage = () => { return (<div className="text-center">Password page</div>) }
+  const Dashboard = () => { return (<div className="text-center">Dashboard Page</div>) }
+  const NotificationsPage = () => { return (<div className="text-center">Notifications Page</div>) }
+  const PreferencesPage = () => { return (<div className="text-center">Preferences Page</div>) }
+  const TermsPage = () => { return (<div className="text-center">Terms Page</div>) }
+  const PolicyPage = () => { return (<div className="text-center">Policy Page</div>) }
 
   const ProfileSettings = [
     {
@@ -1235,7 +1231,7 @@ const DashboardPage = () => {
     {
       name: "App Settings",
       buttons: [
-        { icon: <SettingsIcon fontSize="large" />, name: "App Preferences", description: "Manage your app preferences", page: "Preferneces" }
+        { icon: <SettingsIcon fontSize="large" />, name: "App Preferences", description: "Manage your app preferences", page: "Preferences" }
       ]
     },
     {
@@ -1249,9 +1245,22 @@ const DashboardPage = () => {
 
   return (
     <div className="pb-8">
-      <div className="flex items-center justify-between px-4 py-2">
-        <h2 className="text-black font-semibold text-lg text-center flex-1">My Profile</h2>
-      </div>
+      {DashPage === "none" ?
+        <motion.div
+          initial={{ opacity: 0, x: 0 }}
+          animate={{ opacity: 1, x: 3 }}
+          transition={{
+            delay: 0.2,
+            type: "tween",
+            stiffness: 200,
+            damping: 40,
+            mass: 8,
+            duration: 0.5,
+          }}>
+          <div className="flex-inline text-lg text-red-400 text-center ml-2 font-bold mt-4">
+            My Profile
+          </div>
+        </motion.div> : null}
       {DashPage === "none" ? <div className="flex flex-col px-4 py-2">
         {ProfileSettings.map((section, i) => (
           <div key={i} className="mb-6">
@@ -1274,20 +1283,31 @@ const DashboardPage = () => {
             </div>
           </div>
         ))}
+        <Button
+          onClick={() => handleDashPage("Login")}
+          startIcon={<LoginIcon />}
+          className="justify-start text-left"
+          sx={{ textTransform: "none", color: "black" }}
+        >
+          <div className="flex flex-col items-start">
+            <span className="font-medium">Login</span>
+          </div>
+        </Button>
       </div> : null}
+      {DashPage === "none" ? null : <Button onClick={() => setDashPage("none")}>back</Button>}
       {DashPage === "Details" ? <><DetailsPage /></> : null}
       {DashPage === "Password" ? <><PasswordPage /></> : null}
-      {DashPage === "Dashboard" ? <div className="text-center">Dashboard</div> : null}
-      {DashPage === "Notifications" ? <div className="text-center">Notifications</div> : null}
-      {DashPage === "Preferences" ? <div className="text-center">Preferences</div> : null}
-      {DashPage === "Terms" ? <div className="text-center">Terms</div> : null}
-      {DashPage === "Policy" ? <div className="text-center">Policy</div> : null}
+      {DashPage === "Dashboard" ? <><Dashboard /></> : null}
+      {DashPage === "Notifications" ? <><NotificationsPage /></> : null}
+      {DashPage === "Preferences" ? <><PreferencesPage /></> : null}
+      {DashPage === "Terms" ? <><TermsPage /></> : null}
+      {DashPage === "Policy" ? <><PolicyPage /></> : null}
     </div>
   )
 }
 
 export default function Home() {
-  const [Data, setData] = useState([]);
+  const [Data, setData] = useState("sdfbsakj");
   const [CurrentPage, setCurrentPage] = useState("Home")
 
   // Memoized getInstruments function
@@ -1300,8 +1320,8 @@ export default function Home() {
   const handlePage = (Page) => { setCurrentPage(Page) }
 
   useEffect(() => {
-    getInstruments();
-  }, [getInstruments]);
+    // getInstruments();
+  }, []);
 
   return (
     <React.Fragment>

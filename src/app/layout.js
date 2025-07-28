@@ -28,29 +28,10 @@ import {
   SubMenuList,
   DrawerBackgroundColor,
   DrawerBackgroundHoverColor,
-  Colors,
 } from "./supabase";
 
 
 const supabase = createClient(SUPABASE_URL_WECARE, API_KEY_WECARE);
-
-
-
-
-//<Button
-// variant="contained"
-// fullWidth={false}
-// onClick={toggleDrawer(true)}
-// size="large"
-// disableRipple={true}
-// className="sm:hidden flex items-center justify-center bg-transparent shadow-none"
-//>
-//<div className={`space-y-1 w-7`}>
-//  <span style={{ backgroundColor: "#EB5C5C" }} className={`rounded-md block h-1 transition-transform duration-400 ease-in-out ${open ? 'rotate-45 translate-y-2' : ''}`}></span>
-//  <span style={{ backgroundColor: "#EB5C5C" }} className={`rounded-md block h-1 transition-opacity duration-400 ease-in-out ${open ? 'opacity-0' : 'opacity-100'}`}></span>
-//  <span style={{ backgroundColor: "#EB5C5C" }} className={`rounded-md block h-1 transition-transform duration-400 ease-in-out ${open ? '-rotate-45 -translate-y-2' : ''}`}></span>
-// </div>
-//</Button>
 
 const Pages = [{ "name": "Home", "url": "/" },
 { "name": "Projects", "url": "/projects" },
@@ -59,7 +40,7 @@ const Pages = [{ "name": "Home", "url": "/" },
 
 export default function RootLayout({ children }) {
   const [open, setOpen] = useState(false);
-  const [Data, setData] = useState([]);
+  const [Data, setData] = useState("dkjabsj");
 
   // Memoized getInstruments function
   const getInstruments = useCallback(async () => {
@@ -69,8 +50,8 @@ export default function RootLayout({ children }) {
   }, []);
 
   useEffect(() => {
-    getInstruments();
-  }, [getInstruments]);
+    //getInstruments();
+  }, []);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
