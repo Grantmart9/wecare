@@ -67,7 +67,6 @@ export default function RootLayout({ children }) {
       localStorage.removeItem("user_id");
       localStorage.removeItem("gender");
       localStorage.removeItem("category");
-      window.location.href = "/login";
     }
   };
 

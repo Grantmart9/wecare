@@ -3,11 +3,11 @@ import React, { useState, useEffect, useCallback } from "react";
 import { SUPABASE_URL_WECARE, API_KEY_WECARE, Colors } from "./supabase";
 import { createClient } from "@supabase/supabase-js";
 import LoadingThreeDotsJumping from "./components/loading";
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, TextField } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import Image from "next/image";
 import * as motion from "motion/react-client"
-import { Picture2 } from "./Image";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Lottie from 'react-lottie';
 import animationData1 from './animations/goods.json';
 import animationData2 from './animations/service.json';
@@ -31,6 +31,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LoginIcon from '@mui/icons-material/Login';
+import avatar from "./images/avatar.jpg"
 const supabase = createClient(SUPABASE_URL_WECARE, API_KEY_WECARE);
 
 const DonationTypes = [
@@ -150,7 +151,8 @@ const DonatePage = ({ handlePage }) => {
             disableRipple={true}
             sx={{ backgroundColor: "transparent", textTransform: "none", color: Colors.red }}
             onClick={() => handleGoods("none")}>
-            Back</Button>
+            <ArrowBackIcon />
+          </Button>
           Donate | {donationType}
         </div>
       </motion.div>
@@ -178,7 +180,7 @@ const DonatePage = ({ handlePage }) => {
             disableRipple={true}
             sx={{ backgroundColor: "transparent", textTransform: "none", color: Colors.red }}
             onClick={() => handleGoods1("none")}>
-            Back</Button>
+            <ArrowBackIcon /></Button>
           Donate | {donationType}
         </div>
       </motion.div>
@@ -1202,9 +1204,106 @@ const DashboardPage = () => {
 
   const [DashPage, setDashPage] = useState("none")
 
+  const AccountDetails = {
+    "name": "Olivia Carter",
+    "membership_start_date": "2024",
+    "personal_information": {
+      "email": "olivia.carter@gmail.com",
+      "phone": "+2742893721"
+    },
+    "donation_history": {
+      "total_donations": 12,
+      "recent_activity": 24
+    }
+  }
+
   const handleDashPage = (selected) => { setDashPage(selected) }
 
-  const DetailsPage = () => { return (<div className="text-center">Details</div>) }
+  const DetailsPage = () => {
+    const [edit, setEdit] = useState("ProfileView")
+
+    const handleProfile = () => { setEdit("ProfileEdit") }
+
+    const ProfileEdit = () => {
+      return (
+        <div className="grid grid-flow-row gap-2 mx-4 mt-4">
+          <motion.div
+            initial={{ opacity: 0, y: 0 }}
+            animate={{ opacity: 1, y: 3 }}
+            transition={{
+              delay: 0.2,
+              type: "tween",
+              stiffness: 200,
+              damping: 40,
+              mass: 8,
+              duration: 0.5
+            }}>
+            <Image src={avatar} alt="no image found" className="mx-auto rounded-full max-h-80 max-w-80" />
+          </motion.div>
+          <div className="text-black text-2xl font-bold text-center">{AccountDetails.name}</div>
+          <div className="text-black text-md font-bold text-center">Member since {AccountDetails.membership_start_date}</div>
+          <div className="text-black text-md font-semibold text-left">Name</div>
+          <TextField size="small" variant="outlined" sx={{bgcolor:Colors.yellow}} />
+          <div className="text-black text-md font-semibold text-left">Email</div>
+          <TextField size="small" variant="outlined" sx={{bgcolor:Colors.yellow}} />
+          <div className="text-black text-md font-semibold text-left">Phone</div>
+          <TextField size="small" variant="outlined" sx={{bgcolor:Colors.yellow}} />
+          <div className="text-black text-md font-semibold text-left">Location</div>
+          <TextField size="small" variant="outlined" sx={{bgcolor:Colors.yellow}} />
+          <Button style={{ backgroundColor: Colors.green }} className="text-black text-md rounded-2xl mx-auto mt-4" sx={{ textTransform: "none" }}>Save</Button>
+        </div>
+      )
+    }
+    const ProfileView = () => {
+      return (
+        <div className="grid grid-flow-row gap-2 mx-4 mt-4">
+          <motion.div
+            initial={{ opacity: 0, y: 0 }}
+            animate={{ opacity: 1, y: 3 }}
+            transition={{
+              delay: 0.2,
+              type: "tween",
+              stiffness: 200,
+              damping: 40,
+              mass: 8,
+              duration: 0.5
+            }}>
+            <Image src={avatar} alt="no image found" className="mx-auto rounded-full max-h-80 max-w-80" />
+          </motion.div>
+          <div className="text-black text-2xl font-bold text-center">{AccountDetails.name}</div>
+          <div className="text-black text-md font-bold text-center">Member since {AccountDetails.membership_start_date}</div>
+          <Button
+            onClick={() => handleProfile()}
+            style={{ backgroundColor: Colors.blue }}
+            className="text-black text-md font-bold rounded-3xl mx-4"
+            sx={{ textTransform: "none" }}>
+            Edit Profile
+          </Button>
+          <div className="text-black text-xl font-bold text-left mt-5">Personal Information</div>
+          <div className="text-black text-md font-semibold text-left">Email</div>
+          <div className="text-black text-sm font-light text-left">{AccountDetails.personal_information.email}</div>
+          <div className="text-black text-md font-semibold text-left">Phone</div>
+          <div className="text-black text-sm font-light text-left">{AccountDetails.personal_information.phone}</div>
+          <div className="text-black text-xl font-bold text-left mt-5">Donation History</div>
+          <div className="text-black text-md font-semibold text-left">Total Donations</div>
+          <div className="text-black text-sm font-light text-left">{AccountDetails.donation_history.total_donations} items donated</div>
+          <div className="text-black text-md font-semibold text-left">Recent Activity</div>
+          <div className="text-black text-sm font-light text-left">{AccountDetails.donation_history.recent_activity} Hours ago</div>
+          <Button style={{ backgroundColor: Colors.red }} className="text-black text-md rounded-2xl mx-auto" sx={{ textTransform: "none" }}>Logout</Button>
+          <div className="mb-10"></div>
+        </div>
+      )
+    }
+
+    return (
+      <>
+        {edit === "ProfileView" ?
+          <><ProfileView /></> :
+          <><ProfileEdit /></>}
+      </>
+    )
+  }
+
   const PasswordPage = () => { return (<div className="text-center">Password page</div>) }
   const Dashboard = () => { return (<div className="text-center">Dashboard Page</div>) }
   const NotificationsPage = () => { return (<div className="text-center">Notifications Page</div>) }
@@ -1260,41 +1359,65 @@ const DashboardPage = () => {
           <div className="flex-inline text-lg text-red-400 text-center ml-2 font-bold mt-4">
             My Profile
           </div>
-        </motion.div> : null}
-      {DashPage === "none" ? <div className="flex flex-col px-4 py-2">
-        {ProfileSettings.map((section, i) => (
-          <div key={i} className="mb-6">
-            <h3 className="text-black font-bold mb-2">{section.name}</h3>
-            <div className="flex flex-col gap-2">
-              {section.buttons.map((item, j) => (
-                <Button
-                  key={j}
-                  onClick={() => handleDashPage(item.page)}
-                  startIcon={item.icon}
-                  className="justify-start text-left"
-                  sx={{ textTransform: "none", color: "black" }}
-                >
-                  <div className="flex flex-col items-start">
-                    <span className="font-medium">{item.name}</span>
-                    <span className="text-gray-500 text-sm">{item.description}</span>
-                  </div>
-                </Button>
-              ))}
+        </motion.div> :
+        <div className="inline-flex">
+          <motion.div
+            initial={{ opacity: 0, x: 0 }}
+            animate={{ opacity: 1, x: 3 }}
+            transition={{
+              delay: 0.2,
+              type: "tween",
+              stiffness: 200,
+              damping: 40,
+              mass: 8,
+              duration: 0.5,
+            }}>
+            <div className="flex-inline text-lg text-red-400 text-left ml-2 font-bold mt-4">
+              <Button onClick={() => setDashPage("none")}><ArrowBackIcon sx={{ color: Colors.red }} /></Button> My Profile | {DashPage}
             </div>
-          </div>
-        ))}
-        <Button
-          onClick={() => handleDashPage("Login")}
-          startIcon={<LoginIcon />}
-          className="justify-start text-left"
-          sx={{ textTransform: "none", color: "black" }}
-        >
-          <div className="flex flex-col items-start">
-            <span className="font-medium">Login</span>
-          </div>
-        </Button>
+          </motion.div>
+        </div>}
+      {DashPage === "none" ? <div className="flex flex-col px-4 py-2">
+        <motion.div
+          initial={{ opacity: 0, y: 3 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.5,
+            duration: 0.5,
+          }}>
+          {ProfileSettings.map((section, i) => (
+            <div key={i} className="mb-6">
+              <h3 className="text-black font-bold mb-2">{section.name}</h3>
+              <div className="flex flex-col gap-2">
+                {section.buttons.map((item, j) => (
+                  <Button
+                    key={j}
+                    onClick={() => handleDashPage(item.page)}
+                    startIcon={item.icon}
+                    className="justify-start text-left"
+                    sx={{ textTransform: "none", color: "black" }}
+                  >
+                    <div className="flex flex-col items-start">
+                      <span className="font-medium">{item.name}</span>
+                      <span className="text-gray-500 text-sm">{item.description}</span>
+                    </div>
+                  </Button>
+                ))}
+              </div>
+            </div>
+          ))}
+          <Button
+            onClick={() => handleDashPage("Login")}
+            startIcon={<LoginIcon />}
+            className="justify-start text-left"
+            sx={{ textTransform: "none", color: "black" }}
+          >
+            <div className="flex flex-col items-start">
+              <span className="font-medium">Login</span>
+            </div>
+          </Button>
+        </motion.div>
       </div> : null}
-      {DashPage === "none" ? null : <Button onClick={() => setDashPage("none")}>back</Button>}
       {DashPage === "Details" ? <><DetailsPage /></> : null}
       {DashPage === "Password" ? <><PasswordPage /></> : null}
       {DashPage === "Dashboard" ? <><Dashboard /></> : null}
@@ -1327,10 +1450,10 @@ export default function Home() {
     <React.Fragment>
       <div className="fixed z-40 w-full bottom-0" >
         <div className="grid grid-flow-col gap-0 bg-gradient-to-r from-white to-gray-100 h-14">
-          <IconButton onClick={() => setCurrentPage("Home")}><HomeIcon size="large" sx={{ color: "gray" }} /></IconButton>
-          <IconButton onClick={() => setCurrentPage("Donate")}><AddBoxOutlinedIcon size="large" sx={{ color: "gray" }} /></IconButton>
-          <IconButton onClick={() => setCurrentPage("Community")}><PeopleIcon size="large" sx={{ color: "gray" }} /></IconButton>
-          <IconButton onClick={() => setCurrentPage("Dashboard")}><PersonOutlinedIcon size="large" sx={{ color: "gray" }} /></IconButton>
+          <IconButton onClick={() => setCurrentPage("Home")}><HomeIcon size="large" sx={{ color: "black" }} /></IconButton>
+          <IconButton onClick={() => setCurrentPage("Donate")}><AddBoxOutlinedIcon size="large" sx={{ color: "black" }} /></IconButton>
+          <IconButton onClick={() => setCurrentPage("Community")}><PeopleIcon size="large" sx={{ color: "black" }} /></IconButton>
+          <IconButton onClick={() => setCurrentPage("Dashboard")}><PersonOutlinedIcon size="large" sx={{ color: "black" }} /></IconButton>
         </div>
       </div>
 
