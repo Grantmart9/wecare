@@ -17,7 +17,7 @@ import Landing from "./images/Landing.png";
 import PeopleIcon from '@mui/icons-material/People';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import ScrollLinked3 from "./components/scrollLinked3";
+import HowItWorksAnimation from "./components/HowItWorksAnimation";
 import FeaturedCauses from "./components/Featuredcauses";
 import WavyText from "./components/Wavy";
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -53,43 +53,71 @@ const Homepage = ({ handlePage }) => {
 
   const community =
     [
-      { name: "Social media", icon: <InstagramIcon sx={{ color: "black" }} />, description: "Choose from a variety of causes and donate goods or services." },
-      { name: "Projects", icon: <FolderCopyIcon sx={{ color: "black" }} />, description: "Choose from a variety of causes and donate goods or services." },
-      { name: "upcoming events", icon: <EventIcon sx={{ color: "black" }} />, description: "Choose from a variety of causes and donate goods or services." }
+      { name: "Social media", icon: <InstagramIcon sx={{ color: "black" }} />, description: "Follow us on social media." },
+      { name: "Projects", icon: <FolderCopyIcon sx={{ color: "black" }} />, description: "Find a project you connect with." },
+      { name: "upcoming events", icon: <EventIcon sx={{ color: "black" }} />, description: "Attend our awesome events." }
     ]
 
   const HowItWorks = () => {
 
+
     return (
       <>
-        <ScrollLinked3 />
+        <HowItWorksAnimation />
       </>
     )
   }
 
   return (
     <div>
-      <WavyText />
-      <Image className="w-full shadow-sm" src={Landing} alt="no image found" />
-      <div style={{ top: "61vw" }} className=" absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-        <motion.div
-          animate={{ scale: [0.8, 1, 0.8] }}
-          transition={{ duration: 2.1, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <Button onClick={() => handlePage("Donate")} className="rounded-3xl" sx={{ bgcolor: "black", color: "white", textTransform: "none", textWrap: "nowrap" }}>
-            Donate now
-          </Button>
-        </motion.div>
-      </div>
       <motion.div
-        animate={{ y: [0, -20] }}
-        transition={{ duration: 0.3, ease: "easeIn" }}>
+        initial={{ opacity: 0, y: 3 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          type: "spring",
+          stiffness: 200,
+          damping: 40,
+          mass: 2,
+          duration: 0.5,
+        }}>
+        <WavyText />
+        <Image className="w-full shadow-sm" src={Landing} alt="no image found" />
+        <div style={{ top: "61vw" }} className=" absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <motion.div
+            animate={{ scale: [0.8, 1, 0.8] }}
+            transition={{ duration: 2.1, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          >
+            <Button onClick={() => handlePage("Donate")} className="rounded-3xl" sx={{ bgcolor: "black", color: "white", textTransform: "none", textWrap: "nowrap" }}>
+              Donate now
+            </Button>
+          </motion.div>
+        </div>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 3 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          delay: 0.5,
+          type: "spring",
+          stiffness: 200,
+          damping: 40,
+          mass: 20,
+          duration: 0.5,
+        }}>
         <div className="text-black font-bold text-xl text-left mt-14 pb-1 pl-4">How it works</div>
         <HowItWorks />
       </motion.div>
       <motion.div
-        animate={{ y: [0, -20] }}
-        transition={{ duration: 0.3, delay: 0.3, ease: "easeIn" }}>
+        initial={{ opacity: 0, y: 3 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          delay: 0.5,
+          type: "spring",
+          stiffness: 200,
+          damping: 40,
+          mass: 20,
+          duration: 0.5,
+        }}>
         <div className="text-black font-bold text-xl text-left pl-4">Our Community</div>
         <div className="grid grid-cols-2 gap-5 mx-3 pb-2 pt-6">{community.map((item, index) =>
           <Button variant="outlined" sx={{ borderColor: "gray", textTransform: "none" }} key={index} className="grid grid-flow-row gap-1 p-2 rounded-lg">
@@ -180,7 +208,8 @@ const DonatePage = ({ handlePage }) => {
             disableRipple={true}
             sx={{ backgroundColor: "transparent", textTransform: "none", color: Colors.red }}
             onClick={() => handleGoods1("none")}>
-            <ArrowBackIcon /></Button>
+            <ArrowBackIcon />
+          </Button>
           Donate | {donationType}
         </div>
       </motion.div>
@@ -207,13 +236,18 @@ const DonatePage = ({ handlePage }) => {
         <div className="grid grid-cols-3 gap-3 mt-2 mx-2">
           {DonationTypes.map((item, index) =>
             <motion.div
-              key={index} // assuming each Product has a unique id
-              initial={{ opacity: 0, }}
-              animate={{ opacity: 1, }}
+              key={index}
+              initial={{ opacity: 0, y: 4, }}
+              animate={{ opacity: 1, y: 0, }}
               transition={{
-                delay: index * 0.13, // Add staggered delay based on index
-                duration: 0.3,
-              }} className="mx-auto">
+                delay: 0.3 * index,
+                type: "spring",
+                stiffness: 300,
+                damping: 35,
+                mass: 5,
+                duration: 0.2,
+              }}
+              className="mx-auto">
               <Button
                 onClick={() => handleDonationType(item.name)}
                 key={index}
@@ -917,15 +951,15 @@ const DonatePage = ({ handlePage }) => {
           <div className="flex justify-start"><GoBack />{" "}{selectedGoods === "none" ? null
             :
             <motion.div
-              initial={{ opacity: 0, }}
-              animate={{ opacity: 1, }}
+              initial={{ opacity: 0, x: 0 }}
+              animate={{ opacity: 1, x: 3 }}
               transition={{
                 delay: "0.3",
                 type: "spring",
-                stiffness: 300,
-                damping: 55,
-                mass: 10,
-                duration: 0.3,
+                stiffness: 100,
+                damping: 10,
+                mass: 30,
+                duration: 1,
               }}
               className="flex-inline text-lg text-red-400 text-left ml-2 font-bold mt-2">
               | {selectedGoods}
@@ -938,13 +972,13 @@ const DonatePage = ({ handlePage }) => {
             {AllGoodsDonations.map((item, index) =>
               <motion.button
                 key={index} // assuming each Product has a unique id
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{ opacity: 0, x: 0 }}
+                animate={{ opacity: 1, x: 3 }}
                 transition={{
-                  delay: index * 0.12, // Add staggered delay based on index
+                  delay: index * 0.2, // Add staggered delay based on index
                   type: "spring",
                   stiffness: 300,
-                  damping: 55,
+                  damping: 20,
                   mass: 10,
                   duration: 0.3,
                 }}
@@ -1172,6 +1206,13 @@ const DonatePage = ({ handlePage }) => {
 }
 
 const CommunityPage = () => {
+
+  const community_data = [
+    { "title": "Social media" },
+    { "title": "projects" },
+    { "title": "upcomming events" }
+  ]
+
   return (
     <>
       <motion.div
@@ -1189,7 +1230,27 @@ const CommunityPage = () => {
           Our Community
         </div>
       </motion.div>
-      <div className="mt-5 text-5xl text-center"> This Page is Under construction !!!</div>
+      <div className="grid grid-flow-row gap-3 mt-4">
+        {community_data.map((item, index) =>
+          <motion.div
+            initial={{ opacity: 0, x: 0 }}
+            animate={{ opacity: 1, x: 3 }}
+            transition={{
+              delay: 0.4 * index,
+              type: "spring",
+              stiffness: 200,
+              damping: 40,
+              mass: 20,
+              duration: 0.8,
+            }}
+            className="bg-gradient-to-r from-cyan-500 to-cyan-300 rounded-md mx-4"
+            key={index}>
+            <div className="text-black font-bold text-left mx-4">{item.title}</div>
+            <div className="h-40"></div>
+          </motion.div>)
+        }
+      </div>
+
     </>)
 }
 
@@ -1238,19 +1299,19 @@ const DashboardPage = () => {
               mass: 8,
               duration: 0.5
             }}>
-            <Image src={avatar} alt="no image found" className="mx-auto rounded-full max-h-80 max-w-80" />
+            <Image src={avatar} alt="no image found" className="mx-auto rounded-full max-h-60 max-w-60" />
           </motion.div>
           <div className="text-black text-2xl font-bold text-center">{AccountDetails.name}</div>
           <div className="text-black text-md font-bold text-center">Member since {AccountDetails.membership_start_date}</div>
           <div className="text-black text-md font-semibold text-left">Name</div>
-          <TextField size="small" variant="outlined" sx={{bgcolor:Colors.yellow}} />
+          <TextField size="small" variant="outlined" sx={{ bgcolor: Colors.yellow }} />
           <div className="text-black text-md font-semibold text-left">Email</div>
-          <TextField size="small" variant="outlined" sx={{bgcolor:Colors.yellow}} />
+          <TextField size="small" variant="outlined" sx={{ bgcolor: Colors.yellow }} />
           <div className="text-black text-md font-semibold text-left">Phone</div>
-          <TextField size="small" variant="outlined" sx={{bgcolor:Colors.yellow}} />
+          <TextField size="small" variant="outlined" sx={{ bgcolor: Colors.yellow }} />
           <div className="text-black text-md font-semibold text-left">Location</div>
-          <TextField size="small" variant="outlined" sx={{bgcolor:Colors.yellow}} />
-          <Button style={{ backgroundColor: Colors.green }} className="text-black text-md rounded-2xl mx-auto mt-4" sx={{ textTransform: "none" }}>Save</Button>
+          <TextField size="small" variant="outlined" sx={{ bgcolor: Colors.yellow }} />
+          <Button style={{ backgroundColor: Colors.green }} className="text-black text-md rounded-2xl mx-auto mt-4 mb-10" sx={{ textTransform: "none" }}>Save</Button>
         </div>
       )
     }
@@ -1268,7 +1329,7 @@ const DashboardPage = () => {
               mass: 8,
               duration: 0.5
             }}>
-            <Image src={avatar} alt="no image found" className="mx-auto rounded-full max-h-80 max-w-80" />
+            <Image src={avatar} alt="no image found" className="mx-auto rounded-full max-h-60 max-w-60" />
           </motion.div>
           <div className="text-black text-2xl font-bold text-center">{AccountDetails.name}</div>
           <div className="text-black text-md font-bold text-center">Member since {AccountDetails.membership_start_date}</div>
@@ -1349,8 +1410,8 @@ const DashboardPage = () => {
           initial={{ opacity: 0, x: 0 }}
           animate={{ opacity: 1, x: 3 }}
           transition={{
-            delay: 0.2,
-            type: "tween",
+            delay: 0.1,
+            type: "spring",
             stiffness: 200,
             damping: 40,
             mass: 8,
@@ -1373,23 +1434,39 @@ const DashboardPage = () => {
               duration: 0.5,
             }}>
             <div className="flex-inline text-lg text-red-400 text-left ml-2 font-bold mt-4">
-              <Button onClick={() => setDashPage("none")}><ArrowBackIcon sx={{ color: Colors.red }} /></Button> My Profile | {DashPage}
+              <Button onClick={() => setDashPage("none")} disableRipple={true}><ArrowBackIcon sx={{ color: Colors.red }} /></Button> My Profile | {DashPage}
             </div>
           </motion.div>
         </div>}
       {DashPage === "none" ? <div className="flex flex-col px-4 py-2">
-        <motion.div
-          initial={{ opacity: 0, y: 3 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            delay: 0.5,
-            duration: 0.5,
-          }}>
-          {ProfileSettings.map((section, i) => (
-            <div key={i} className="mb-6">
-              <h3 className="text-black font-bold mb-2">{section.name}</h3>
-              <div className="flex flex-col gap-2">
-                {section.buttons.map((item, j) => (
+        {ProfileSettings.map((section, i) => (
+          <motion.div
+            initial={{ opacity: 0, }}
+            animate={{ opacity: 1, }}
+            transition={{
+              delay: 0.2 * i,
+              type: "tween",
+              stiffness: 200,
+              damping: 40,
+              mass: 8,
+              duration: 1,
+            }}
+            key={i}
+            className="mb-6">
+            <h3 className="text-black font-bold mb-2">{section.name}</h3>
+            <div className="flex flex-col gap-2">
+              {section.buttons.map((item, j) => (
+                <motion.div
+                  initial={{ opacity: 0, x: 0 }}
+                  animate={{ opacity: 1, x: 3 }}
+                  transition={{
+                    delay: 0.4 * j,
+                    type: "tween",
+                    stiffness: 200,
+                    damping: 40,
+                    mass: 8,
+                    duration: 0.5,
+                  }} key={j}>
                   <Button
                     key={j}
                     onClick={() => handleDashPage(item.page)}
@@ -1402,21 +1479,22 @@ const DashboardPage = () => {
                       <span className="text-gray-500 text-sm">{item.description}</span>
                     </div>
                   </Button>
-                ))}
-              </div>
+                </motion.div>
+              ))}
             </div>
-          ))}
-          <Button
-            onClick={() => handleDashPage("Login")}
-            startIcon={<LoginIcon />}
-            className="justify-start text-left"
-            sx={{ textTransform: "none", color: "black" }}
-          >
-            <div className="flex flex-col items-start">
-              <span className="font-medium">Login</span>
-            </div>
-          </Button>
-        </motion.div>
+          </motion.div>
+        ))}
+        <Button
+          onClick={() => handleDashPage("Login")}
+          startIcon={<LoginIcon />}
+          className="justify-start text-left"
+          sx={{ textTransform: "none", color: "black" }}
+        >
+          <div className="flex flex-col items-start">
+            <span className="font-medium">Login</span>
+          </div>
+        </Button>
+
       </div> : null}
       {DashPage === "Details" ? <><DetailsPage /></> : null}
       {DashPage === "Password" ? <><PasswordPage /></> : null}
