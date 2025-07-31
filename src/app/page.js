@@ -1342,7 +1342,7 @@ const CommunityPage = () => {
             className="bg-gradient-to-r from-cyan-500 to-cyan-300 rounded-md mx-4"
             key={index}>
             <div className="text-black font-bold text-left mx-4">{item.title}</div>
-            <div className="h-40"></div>
+            <div className="h-80"></div>
           </motion.div>)
         }
       </div>
@@ -1430,7 +1430,7 @@ const DashboardPage = () => {
             initial={{ opacity: 0, y: 0 }}
             animate={{ opacity: 1, y: 3 }}
             transition={{
-              delay: 0.2,
+              delay: 0.15,
               type: "tween",
               stiffness: 200,
               damping: 40,
@@ -1438,21 +1438,21 @@ const DashboardPage = () => {
               duration: 0.5
             }}>
             <Image src={avatar} alt="no image found" className="mx-auto rounded-full max-h-60 max-w-60" />
+            <div className="text-black text-2xl font-bold text-center">{AccountDetails.name}</div>
+            <div className="text-black text-md font-bold text-center">Member since {AccountDetails.membership_start_date}</div>
+            <Button
+              onClick={() => handleProfile()}
+              style={{ backgroundColor: Colors.blue }}
+              className="text-black text-md font-bold rounded-3xl w-full"
+              sx={{ textTransform: "none" }}>
+              Edit Profile
+            </Button>
           </motion.div>
-          <div className="text-black text-2xl font-bold text-center">{AccountDetails.name}</div>
-          <div className="text-black text-md font-bold text-center">Member since {AccountDetails.membership_start_date}</div>
-          <Button
-            onClick={() => handleProfile()}
-            style={{ backgroundColor: Colors.blue }}
-            className="text-black text-md font-bold rounded-3xl mx-4"
-            sx={{ textTransform: "none" }}>
-            Edit Profile
-          </Button>
           <motion.div
-            initial={{ opacity: 0, y: 0 }}
-            animate={{ opacity: 1, y: 3 }}
+            initial={{ opacity: 0, x: 0 }}
+            animate={{ opacity: 1, x: 3 }}
             transition={{
-              delay: 0.7,
+              delay: 0.2,
               type: "spring",
               stiffness: 200,
               damping: 40,
@@ -1534,7 +1534,7 @@ const DashboardPage = () => {
             type: "spring",
             stiffness: 200,
             damping: 40,
-            mass: 8,
+            mass: 20,
             duration: 0.5,
           }}>
           <div className="flex-inline text-lg text-red-400 text-center ml-2 font-bold mt-4">
@@ -1565,10 +1565,10 @@ const DashboardPage = () => {
             animate={{ opacity: 1, }}
             transition={{
               delay: 0.2 * i,
-              type: "tween",
+              type: "spring",
               stiffness: 200,
               damping: 40,
-              mass: 8,
+              mass: 20,
               duration: 1,
             }}
             key={i}
@@ -1581,7 +1581,7 @@ const DashboardPage = () => {
                   animate={{ opacity: 1, x: 3 }}
                   transition={{
                     delay: 0.4 * j,
-                    type: "tween",
+                    type: "spring",
                     stiffness: 200,
                     damping: 40,
                     mass: 8,
@@ -1589,6 +1589,7 @@ const DashboardPage = () => {
                   }} key={j}>
                   <Button
                     key={j}
+                    disableRipple={true}
                     onClick={() => handleDashPage(item.page)}
                     startIcon={item.icon}
                     className="justify-start text-left"
@@ -1602,19 +1603,19 @@ const DashboardPage = () => {
                 </motion.div>
               ))}
             </div>
+            <Button
+              onClick={() => handleDashPage("Login")}
+              startIcon={<LoginIcon />}
+              disableRipple={true}
+              className="justify-start text-center"
+              sx={{ textTransform: "none", color: "black" }}
+            >
+              <div className="flex flex-col items-start">
+                <span className="font-medium">Login</span>
+              </div>
+            </Button>
           </motion.div>
         ))}
-        <Button
-          onClick={() => handleDashPage("Login")}
-          startIcon={<LoginIcon />}
-          className="justify-start text-left"
-          sx={{ textTransform: "none", color: "black" }}
-        >
-          <div className="flex flex-col items-start">
-            <span className="font-medium">Login</span>
-          </div>
-        </Button>
-
       </div> : null}
       {DashPage === "Details" ? <><DetailsPage /></> : null}
       {DashPage === "Password" ? <><PasswordPage /></> : null}
