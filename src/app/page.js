@@ -1389,7 +1389,7 @@ const DashboardPage = () => {
             animate={{ opacity: 1, y: 3 }}
             transition={{
               delay: 0.2,
-              type: "tween",
+              type: "spring",
               stiffness: 200,
               damping: 40,
               mass: 8,
@@ -1397,17 +1397,29 @@ const DashboardPage = () => {
             }}>
             <Image src={avatar} alt="no image found" className="mx-auto rounded-full max-h-60 max-w-60" />
           </motion.div>
-          <div className="text-black text-2xl font-bold text-center">{AccountDetails.name}</div>
-          <div className="text-black text-md font-bold text-center">Member since {AccountDetails.membership_start_date}</div>
-          <div className="text-black text-md font-semibold text-left">Name</div>
-          <TextField size="small" variant="outlined" sx={{ bgcolor: Colors.yellow }} />
-          <div className="text-black text-md font-semibold text-left">Email</div>
-          <TextField size="small" variant="outlined" sx={{ bgcolor: Colors.yellow }} />
-          <div className="text-black text-md font-semibold text-left">Phone</div>
-          <TextField size="small" variant="outlined" sx={{ bgcolor: Colors.yellow }} />
-          <div className="text-black text-md font-semibold text-left">Location</div>
-          <TextField size="small" variant="outlined" sx={{ bgcolor: Colors.yellow }} />
-          <Button style={{ backgroundColor: Colors.green }} className="text-black text-md rounded-2xl mx-auto mt-4 mb-10" sx={{ textTransform: "none" }}>Save</Button>
+          <motion.div
+            initial={{ opacity: 0, y: 0 }}
+            animate={{ opacity: 1, y: 3 }}
+            transition={{
+              delay: 0.7,
+              type: "spring",
+              stiffness: 200,
+              damping: 40,
+              mass: 8,
+              duration: 0.5
+            }} className="grid grid-flow-row gap-1">
+            <div className="text-black text-2xl font-bold text-center">{AccountDetails.name}</div>
+            <div className="text-black text-md font-bold text-center">Member since {AccountDetails.membership_start_date}</div>
+            <div className="text-black text-md font-semibold text-left">Name</div>
+            <TextField size="small" variant="outlined" sx={{ bgcolor: Colors.yellow }} />
+            <div className="text-black text-md font-semibold text-left">Email</div>
+            <TextField size="small" variant="outlined" sx={{ bgcolor: Colors.yellow }} />
+            <div className="text-black text-md font-semibold text-left">Phone</div>
+            <TextField size="small" variant="outlined" sx={{ bgcolor: Colors.yellow }} />
+            <div className="text-black text-md font-semibold text-left">Location</div>
+            <TextField size="small" variant="outlined" sx={{ bgcolor: Colors.yellow }} />
+            <Button style={{ backgroundColor: Colors.green }} className="text-black text-md rounded-2xl mx-auto mt-4 mb-10" sx={{ textTransform: "none" }}>Save</Button>
+          </motion.div>
         </div>
       )
     }
@@ -1436,17 +1448,29 @@ const DashboardPage = () => {
             sx={{ textTransform: "none" }}>
             Edit Profile
           </Button>
-          <div className="text-black text-xl font-bold text-left mt-5">Personal Information</div>
-          <div className="text-black text-md font-semibold text-left">Email</div>
-          <div className="text-black text-sm font-light text-left">{AccountDetails.personal_information.email}</div>
-          <div className="text-black text-md font-semibold text-left">Phone</div>
-          <div className="text-black text-sm font-light text-left">{AccountDetails.personal_information.phone}</div>
-          <div className="text-black text-xl font-bold text-left mt-5">Donation History</div>
-          <div className="text-black text-md font-semibold text-left">Total Donations</div>
-          <div className="text-black text-sm font-light text-left">{AccountDetails.donation_history.total_donations} items donated</div>
-          <div className="text-black text-md font-semibold text-left">Recent Activity</div>
-          <div className="text-black text-sm font-light text-left">{AccountDetails.donation_history.recent_activity} Hours ago</div>
-          <Button style={{ backgroundColor: Colors.red }} className="text-black text-md rounded-2xl mx-auto" sx={{ textTransform: "none" }}>Logout</Button>
+          <motion.div
+            initial={{ opacity: 0, y: 0 }}
+            animate={{ opacity: 1, y: 3 }}
+            transition={{
+              delay: 0.7,
+              type: "spring",
+              stiffness: 200,
+              damping: 40,
+              mass: 8,
+              duration: 0.5
+            }} className="grid grid-flow-row gap-1">
+            <div className="text-black text-xl font-bold text-left mt-5">Personal Information</div>
+            <div className="text-black text-md font-semibold text-left">Email</div>
+            <div className="text-black text-sm font-light text-left">{AccountDetails.personal_information.email}</div>
+            <div className="text-black text-md font-semibold text-left">Phone</div>
+            <div className="text-black text-sm font-light text-left">{AccountDetails.personal_information.phone}</div>
+            <div className="text-black text-xl font-bold text-left mt-5">Donation History</div>
+            <div className="text-black text-md font-semibold text-left">Total Donations</div>
+            <div className="text-black text-sm font-light text-left">{AccountDetails.donation_history.total_donations} items donated</div>
+            <div className="text-black text-md font-semibold text-left">Recent Activity</div>
+            <div className="text-black text-sm font-light text-left">{AccountDetails.donation_history.recent_activity} Hours ago</div>
+            <Button style={{ backgroundColor: Colors.red }} className="text-black text-md rounded-2xl mx-auto" sx={{ textTransform: "none" }}>Logout</Button>
+          </motion.div>
           <div className="mb-10"></div>
         </div>
       )
