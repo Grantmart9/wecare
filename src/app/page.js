@@ -978,8 +978,8 @@ const DonatePage = ({ handlePage }) => {
                   delay: index * 0.2, // Add staggered delay based on index
                   type: "spring",
                   stiffness: 300,
-                  damping: 20,
-                  mass: 10,
+                  damping: 30,
+                  mass: 20,
                   duration: 0.3,
                 }}
                 onClick={() => handleGoods(item.name)}
@@ -990,15 +990,111 @@ const DonatePage = ({ handlePage }) => {
             )
             }
           </div> : null}
-        {selectedGoods === "Clothing" ? <div><DonateClothing /></div> : null}
-        {selectedGoods === "Non - perishable food" ? <div><DonateNonPerishableFoods /></div> : null}
-        {selectedGoods === "Books & educatutional materials" ? <div><DonateBooksAndEducationalMaterials /></div> : null}
-        {selectedGoods === "Electronics" ? <div><DonateElectronics /></div> : null}
-        {selectedGoods === "Furniture" ? <div><DonateFurniture /></div> : null}
-        {selectedGoods === "Medical supplies" ? <div><DonateMedicalSupplies /></div> : null}
-        {selectedGoods === "Toys & games" ? <div><DonateToysAndGames /></div> : null}
-        {selectedGoods === "Hygiene" ? <div><DonateHygiene /></div> : null}
-        {selectedGoods === "Household" ? <div><DonateHousehold /></div> : null}
+        {selectedGoods === "Clothing" ?
+          <motion.div
+            initial={{ opacity: 0, x: 0 }}
+            animate={{ opacity: 1, x: 3 }}
+            transition={{
+              delay: 0.5, // Add staggered delay based on index
+              type: "spring",
+              stiffness: 300,
+              damping: 35,
+              mass: 20,
+              duration: 0.2,
+            }}><DonateClothing />
+          </motion.div> : null}
+        {selectedGoods === "Non - perishable food" ?
+          <motion.div
+            initial={{ opacity: 0, x: 0 }}
+            animate={{ opacity: 1, x: 3 }}
+            transition={{
+              delay: 0.5, // Add staggered delay based on index
+              type: "spring",
+              stiffness: 300,
+              damping: 35,
+              mass: 20,
+              duration: 0.2,
+            }}><DonateNonPerishableFoods />
+          </motion.div> : null}
+        {selectedGoods === "Books & educatutional materials" ?
+          <motion.div
+            initial={{ opacity: 0, x: 0 }}
+            animate={{ opacity: 1, x: 3 }}
+            transition={{
+              delay: 0.5, // Add staggered delay based on index
+              type: "spring",
+              stiffness: 300,
+              damping: 35,
+              mass: 20,
+              duration: 0.2,
+            }}><DonateBooksAndEducationalMaterials />
+          </motion.div> : null}
+        {selectedGoods === "Electronics" ? <motion.div
+          initial={{ opacity: 0, x: 0 }}
+          animate={{ opacity: 1, x: 3 }}
+          transition={{
+            delay: 0.5, // Add staggered delay based on index
+            type: "spring",
+            stiffness: 300,
+            damping: 35,
+            mass: 20,
+            duration: 0.2,
+          }}><DonateElectronics /></motion.div> : null}
+        {selectedGoods === "Furniture" ? <motion.div
+          initial={{ opacity: 0, x: 0 }}
+          animate={{ opacity: 1, x: 3 }}
+          transition={{
+            delay: 0.5, // Add staggered delay based on index
+            type: "spring",
+            stiffness: 300,
+            damping: 35,
+            mass: 20,
+            duration: 0.2,
+          }}><DonateFurniture /></motion.div> : null}
+        {selectedGoods === "Medical supplies" ? <motion.div
+          initial={{ opacity: 0, x: 0 }}
+          animate={{ opacity: 1, x: 3 }}
+          transition={{
+            delay: 0.5, // Add staggered delay based on index
+            type: "spring",
+            stiffness: 300,
+            damping: 35,
+            mass: 20,
+            duration: 0.2,
+          }}><DonateMedicalSupplies /></motion.div> : null}
+        {selectedGoods === "Toys & games" ? <motion.div
+          initial={{ opacity: 0, x: 0 }}
+          animate={{ opacity: 1, x: 3 }}
+          transition={{
+            delay: 0.5, // Add staggered delay based on index
+            type: "spring",
+            stiffness: 300,
+            damping: 35,
+            mass: 20,
+            duration: 0.2,
+          }}><DonateToysAndGames /></motion.div> : null}
+        {selectedGoods === "Hygiene" ? <motion.div
+          initial={{ opacity: 0, x: 0 }}
+          animate={{ opacity: 1, x: 3 }}
+          transition={{
+            delay: 0.5, // Add staggered delay based on index
+            type: "spring",
+            stiffness: 300,
+            damping: 35,
+            mass: 20,
+            duration: 0.2,
+          }}><DonateHygiene /></motion.div> : null}
+        {selectedGoods === "Household" ? <motion.div
+          initial={{ opacity: 0, x: 0 }}
+          animate={{ opacity: 1, x: 3 }}
+          transition={{
+            delay: 0.5, // Add staggered delay based on index
+            type: "spring",
+            stiffness: 300,
+            damping: 35,
+            mass: 20,
+            duration: 0.2,
+          }}><DonateHousehold /></motion.div> : null}
       </div>
     )
   }
