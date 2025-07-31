@@ -68,6 +68,11 @@ const Homepage = ({ handlePage }) => {
     )
   }
 
+  useEffect(() => {
+    // getInstruments();
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <motion.div
@@ -233,31 +238,31 @@ const DonatePage = ({ handlePage }) => {
     return (
       <>
         {donationType === "none" ? null : <GoBack />}
-        <div className="grid grid-cols-3 gap-3 mt-2 mx-2">
+        <div className="grid grid-rows-3 md:grid-cols-3 gap-4 md:gap-3 mt-2 md:mt-8 md:mx-4 mx:2 pb-20 ">
           {DonationTypes.map((item, index) =>
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 4, }}
-              animate={{ opacity: 1, y: 0, }}
+              initial={{ x: -400 }}
+              animate={{ x: 0 }}
               transition={{
-                delay: 0.3 * index,
+                delay: 0.2 * index,
                 type: "spring",
-                stiffness: 300,
-                damping: 35,
-                mass: 5,
-                duration: 0.2,
+                stiffness: 230,
+                damping: 75,
+                mass: 15,
+                duration: 1,
               }}
-              className="mx-auto">
+            >
               <Button
                 onClick={() => handleDonationType(item.name)}
                 key={index}
-                className="grid grid-flow-row  p-2 rounded-md"
+                className="grid grid-flow-row p-2 rounded-full mx-auto border-4 border-gray-600"
                 sx={{ bgcolor: item.color, textTransform: "none" }}>
                 <Lottie
                   options={defaultOptions1(item.json)}
                   className="mx-auto my-auto"
-                  height={90}
-                  width={115}
+                  height={210}
+                  width={240}
                 />
                 <div className="text-center justify-center text-teal-950">{item.name}</div>
               </Button>
@@ -984,7 +989,7 @@ const DonatePage = ({ handlePage }) => {
                 }}
                 onClick={() => handleGoods(item.name)}
                 style={{ textTransform: "none", backgroundColor: item.color }}
-                className=" text-teal-950 text-lg font-semibold rounded-lg p-3">
+                className=" text-teal-950 text-lg font-semibold rounded-lg p-3 border-2 border-gray-500">
                 {item.name}
               </motion.button>
             )
@@ -1115,6 +1120,11 @@ const DonatePage = ({ handlePage }) => {
       { "name": "Samsung Pay", "color": Colors.blue },
     ]
 
+    useEffect(() => {
+      // getInstruments();
+      window.scrollTo(0, 0);
+    }, []);
+
     return (
       <div className="text-center">
         {selectedCash === "none" ?
@@ -1150,7 +1160,8 @@ const DonatePage = ({ handlePage }) => {
             damping: 55,
             mass: 10,
             duration: 0.3,
-          }} className="mx-2  text-gray-600 text-center text-xl mt-5">Please sellect a payment option bellow
+          }}
+          className="mx-2  text-gray-600 text-center text-xl mt-5">Please sellect a payment option bellow
         </motion.div>
         <div className="grid grid-flow-row gap-3 mt-5">
           {paymentTypes.map((item, index) =>
@@ -1168,7 +1179,7 @@ const DonatePage = ({ handlePage }) => {
               }}>
               <Button key={index}
                 fullWidth={true}
-                className="rounded-lg text-teal-950 mx-auto"
+                className="rounded-lg text-teal-950"
                 sx={{ bgcolor: item.color, textTransform: "none", maxWidth: "300px" }}>
                 {item.name}
               </Button>
@@ -1276,7 +1287,7 @@ const DonatePage = ({ handlePage }) => {
   };
 
   return (
-    <>
+    <div className="block">
       {donationType === "none" ?
         <motion.div
           initial={{ opacity: 0, x: 0 }}
@@ -1297,17 +1308,22 @@ const DonatePage = ({ handlePage }) => {
       {donationType === "Goods" ? <><DonationTypeGoods handleDonationType={handleDonationType} handleGoods={handleGoods} /></> : null}
       {donationType === "Cash" ? <><DonationTypeCash /></> : null}
       {donationType === "Service" ? <><DonationTypeService /></> : null}
-    </>
+    </div>
   )
 }
 
 const CommunityPage = () => {
 
   const community_data = [
-    { "title": "Social media" },
-    { "title": "projects" },
-    { "title": "upcomming events" }
+    { "title": "Social media", "color": Colors.orange },
+    { "title": "Projects", "color": Colors.blue },
+    { "title": "Upcomming events", "color": Colors.yellow }
   ]
+
+  useEffect(() => {
+    // getInstruments();
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
@@ -1326,22 +1342,23 @@ const CommunityPage = () => {
           Our Community
         </div>
       </motion.div>
-      <div className="grid grid-flow-row gap-3 mt-4">
+      <div className="grid grid-flow-row gap-3 mt-4 pb-20">
         {community_data.map((item, index) =>
           <motion.div
             initial={{ opacity: 0, x: 0 }}
             animate={{ opacity: 1, x: 3 }}
             transition={{
-              delay: 0.4 * index,
+              delay: 0.6 * index,
               type: "spring",
               stiffness: 200,
               damping: 40,
               mass: 20,
               duration: 0.8,
             }}
-            className="bg-gradient-to-r from-cyan-500 to-cyan-300 rounded-md mx-4"
+            style={{ backgroundColor: item.color }}
+            className="rounded-md mx-4"
             key={index}>
-            <div className="text-black font-bold text-left mx-4">{item.title}</div>
+            <div className="text-gray-600 font-bold text-lg text-left mt-4 mx-4">{item.title}</div>
             <div className="h-80"></div>
           </motion.div>)
         }
@@ -1351,6 +1368,11 @@ const CommunityPage = () => {
 }
 
 const SupportPage = () => {
+
+  useEffect(() => {
+    // getInstruments();
+    window.scrollTo(0, 0);
+  }, []);
   return (<>
 
     <div className="mt-5 text-5xl text-center"> This Page is Under construction !!!</div>
@@ -1366,7 +1388,7 @@ const DashboardPage = () => {
     "membership_start_date": "2024",
     "personal_information": {
       "email": "olivia.carter@gmail.com",
-      "phone": "+2742893721"
+      "phone": "+27 74 289 3721"
     },
     "donation_history": {
       "total_donations": 12,
@@ -1407,7 +1429,7 @@ const DashboardPage = () => {
               damping: 40,
               mass: 8,
               duration: 0.5
-            }} className="grid grid-flow-row gap-1">
+            }} className="grid grid-flow-row gap-1 mx-4">
             <div className="text-black text-2xl font-bold text-center">{AccountDetails.name}</div>
             <div className="text-black text-md font-bold text-center">Member since {AccountDetails.membership_start_date}</div>
             <div className="text-black text-md font-semibold text-left">Name</div>
@@ -1425,7 +1447,7 @@ const DashboardPage = () => {
     }
     const ProfileView = () => {
       return (
-        <div className="grid grid-flow-row gap-2 mx-4 mt-4">
+        <div className="grid grid-flow-row gap-3.5 mx-4 mt-4">
           <motion.div
             initial={{ opacity: 0, y: 0 }}
             animate={{ opacity: 1, y: 3 }}
@@ -1443,7 +1465,7 @@ const DashboardPage = () => {
             <Button
               onClick={() => handleProfile()}
               style={{ backgroundColor: Colors.blue }}
-              className="text-black text-md font-bold rounded-3xl w-full"
+              className="text-black text-md font-bold rounded-3xl w-full mt-4"
               sx={{ textTransform: "none" }}>
               Edit Profile
             </Button>
@@ -1458,7 +1480,7 @@ const DashboardPage = () => {
               damping: 40,
               mass: 8,
               duration: 0.5
-            }} className="grid grid-flow-row gap-1">
+            }} className="grid grid-flow-row gap-2">
             <div className="text-black text-xl font-bold text-left mt-5">Personal Information</div>
             <div className="text-black text-md font-semibold text-left">Email</div>
             <div className="text-black text-sm font-light text-left">{AccountDetails.personal_information.email}</div>
@@ -1469,7 +1491,7 @@ const DashboardPage = () => {
             <div className="text-black text-sm font-light text-left">{AccountDetails.donation_history.total_donations} items donated</div>
             <div className="text-black text-md font-semibold text-left">Recent Activity</div>
             <div className="text-black text-sm font-light text-left">{AccountDetails.donation_history.recent_activity} Hours ago</div>
-            <Button style={{ backgroundColor: Colors.red }} className="text-black text-md rounded-2xl mx-auto" sx={{ textTransform: "none" }}>Logout</Button>
+            <Button style={{ backgroundColor: Colors.red }} className="text-black text-sm rounded-2xl mx-auto" sx={{ textTransform: "none" }}>Logout</Button>
           </motion.div>
           <div className="mb-10"></div>
         </div>
@@ -1522,6 +1544,11 @@ const DashboardPage = () => {
       ]
     }
   ];
+
+  useEffect(() => {
+    // getInstruments();
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="pb-8">
@@ -1603,19 +1630,20 @@ const DashboardPage = () => {
                 </motion.div>
               ))}
             </div>
-            <Button
-              onClick={() => handleDashPage("Login")}
-              startIcon={<LoginIcon />}
-              disableRipple={true}
-              className="justify-start text-center"
-              sx={{ textTransform: "none", color: "black" }}
-            >
-              <div className="flex flex-col items-start">
-                <span className="font-medium">Login</span>
-              </div>
-            </Button>
           </motion.div>
+
         ))}
+        <Button
+          onClick={() => handleDashPage("Login")}
+          startIcon={<LoginIcon />}
+          disableRipple={true}
+          className="justify-start text-center"
+          sx={{ textTransform: "none", color: "black" }}
+        >
+          <div className="flex flex-col items-start">
+            <span className="font-medium">Login</span>
+          </div>
+        </Button>
       </div> : null}
       {DashPage === "Details" ? <><DetailsPage /></> : null}
       {DashPage === "Password" ? <><PasswordPage /></> : null}
