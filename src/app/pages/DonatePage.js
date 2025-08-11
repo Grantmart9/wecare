@@ -63,13 +63,15 @@ const ImageDialog = ({ handleImage, image }) => {
     </>)
 }
 
-const DonatePage = ({ handlePage }) => {
+const DonatePage = ({ handlePage, scrollToTop }) => {
   const [donationType, setDonationType] = useState("none");
   const [selectedGoods, setSelectedGoods] = useState("none");
   
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [donationType, selectedGoods]);
+    if (scrollToTop) {
+      scrollToTop();
+    }
+  }, [donationType, selectedGoods, scrollToTop]);
 
   const handleDonationType = (selected) => { setDonationType(selected) }
   const handleGoods = (selected) => { setSelectedGoods(selected) && setDonationType(selected) }
@@ -1052,8 +1054,10 @@ const DonatePage = ({ handlePage }) => {
 
     useEffect(() => {
       // getInstruments();
-      window.scrollTo(0, 0);
-    }, []);
+      if (scrollToTop) {
+        scrollToTop();
+      }
+    }, [selectedCash, scrollToTop]);
 
     return (
       <div className="text-center">
@@ -1245,21 +1249,26 @@ const DonatePage = ({ handlePage }) => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       {donationType === "none" ?
-        <motion.div
-          initial={{ opacity: 0, x: 0 }}
-          animate={{ opacity: 1, x: 3 }}
-          transition={{
-            delay: 0.2,
-            type: "tween",
-            stiffness: 200,
-            damping: 40,
-            mass: 8,
-            duration: 0.5,
-          }}>
-          <div className="flex-inline text-lg text-gray-800 text-center ml-2 font-bold mt-4">
-            Donate
+        <div className="relative h-[300px] bg-gradient-to-r from-blue-600 to-purple-700">
+          <div className="absolute inset-0 bg-black opacity-30"></div>
+          <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h1 className="text-4xl font-bold mb-4">Donate</h1>
+            </motion.div>
+            <motion.p
+              className="text-xl max-w-3xl"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              Make a lasting impact in your community by donating goods, cash, or services to those who need it most.
+            </motion.p>
           </div>
-        </motion.div> : null}
+        </div> : null}
       {donationType === "none" ? <><NoDonationTypeSelected /></> : null}
       {donationType === "Goods" ? <><DonationTypeGoods handleDonationType={handleDonationType} handleGoods={handleGoods} /></> : null}
       {donationType === "Cash" ? <><DonationTypeCash /></> : null}

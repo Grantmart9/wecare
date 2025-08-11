@@ -1,13 +1,9 @@
 "use client"
 import React, { useEffect } from "react";
-import { Colors } from "../supabase";
 import { Button } from "@mui/material";
-import Image from "next/image";
 import * as motion from "motion/react-client"
-import { animate } from "motion/react-client"
 import Lottie from 'react-lottie';
 import animationData4 from '../animations/give.json';
-import Landing from "../images/Landing.png";
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FolderCopyIcon from '@mui/icons-material/FolderCopy';
 import EventIcon from '@mui/icons-material/Event';
@@ -29,17 +25,17 @@ const impactStats = [
 ];
 
 const donationTypes = [
-  { 
-    title: "Goods Donations", 
-    description: "Donate clothing, food, electronics, and household items to those in need."
+  {
+    title: "Goods Donations",
+    description: "Donate clothing, food, electronics, and household items to support families in need in your community."
   },
-  { 
-    title: "Cash Donations", 
-    description: "Make monetary contributions to support our programs and initiatives."
+  {
+    title: "Financial Support",
+    description: "Contribute funds to help us expand our reach and support more community initiatives and programs."
   },
-  { 
-    title: "Service Donations", 
-    description: "Offer your time and skills to help our community projects."
+  {
+    title: "Volunteer Services",
+    description: "Share your skills and time to make a direct impact through hands-on community service projects."
   }
 ];
 

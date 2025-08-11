@@ -15,7 +15,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
 import LoginIcon from '@mui/icons-material/Login';
 
-const DashboardPage = ({ handlePage }) => {
+const DashboardPage = ({ handlePage, scrollToTop }) => {
 
   const [DashPage, setDashPage] = useState("none")
 
@@ -482,8 +482,10 @@ const DashboardPage = ({ handlePage }) => {
   ];
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    if (scrollToTop) {
+      scrollToTop();
+    }
+  }, [DashPage, scrollToTop]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 pb-8">
@@ -511,8 +513,8 @@ const DashboardPage = ({ handlePage }) => {
               mass: 8,
               duration: 0.5,
             }}>
-            <div className="flex-inline text-lg text-red-400 text-left ml-2 font-bold mt-4">
-              <Button onClick={() => setDashPage("none")} disableRipple={true}><ArrowBackIcon sx={{ color: Colors.red }} /></Button> My Profile | {DashPage}
+            <div className="flex-inline text-lg text-gray-800 text-left ml-2 font-bold mt-4">
+              <Button onClick={() => setDashPage("none")} disableRipple={true}><ArrowBackIcon sx={{ color: "gray.800" }} /></Button> My Profile | {DashPage}
             </div>
           </motion.div>
         </div>}
@@ -552,7 +554,13 @@ const DashboardPage = ({ handlePage }) => {
                       onClick={() => handleDashPage(item.page)}
                       startIcon={item.icon}
                       className="justify-start text-left w-full py-4"
-                      sx={{ textTransform: "none", color: "black" }}
+                      sx={{
+                        textTransform: "none",
+                        color: "gray.800",
+                        '&:hover': {
+                          backgroundColor: "gray.50",
+                        }
+                      }}
                     >
                       <div className="flex flex-col items-start w-full text-left">
                         <span className="font-medium text-lg">{item.name}</span>
@@ -570,7 +578,13 @@ const DashboardPage = ({ handlePage }) => {
             startIcon={<LoginIcon />}
             disableRipple={true}
             className="justify-start w-full py-4"
-            sx={{ textTransform: "none", color: "black" }}
+            sx={{
+              textTransform: "none",
+              color: "gray.800",
+              '&:hover': {
+                backgroundColor: "gray.50",
+              }
+            }}
           >
             <div className="flex flex-col items-start w-full text-left">
               <span className="font-medium text-lg">Login</span>
