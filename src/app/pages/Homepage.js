@@ -170,7 +170,7 @@ const Homepage = ({ handlePage }) => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            <h2 className="text-4xl font-bold text-center text-gray-800 mb-3">How Your Donation Helps</h2>
+            <h2 className="text-4xl font-bold text-center text-gray-800 mb-3 pt-3">How Your Donation Helps</h2>
             <div className="w-24 h-1 bg-blue-600 mx-auto mb-6"></div>
             <p className="text-gray-600 text-center mb-16 max-w-2xl mx-auto text-lg">
               Every contribution creates ripples of positive change in our community.
@@ -226,7 +226,7 @@ const Homepage = ({ handlePage }) => {
 
       {/* Community Section */}
       <motion.div
-        className="py-20 bg-white"
+        className="py-10 bg-white"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -279,7 +279,7 @@ const Homepage = ({ handlePage }) => {
 
       {/* Featured Causes Section */}
       <motion.div
-        className="py-16 bg-gray-50"
+        className="py-5 bg-gray-50"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.8 }}
