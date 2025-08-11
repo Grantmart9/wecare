@@ -1,6 +1,5 @@
 "use client"
 import React, { useState, useEffect } from "react";
-import { Colors } from "../supabase";
 import { Button, TextField } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Image from "next/image";

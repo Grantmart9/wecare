@@ -1,9 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import PeopleIcon from "@mui/icons-material/People";
-import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { MainMenuList, SubMenuList } from "../supabase";
@@ -21,7 +21,7 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
     { name: "Home", icon: HomeIcon, page: "Home" },
     { name: "Donate", icon: AddBoxIcon, page: "Donate" },
     { name: "Community", icon: PeopleIcon, page: "Community" },
-    { name: "Profile", icon: ChatBubbleIcon, page: "Dashboard" },
+    { name: "Profile", icon: AccountBoxIcon, page: "Dashboard" },
   ];
 
   return (

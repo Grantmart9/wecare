@@ -1,8 +1,6 @@
 "use client"
 import React, { useEffect } from "react";
-import { Colors } from "../supabase";
 import * as motion from "motion/react-client"
-import Image from "next/image";
 
 const CommunityPage = () => {
   // Mock data for community content

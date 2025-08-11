@@ -220,7 +220,6 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
   const DonationTypeGoods = ({ handleDonationType, handleGoods }) => {
 
-    const [file, setFile] = useState();
     const [image, setImage] = useState();
 
     /// Image handler ///
@@ -234,8 +233,6 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
         // Set up an event listener for when the file is read
         reader.onloadend = () => {
-          const base64String = reader.result.split(',')[1]; // Strip off the data URL prefix
-          setFile(base64String)
           // You can now use base64String to send it to your database
         };
         // Read the file as a data URL

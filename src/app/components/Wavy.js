@@ -38,7 +38,7 @@ export default function WavyText() {
     return (
         <div className="flex" ref={containerRef}>
             <h1 className="h1">
-                <span style={{fontFamily:"unset"}} className="wavy text-teal-600 text-5xl">WeCare</span>
+                <span style={{fontFamily:"unset"}} className="wavy text-gray-50 text-6xl">WeCare</span>
             </h1>
             <Stylesheet />
         </div>
