@@ -35,10 +35,16 @@ const ImageDialog = ({ handleImage, image }) => {
     <>
       <Button
         sx={{
-          textTransform: "none", bgcolor: Colors.orange, color: "gray",
+          textTransform: "none",
+          bgcolor: "white",
+          color: "gray.800",
+          border: "1px solid #d1d5db",
+          fontWeight: "bold",
+          borderRadius: "9999px",
+          paddingX: 6,
+          paddingY: 2,
           '&:hover': {
-            backgroundColor: Colors.green,
-            color: "white",
+            backgroundColor: "gray.50",
           }
         }}>
         <label style={{ cursor: 'pointer' }}>
@@ -90,13 +96,13 @@ const DonatePage = ({ handlePage }) => {
           mass: 40,
           duration: 0.5,
         }}>
-        <div className="flex-inline text-lg text-red-400 text-left font-bold mt-2">
+        <div className="flex-inline text-lg text-gray-800 text-left font-bold mt-2">
           <Button
             size="small"
             fullWidth={false}
             className="font-bold"
             disableRipple={true}
-            sx={{ backgroundColor: "transparent", textTransform: "none", color: Colors.red }}
+            sx={{ backgroundColor: "transparent", textTransform: "none", color: "gray.800" }}
             onClick={() => handleGoods("none")}>
             <ArrowBackIcon />
           </Button>
@@ -119,13 +125,13 @@ const DonatePage = ({ handlePage }) => {
           mass: 20,
           duration: 0.5,
         }} className="mx-auto">
-        <div className="flex-inline text-lg text-red-400 text-left font-bold mt-2">
+        <div className="flex-inline text-lg text-gray-800 text-left font-bold mt-2">
           <Button
             size="small"
             fullWidth={false}
             className="font-bold"
             disableRipple={true}
-            sx={{ backgroundColor: "transparent", textTransform: "none", color: Colors.red }}
+            sx={{ backgroundColor: "transparent", textTransform: "none", color: "gray.800" }}
             onClick={() => handleGoods1("none")}>
             <ArrowBackIcon />
           </Button>
@@ -140,7 +146,19 @@ const DonatePage = ({ handlePage }) => {
       <Button
         type="submit"
         variant="contained"
-        sx={{ bgcolor: Colors.red }}
+        sx={{
+          bgcolor: "blue.600",
+          color: "white",
+          textTransform: "none",
+          fontWeight: "bold",
+          borderRadius: "9999px",
+          paddingX: 8,
+          paddingY: 3,
+          fontSize: "lg",
+          '&:hover': {
+            bgcolor: "blue.700",
+          }
+        }}
         disabled={loading}
       >
         {loading ? "Submitting..." : "Donate"}
@@ -170,15 +188,21 @@ const DonatePage = ({ handlePage }) => {
               <Button
                 onClick={() => handleDonationType(item.name)}
                 key={index}
-                className="grid grid-flow-row p-2 rounded-full mx-auto border-4 border-gray-600"
-                sx={{ bgcolor: item.color, textTransform: "none" }}>
+                className="grid grid-flow-row p-2 rounded-full mx-auto border-4 border-gray-200 shadow-lg"
+                sx={{
+                  bgcolor: "white",
+                  textTransform: "none",
+                  '&:hover': {
+                    bgcolor: "gray.50",
+                  }
+                }}>
                 <Lottie
                   options={defaultOptions1(item.json)}
                   className="mx-auto my-auto"
                   height={160}
                   width={190}
                 />
-                <div className="text-center justify-center text-teal-950">{item.name}</div>
+                <div className="text-center justify-center text-gray-800 font-bold">{item.name}</div>
               </Button>
             </motion.div>
           )}
@@ -221,10 +245,36 @@ const DonatePage = ({ handlePage }) => {
         <div className="grid grid-flow-row">
           <div className="text-left text-gray-600 pb-3">Delivery Type</div>
           <div className="grid grid-cols-2 gap-3">
-            <Button onClick={() => handleDeliveryType("Drop")} className="text-cyan-950" variant="contained" sx={{ bgcolor: deliveryType === "Drop" ? Colors.red : Colors.blue, textTransform: "none" }}>
+            <Button
+              onClick={() => handleDeliveryType("Drop")}
+              className="text-gray-800 font-bold"
+              variant="contained"
+              sx={{
+                bgcolor: deliveryType === "Drop" ? "blue.600" : "white",
+                color: deliveryType === "Drop" ? "white" : "gray.800",
+                textTransform: "none",
+                borderRadius: "9999px",
+                border: deliveryType === "Drop" ? "none" : "1px solid #d1d5db",
+                '&:hover': {
+                  bgcolor: deliveryType === "Drop" ? "blue.700" : "gray.50",
+                }
+              }}>
               I will deliver the goods
             </Button>
-            <Button onClick={() => handleDeliveryType("Pick")} className="text-cyan-950" variant="contained" sx={{ bgcolor: deliveryType === "Pick" ? Colors.red : Colors.blue, textTransform: "none" }}>
+            <Button
+              onClick={() => handleDeliveryType("Pick")}
+              className="text-gray-800 font-bold"
+              variant="contained"
+              sx={{
+                bgcolor: deliveryType === "Pick" ? "blue.600" : "white",
+                color: deliveryType === "Pick" ? "white" : "gray.800",
+                textTransform: "none",
+                borderRadius: "9999px",
+                border: deliveryType === "Pick" ? "none" : "1px solid #d1d5db",
+                '&:hover': {
+                  bgcolor: deliveryType === "Pick" ? "blue.700" : "gray.50",
+                }
+              }}>
               Request a pickup
             </Button>
           </div>
@@ -284,7 +334,7 @@ const DonatePage = ({ handlePage }) => {
             value={formData.description}
             onChange={handleChange}
             required
-            className="w-full max-w-md p-2 border border-gray-300 rounded"
+            className="w-full max-w-md p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           ></textarea>
           <input
             type="text"
@@ -293,7 +343,7 @@ const DonatePage = ({ handlePage }) => {
             value={formData.brand}
             onChange={handleChange}
             required
-            className="w-full max-w-md p-2 border border-gray-300 rounded"
+            className="w-full max-w-md p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
 
           <DonateButton loading={loading} />
@@ -352,14 +402,14 @@ const DonatePage = ({ handlePage }) => {
             value={formData.description}
             onChange={handleChange}
             required
-            className="w-full max-w-md p-2 border border-gray-300 rounded"
+            className="w-full max-w-md p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           ></textarea>
           <select
             name="gender"
             value={formData.gender}
             onChange={handleChange}
             required
-            className="w-full max-w-md p-2 border border-gray-300 rounded"
+            className="w-full max-w-md p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">Type of Clothing</option>
             <option value="Men">Men</option>
@@ -841,7 +891,7 @@ const DonatePage = ({ handlePage }) => {
                 mass: 30,
                 duration: 1,
               }}
-              className="flex-inline text-lg text-red-400 text-left ml-2 font-bold mt-2">
+              className="flex-inline text-lg text-gray-800 text-left ml-2 font-bold mt-2">
               | {selectedGoods}
             </motion.div>
           }
@@ -863,8 +913,8 @@ const DonatePage = ({ handlePage }) => {
                   duration: 0.3,
                 }}
                 onClick={() => handleGoods(item.name)}
-                style={{ textTransform: "none", backgroundColor: item.color }}
-                className=" text-teal-950 text-lg font-semibold rounded-lg p-3 border-2 border-gray-500">
+                style={{ textTransform: "none" }}
+                className="bg-white text-gray-800 text-lg font-semibold rounded-lg p-3 border-2 border-gray-200 shadow-md hover:bg-gray-50">
                 {item.name}
               </motion.button>
             )
@@ -1019,7 +1069,7 @@ const DonatePage = ({ handlePage }) => {
                   mass: 10,
                   duration: 0.3,
                 }}
-                className="flex-inline text-lg text-red-400 text-left ml-2 font-bold mt-2">
+                className="flex-inline text-lg text-gray-800 text-left ml-2 font-bold mt-2">
                 | {selectedCash}
               </motion.div>
             }
@@ -1036,7 +1086,7 @@ const DonatePage = ({ handlePage }) => {
             mass: 10,
             duration: 0.3,
           }}
-          className="mx-2  text-gray-600 text-center text-xl mt-5">Please sellect a payment option bellow
+          className="mx-2  text-gray-600 text-center text-xl mt-5">Please select a payment option below
         </motion.div>
         <div className="grid grid-flow-row gap-3 mt-5">
           {paymentTypes.map((item, index) =>
@@ -1055,7 +1105,20 @@ const DonatePage = ({ handlePage }) => {
               <Button key={index}
                 fullWidth={true}
                 className="rounded-lg text-teal-950"
-                sx={{ bgcolor: item.color, textTransform: "none", maxWidth: "300px" }}>
+                sx={{
+                  bgcolor: "white",
+                  color: "gray.800",
+                  textTransform: "none",
+                  fontWeight: "bold",
+                  borderRadius: "9999px",
+                  border: "1px solid #d1d5db",
+                  paddingX: 6,
+                  paddingY: 2,
+                  maxWidth: "300px",
+                  '&:hover': {
+                    backgroundColor: "gray.50",
+                  }
+                }}>
                 {item.name}
               </Button>
             </motion.div>
@@ -1094,7 +1157,7 @@ const DonatePage = ({ handlePage }) => {
           <ImageDialog image={image} handleImage={handleImage} />
           <select
             required
-            className="w-full max-w-md p-2 border border-gray-300 rounded"
+            className="w-full max-w-md p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">Select a Service Category</option>
             <option value="Automotive">Automotive (e.g., mechanic, driver)</option>
@@ -1109,15 +1172,39 @@ const DonatePage = ({ handlePage }) => {
           <textarea
             placeholder="Describe the service you are offering (e.g., skills, tools, duration, etc.)"
             required
-            className="w-full max-w-md p-2 border border-gray-300 rounded"
+            className="w-full max-w-md p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           ></textarea>
 
           {/* Service Location */}
           <div className="flex gap-4">
-            <Button variant="contained" sx={{ bgcolor: Colors.yellow, textTransform: "none", color: "darkcyan" }}>
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "white",
+                color: "gray.800",
+                textTransform: "none",
+                fontWeight: "bold",
+                borderRadius: "9999px",
+                border: "1px solid #d1d5db",
+                '&:hover': {
+                  backgroundColor: "gray.50",
+                }
+              }}>
               I can provide this service remotely
             </Button>
-            <Button variant="contained" sx={{ bgcolor: Colors.green, textTransform: "none", color: "darkcyan" }}>
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "white",
+                color: "gray.800",
+                textTransform: "none",
+                fontWeight: "bold",
+                borderRadius: "9999px",
+                border: "1px solid #d1d5db",
+                '&:hover': {
+                  backgroundColor: "gray.50",
+                }
+              }}>
               Requires my presence at a location
             </Button>
           </div>
@@ -1127,9 +1214,23 @@ const DonatePage = ({ handlePage }) => {
             type="text"
             placeholder="Availability (e.g., weekdays, weekends, specific times)"
             required
-            className="w-full max-w-md p-2 border border-gray-300 rounded"
+            className="w-full max-w-md p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
-          <Button variant="contained" sx={{ bgcolor: Colors.red }}>
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: "blue.600",
+              color: "white",
+              textTransform: "none",
+              fontWeight: "bold",
+              borderRadius: "9999px",
+              paddingX: 8,
+              paddingY: 3,
+              fontSize: "lg",
+              '&:hover': {
+                bgcolor: "blue.700",
+              }
+            }}>
             Donate
           </Button>
         </form></>
@@ -1137,7 +1238,7 @@ const DonatePage = ({ handlePage }) => {
   };
 
   return (
-    <div className="block">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       {donationType === "none" ?
         <motion.div
           initial={{ opacity: 0, x: 0 }}
@@ -1150,7 +1251,7 @@ const DonatePage = ({ handlePage }) => {
             mass: 8,
             duration: 0.5,
           }}>
-          <div className="flex-inline text-lg text-red-400 text-center ml-2 font-bold mt-4">
+          <div className="flex-inline text-lg text-gray-800 text-center ml-2 font-bold mt-4">
             Donate
           </div>
         </motion.div> : null}
