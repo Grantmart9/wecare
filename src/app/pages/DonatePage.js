@@ -66,6 +66,11 @@ const ImageDialog = ({ handleImage, image }) => {
 const DonatePage = ({ handlePage }) => {
   const [donationType, setDonationType] = useState("none");
   const [selectedGoods, setSelectedGoods] = useState("none");
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [donationType, selectedGoods]);
+
   const handleDonationType = (selected) => { setDonationType(selected) }
   const handleGoods = (selected) => { setSelectedGoods(selected) && setDonationType(selected) }
   const handleGoods1 = (selected) => { setDonationType(selected) }
