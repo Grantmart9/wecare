@@ -176,7 +176,6 @@ const Homepage = ({ handlePage }) => {
               Every contribution creates ripples of positive change in our community.
             </p>
           </motion.div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
             {donationTypes.map((type, index) => (
               <motion.div

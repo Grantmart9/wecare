@@ -392,7 +392,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
       return (
         <form
-          className="flex flex-col items-center justify-center gap-4 p-6 rounded-lg bg-transparent"
+          className="flex flex-col items-center justify-center gap-4 p-6 rounded-full bg-white border-3 border-gray-200 w-min min-w-2xl mx-auto"
           onSubmit={handleSubmit}
         >
           <ImageDialog image={image} handleImage={handleImage} />
@@ -402,7 +402,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
           />
           <textarea
             name="description"
-            placeholder="Description of clothing items"
+            placeholder="Description of clothing items" ƒ
             value={formData.description}
             onChange={handleChange}
             required
@@ -906,12 +906,12 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             {AllGoodsDonations.map((item, index) =>
               <motion.button
                 key={index} // assuming each Product has a unique id
-                initial={{ opacity: 0, x: -100 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, }}
+                animate={{ opacity: 1,  }}
                 whileHover={{ scale: 1.05, backgroundColor: "gray.200" }}
                 whileTap={{ scale: 0.95 }}
                 transition={{
-                  delay: index * 0.1, // Add staggered delay based on index
+                  delay: index * 0.15, // Add staggered delay based on index
                   type: "spring",
                   stiffness: 300,
                   damping: 30,
@@ -950,14 +950,15 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
           </div> : null}
         {selectedGoods === "Clothing" ?
           <motion.div
-            initial={{ opacity: 0, x: 0 }}
-            animate={{ opacity: 1, x: 3 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 0.3, 0.8, 0.9, 1], x: 4 }}
+            className="mt-50"
             transition={{
-              delay: 0.5, // Add staggered delay based on index
+              delay: 0.15, // Add staggered delay based on index
               type: "spring",
               stiffness: 300,
               damping: 35,
-              mass: 20,
+              mass: 5,
               duration: 0.2,
             }}><DonateClothing />
           </motion.div> : null}
@@ -988,8 +989,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             }}><DonateBooksAndEducationalMaterials />
           </motion.div> : null}
         {selectedGoods === "Electronics" ? <motion.div
-          initial={{ opacity: 0, x: 0 }}
-          animate={{ opacity: 1, x: 3 }}
+          initial={{ opacity: 0, }}
+          animate={{ opacity: 1, }}
           transition={{
             delay: 0.5, // Add staggered delay based on index
             type: "spring",
@@ -999,8 +1000,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             duration: 0.2,
           }}><DonateElectronics /></motion.div> : null}
         {selectedGoods === "Furniture" ? <motion.div
-          initial={{ opacity: 0, x: 0 }}
-          animate={{ opacity: 1, x: 3 }}
+          initial={{ opacity: 0, }}
+          animate={{ opacity: 1, }}
           transition={{
             delay: 0.5, // Add staggered delay based on index
             type: "spring",
@@ -1010,8 +1011,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             duration: 0.2,
           }}><DonateFurniture /></motion.div> : null}
         {selectedGoods === "Medical supplies" ? <motion.div
-          initial={{ opacity: 0, x: 0 }}
-          animate={{ opacity: 1, x: 3 }}
+          initial={{ opacity: 0, }}
+          animate={{ opacity: 1, }}
           transition={{
             delay: 0.5, // Add staggered delay based on index
             type: "spring",
@@ -1021,8 +1022,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             duration: 0.2,
           }}><DonateMedicalSupplies /></motion.div> : null}
         {selectedGoods === "Toys & games" ? <motion.div
-          initial={{ opacity: 0, x: 0 }}
-          animate={{ opacity: 1, x: 3 }}
+          initial={{ opacity: 0, }}
+          animate={{ opacity: 1, }}
           transition={{
             delay: 0.5, // Add staggered delay based on index
             type: "spring",
@@ -1032,8 +1033,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             duration: 0.2,
           }}><DonateToysAndGames /></motion.div> : null}
         {selectedGoods === "Hygiene" ? <motion.div
-          initial={{ opacity: 0, x: 0 }}
-          animate={{ opacity: 1, x: 3 }}
+          initial={{ opacity: 0, }}
+          animate={{ opacity: 1, }}
           transition={{
             delay: 0.5, // Add staggered delay based on index
             type: "spring",
@@ -1043,8 +1044,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             duration: 0.2,
           }}><DonateHygiene /></motion.div> : null}
         {selectedGoods === "Household" ? <motion.div
-          initial={{ opacity: 0, x: 0 }}
-          animate={{ opacity: 1, x: 3 }}
+          initial={{ opacity: 0, }}
+          animate={{ opacity: 1, }}
           transition={{
             delay: 0.5, // Add staggered delay based on index
             type: "spring",

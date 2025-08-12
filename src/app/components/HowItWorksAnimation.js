@@ -126,7 +126,7 @@ export default function HowItWorksAnimation() {
                                  backdrop-blur-sm border border-white/10"
                     >
                         <motion.div
-                            whileHover={{ scale: 1.1, rotate: -5 }}
+                            whileHover={{ scale: 1.1, rotate: 5 }}
                             className="flex mx-auto mb-4"
                         >
                             <Image

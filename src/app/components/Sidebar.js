@@ -105,7 +105,7 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
                   {item.name}
                 </button>
               ))}
-              <Button variant="contained" color="primary" fullWidth>
+              <Button variant="contained" className="bg-blue-600 hover:bg-blue-800" fullWidth>
                 Logout
               </Button>
             </div>
