@@ -125,36 +125,20 @@ export default function HowItWorksAnimation() {
                                  flex flex-col justify-between w-full h-72 
                                  backdrop-blur-sm border border-white/10"
                     >
-                        <div className="flex items-center justify-between">
-                            <motion.div 
-                                className="flex items-center gap-4"
-                                whileHover={{ x: 5 }}
-                            >
-                                <motion.div 
-                                    className="w-14 h-14 flex items-center justify-center 
-                                             bg-white/20 rounded-2xl backdrop-blur-sm"
-                                    whileHover={{ rotate: 5 }}
-                                >
-                                    <IconComponent icon={card.icon} />
-                                </motion.div>
-                                <h3 className="text-gray-100 text-xl font-semibold">
-                                    {card.title}
-                                </h3>
-                            </motion.div>
-                            <motion.div
-                                whileHover={{ scale: 1.1, rotate: -5 }}
-                            >
-                                <Image
-                                    src={card.image}
-                                    alt={`${card.title} image`}
-                                    width={96}
-                                    height={96}
-                                    className="w-24 h-24 object-cover rounded-xl 
+                        <motion.div
+                            whileHover={{ scale: 1.1, rotate: -5 }}
+                            className="flex mx-auto mb-4"
+                        >
+                            <Image
+                                src={card.image}
+                                alt={`${card.title} image`}
+                                width={150}
+                                height={150}
+                                className="object-cover rounded-xl 
                                              shadow-lg transform"
-                                />
-                            </motion.div>
-                        </div>
-                        <motion.p 
+                            />
+                        </motion.div>
+                        <motion.p
                             className="text-gray-200 text-lg leading-relaxed mt-4"
                             initial={{ opacity: 0.8 }}
                             whileHover={{ opacity: 1 }}
