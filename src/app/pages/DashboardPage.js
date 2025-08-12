@@ -52,7 +52,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
                 <h2 className="text-2xl font-bold text-gray-800">{AccountDetails.name}</h2>
                 <p className="text-gray-600">Member since {AccountDetails.membership_start_date}</p>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-gray-700 text-sm font-bold mb-2">Name</label>
@@ -90,7 +90,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
                   />
                 </div>
               </div>
-              
+
               <div className="flex justify-center mt-8">
                 <Button
                   variant="contained"
@@ -104,7 +104,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
         </div>
       )
     }
-    
+
     const ProfileView = () => {
       return (
         <div className="max-w-3xl mx-auto px-4 py-8">
@@ -125,7 +125,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
                   Edit Profile
                 </Button>
               </div>
-              
+
               <div className="bg-gray-50 rounded-xl p-6 mb-6">
                 <h3 className="text-xl font-bold text-gray-800 mb-4">Personal Information</h3>
                 <div className="grid grid-cols-2 gap-4">
@@ -139,7 +139,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-gray-50 rounded-xl p-6">
                 <h3 className="text-xl font-bold text-gray-800 mb-4">Donation History</h3>
                 <div className="grid grid-cols-2 gap-4">
@@ -153,7 +153,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex justify-center mt-8">
                 <Button
                   className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full transition duration-300"
@@ -228,7 +228,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
       </div>
     )
   }
-  
+
   const Dashboard = () => {
     return (
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -255,7 +255,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
               <p className="text-3xl font-bold text-purple-600">#12</p>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-2xl shadow-lg p-8">
             <h3 className="text-2xl font-bold text-gray-800 mb-6">Recent Activity</h3>
             <div className="space-y-4">
@@ -289,7 +289,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
       </div>
     )
   }
-  
+
   const NotificationsPage = () => {
     return (
       <div className="max-w-3xl mx-auto px-4 py-8">
@@ -334,7 +334,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
       </div>
     )
   }
-  
+
   const PreferencesPage = () => {
     return (
       <div className="max-w-3xl mx-auto px-4 py-8">
@@ -374,7 +374,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
       </div>
     )
   }
-  
+
   const TermsPage = () => {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -388,10 +388,10 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
             <div className="prose max-w-none">
               <h3>1. Introduction</h3>
               <p>These terms and conditions outline the rules and regulations for the use of our service.</p>
-              
+
               <h3>2. Intellectual Property</h3>
               <p>Unless otherwise stated, we own the intellectual property rights for all content on this platform.</p>
-              
+
               <h3>3. Restrictions</h3>
               <p>You are specifically restricted from:</p>
               <ul>
@@ -399,10 +399,10 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
                 <li>Using our platform in any way that causes or may cause damage</li>
                 <li>Using our platform in any way that impacts user access</li>
               </ul>
-              
+
               <h3>4. Limitation of Liability</h3>
               <p>We shall not be liable for any consequential, incidental, indirect, or special damages.</p>
-              
+
               <h3>5. Changes to These Terms</h3>
               <p>We reserve the right to modify these terms at any time.</p>
             </div>
@@ -411,7 +411,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
       </div>
     )
   }
-  
+
   const PolicyPage = () => {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -425,10 +425,10 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
             <div className="prose max-w-none">
               <h3>1. Information We Collect</h3>
               <p>We collect information you provide directly to us, such as when you create an account or donate.</p>
-              
+
               <h3>2. How We Use Information</h3>
               <p>We use the information we collect to provide, maintain, and improve our services.</p>
-              
+
               <h3>3. Information Sharing and Disclosure</h3>
               <p>We do not share personal information with companies, organizations, or individuals outside of our organization except in the following cases:</p>
               <ul>
@@ -436,10 +436,10 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
                 <li>For legal reasons</li>
                 <li>To protect rights and property</li>
               </ul>
-              
+
               <h3>4. Data Security</h3>
               <p>We work hard to protect your personal information. We implement security measures to protect against unauthorized access.</p>
-              
+
               <h3>5. Your Rights</h3>
               <p>You have the right to access, update, or delete your personal information at any time.</p>
             </div>
@@ -572,23 +572,6 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
             </motion.div>
 
           ))}
-          <Button
-            onClick={() => handleDashPage("Login")}
-            startIcon={<LoginIcon />}
-            disableRipple={true}
-            className="justify-start w-full py-4"
-            sx={{
-              textTransform: "none",
-              color: "gray.800",
-              '&:hover': {
-                backgroundColor: "gray.50",
-              }
-            }}
-          >
-            <div className="flex flex-col items-start w-full text-left">
-              <span className="font-medium text-lg">Login</span>
-            </div>
-          </Button>
         </div> : null}
       {DashPage === "Details" ? <><DetailsPage /></> : null}
       {DashPage === "Password" ? <><PasswordPage /></> : null}

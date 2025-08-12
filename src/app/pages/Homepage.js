@@ -187,7 +187,7 @@ const Homepage = ({ handlePage }) => {
                 transition={{ delay: 0.2 * index }}
               >
                 <div className=" rounded-2xl shadow-xl p-8 h-full border border-gray-100 hover:border-blue-500 transition-colors duration-300">
-                  <div className="bg-gradient-to-r from-blue-600 to-purple-700 rounded-xl shadow-md p-4 transform rotate-4 transition-transform hover:rotate-0 duration-300">
+                  <div className="bg-gradient-to-r from-blue-600 to-purple-700 rounded-xl shadow-md p-4 transform rotate-4 transition-transform hover:rotate-0 duration-300 max-w-72 mx-auto mb-6">
                     <div className="w-32 h-32 mx-auto">
                       <Lottie
                         options={{

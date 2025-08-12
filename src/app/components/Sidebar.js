@@ -6,10 +6,9 @@ import PeopleIcon from "@mui/icons-material/People";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { MainMenuList, SubMenuList } from "../supabase";
-import { Accordion, AccordionSummary, AccordionDetails, Typography, List, ListItemButton } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { SubMenuList } from "../supabase";
 import * as motion from "motion/react-client";
+import { Button } from "@mui/material";
 
 const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
   const toggleSidebar = () => {
@@ -64,11 +63,10 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
                     onClick={() => {
                       handlePage(item.page);
                     }}
-                    className={`w-full flex items-center rounded-lg px-3 py-3 text-left transition-colors ${
-                      currentPage === item.page
-                        ? "bg-blue-50 text-blue-600 font-medium"
-                        : "text-gray-700 hover:bg-gray-100"
-                    }`}
+                    className={`w-full flex items-center rounded-lg px-3 py-3 text-left transition-colors ${currentPage === item.page
+                      ? "bg-blue-50 text-blue-600 font-medium"
+                      : "text-gray-700 hover:bg-gray-100"
+                      }`}
                   >
                     <div className="flex items-center">
                       <item.icon className="h-6 w-6" />
@@ -86,58 +84,8 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
                 </li>
               ))}
             </ul>
-
-            {/* Main menu items */}
-            {isOpen && (
-              <div className="mt-8 px-2">
-                {MainMenuList.map((menu, index) => (
-                  <Accordion
-                    key={index}
-                    elevation={0}
-                    className="bg-transparent"
-                    disableGutters
-                  >
-                    <AccordionSummary
-                      expandIcon={<AddIcon className="text-gray-500" />}
-                      className="px-2 py-1"
-                      sx={{
-                        minHeight: "40px !important",
-                        '&.Mui-expanded': {
-                          minHeight: "40px !important",
-                        },
-                        '& > .MuiAccordionSummary-content': {
-                          margin: "8px 0 !important",
-                        },
-                      }}
-                    >
-                      <Typography className="text-gray-700 font-medium">
-                        {menu.name}
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails sx={{ padding: "8px 0 !important" }}>
-                      <List className="py-0">
-                        {menu.menu.map((subItem, subIndex) => (
-                          <ListItemButton
-                            key={subIndex}
-                            className="py-2 px-4 text-gray-600 rounded-lg hover:bg-gray-100"
-                            onClick={() => {
-                              localStorage.setItem("gender", menu.name);
-                              localStorage.setItem("category", subItem.name);
-                              handlePage("Donate");
-                            }}
-                          >
-                            <span className="text-sm">{subItem.name}</span>
-                          </ListItemButton>
-                        ))}
-                      </List>
-                    </AccordionDetails>
-                  </Accordion>
-                ))}
-              </div>
-            )}
           </nav>
         </div>
-
         {/* User section */}
         {isOpen && (
           <div className="p-4 border-t">
@@ -157,11 +105,13 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
                   {item.name}
                 </button>
               ))}
+              <Button variant="contained" color="primary" fullWidth>
+                Logout
+              </Button>
             </div>
           </div>
         )}
       </div>
-
       {/* Mobile bottom navigation */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
         <div className="grid grid-cols-4">
@@ -171,11 +121,10 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
               onClick={() => {
                 handlePage(item.page);
               }}
-              className={`flex flex-col items-center justify-center py-2 px-1 ${
-                currentPage === item.page
-                  ? "text-blue-600"
-                  : "text-gray-500"
-              }`}
+              className={`flex flex-col items-center justify-center py-2 px-1 ${currentPage === item.page
+                ? "text-blue-600"
+                : "text-gray-500"
+                }`}
             >
               <item.icon className="h-6 w-6" />
               <span className="text-xs mt-1">{item.name}</span>

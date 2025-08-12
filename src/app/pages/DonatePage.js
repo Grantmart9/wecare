@@ -66,7 +66,7 @@ const ImageDialog = ({ handleImage, image }) => {
 const DonatePage = ({ handlePage, scrollToTop }) => {
   const [donationType, setDonationType] = useState("none");
   const [selectedGoods, setSelectedGoods] = useState("none");
-  
+
   useEffect(() => {
     if (scrollToTop) {
       scrollToTop();
@@ -902,24 +902,48 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
           </div>
         }
         {selectedGoods === "none" ?
-          <div className="grid grid-cols-2 gap-3 mx-2 pt-5">
+          <div className="grid grid-flow-row sm:grid-cols-2 xl:grid-cols-3 gap-6 mx-2 pt-5">
             {AllGoodsDonations.map((item, index) =>
               <motion.button
                 key={index} // assuming each Product has a unique id
-                initial={{ opacity: 0, x: 0 }}
-                animate={{ opacity: 1, x: 3 }}
+                initial={{ opacity: 0, x: -100 }}
+                animate={{ opacity: 1, x: 0 }}
+                whileHover={{ scale: 1.05, backgroundColor: "gray.200" }}
+                whileTap={{ scale: 0.95 }}
                 transition={{
-                  delay: index * 0.2, // Add staggered delay based on index
+                  delay: index * 0.1, // Add staggered delay based on index
                   type: "spring",
                   stiffness: 300,
                   damping: 30,
-                  mass: 20,
+                  mass: 2,
                   duration: 0.3,
                 }}
                 onClick={() => handleGoods(item.name)}
-                style={{ textTransform: "none" }}
-                className="bg-white text-gray-800 text-lg font-semibold rounded-lg p-3 border-2 border-gray-200 shadow-md hover:bg-gray-50">
-                {item.name}
+                className="grid grid-flow-row p-2 rounded-4xl mx-auto border-4 border-gray-200 shadow-lg min-w-80"
+                sx={{
+                  bgcolor: "white",
+                  textTransform: "none",
+                  '&:hover': {
+                    bgcolor: "gray.50",
+                  }
+                }}>
+                <div className="bg-gradient-to-r from-blue-600 to-purple-700 rounded-xl shadow-md p-4 transform rotate-4 transition-transform hover:rotate-0 duration-300 max-w-72 mx-auto mb-6">
+                  <div className="w-16 h-16 mx-auto">
+                    <Lottie
+                      options={{
+                        loop: true,
+                        autoplay: true,
+                        animationData: require('../animations/cash.json'),
+                        rendererSettings: {
+                          preserveAspectRatio: 'xMidYMid slice'
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+                <div>
+                  {item.name}
+                </div>
               </motion.button>
             )
             }

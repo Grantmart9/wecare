@@ -137,12 +137,10 @@ export default function HowItWorksAnimation() {
                                 >
                                     <IconComponent icon={card.icon} />
                                 </motion.div>
-
                                 <h3 className="text-gray-100 text-xl font-semibold">
                                     {card.title}
                                 </h3>
                             </motion.div>
-
                             <motion.div
                                 whileHover={{ scale: 1.1, rotate: -5 }}
                             >
@@ -156,7 +154,6 @@ export default function HowItWorksAnimation() {
                                 />
                             </motion.div>
                         </div>
-
                         <motion.p 
                             className="text-gray-200 text-lg leading-relaxed mt-4"
                             initial={{ opacity: 0.8 }}

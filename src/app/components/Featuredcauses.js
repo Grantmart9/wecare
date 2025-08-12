@@ -30,7 +30,7 @@ const cardData = [
 export default function FeaturedCauses() {
     return (
         <div className="max-w-7xl mx-auto px-4 py-16">
-            <motion.div 
+            <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="grid grid-cols-1 md:grid-cols-3 gap-8"
@@ -38,16 +38,16 @@ export default function FeaturedCauses() {
                 {cardData.map((card) => (
                     <motion.div
                         key={card.id}
-                        whileHover={{ 
+                        whileHover={{
                             scale: 1.03,
-                            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" 
+                            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)"
                         }}
                         transition={{ type: "spring", stiffness: 300 }}
                         className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
                     >
                         <div className="relative w-full h-48 overflow-hidden">
-                            <Image 
-                                src={card.image} 
+                            <Image
+                                src={card.image}
                                 alt={card.title}
                                 className="object-cover transform hover:scale-110 transition-transform duration-500"
                                 fill
@@ -62,13 +62,7 @@ export default function FeaturedCauses() {
                             <p className="text-gray-600 mb-4">
                                 {card.description}
                             </p>
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200"
-                            >
-                                Donate Now
-                            </motion.button>
+
                         </div>
                     </motion.div>
                 ))}

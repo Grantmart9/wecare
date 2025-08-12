@@ -74,13 +74,11 @@ export const MainMenuList = [
   }
 ]
 
-
 export const SubMenuList = [
   { "name": "About Us", "path": "/donations" },
   { "name": "Contact Us", "path": "/donations" },
   { "name": 'Meet Our Team', "path": "/donations" },
   { "name": 'Vission & Mission', "path": "/donations" },
-  { "name": 'My Donations', "path": "/donations" },
 ]
 
 export const Colors = {
@@ -107,7 +105,6 @@ export const max_delivery_cost = 350; // R
 export const min_delivery_cost = 50;
 export const max_distance_from_warehouse = 50; // in km if the the distance exceeds this ammount, same day delivery does not apply
 export const min_distance_from_warehouse = 5; // personal delivery for distances less than this
-
 
 export const TextColorHover = "#0A4D68"
 export const TitleColor = "rgba(27, 51, 54, 0.75)"
