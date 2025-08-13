@@ -902,7 +902,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
           </div>
         }
         {selectedGoods === "none" ?
-          <div className="grid grid-flow-row sm:grid-cols-2 xl:grid-cols-3 gap-6 mx-2 pt-5">
+          <div className="grid grid-flow-row sm:grid-cols-2 xl:grid-cols-3 gap-6 mx-2 pt-5 mt-10">
             {AllGoodsDonations.map((item, index) =>
               <motion.button
                 key={index} // assuming each Product has a unique id
@@ -1196,13 +1196,13 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
               variant="contained"
               sx={{
                 bgcolor: "white",
-                color: "gray.800",
+                color: "black",
                 textTransform: "none",
                 fontWeight: "bold",
                 borderRadius: "9999px",
                 border: "1px solid #d1d5db",
                 '&:hover': {
-                  backgroundColor: "gray.50",
+                  backgroundColor: "gray",
                 }
               }}>
               I can provide this service remotely
@@ -1211,13 +1211,13 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
               variant="contained"
               sx={{
                 bgcolor: "white",
-                color: "gray.800",
+                color: "black",
                 textTransform: "none",
                 fontWeight: "bold",
                 borderRadius: "9999px",
                 border: "1px solid #d1d5db",
                 '&:hover': {
-                  backgroundColor: "gray.50",
+                  backgroundColor: "gray",
                 }
               }}>
               Requires my presence at a location
