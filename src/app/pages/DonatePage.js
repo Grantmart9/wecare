@@ -392,7 +392,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
       return (
         <form
-          className="flex flex-col items-center justify-center gap-4 p-6 rounded-full bg-white border-3 border-gray-200 w-min min-w-2xl mx-auto"
+          className="flex flex-col items-center justify-center gap-4 p-6"
           onSubmit={handleSubmit}
         >
           <ImageDialog image={image} handleImage={handleImage} />
@@ -906,12 +906,12 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             {AllGoodsDonations.map((item, index) =>
               <motion.button
                 key={index} // assuming each Product has a unique id
-                initial={{ opacity: 0, }}
-                animate={{ opacity: 1,  }}
-                whileHover={{ scale: 1.05, backgroundColor: "gray.200" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                whileHover={{ scale: 1.05, backgroundColor: "gray.200",delay: 0.1 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{
-                  delay: index * 0.15, // Add staggered delay based on index
+                  delay: 0.15, // Add staggered delay based on index
                   type: "spring",
                   stiffness: 300,
                   damping: 30,
@@ -927,23 +927,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
                     bgcolor: "gray.50",
                   }
                 }}>
-                <div className="bg-gradient-to-r from-blue-600 to-purple-700 rounded-xl shadow-md p-4 transform rotate-4 transition-transform hover:rotate-0 duration-300 max-w-72 mx-auto mb-6">
-                  <div className="w-16 h-16 mx-auto">
-                    <Lottie
-                      options={{
-                        loop: true,
-                        autoplay: true,
-                        animationData: require('../animations/cash.json'),
-                        rendererSettings: {
-                          preserveAspectRatio: 'xMidYMid slice'
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-                <div>
-                  {item.name}
-                </div>
+                {item.name}
               </motion.button>
             )
             }
@@ -952,7 +936,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: [0, 0.3, 0.8, 0.9, 1], x: 4 }}
-            className="mt-50"
+            className="mt-10"
             transition={{
               delay: 0.15, // Add staggered delay based on index
               type: "spring",
