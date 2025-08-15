@@ -908,7 +908,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
                 key={index} // assuming each Product has a unique id
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                whileHover={{ scale: 1.05, backgroundColor: "gray.200",delay: 0.1 }}
+                whileHover={{ scale: 1.05, backgroundColor: "gray.200", delay: 0.1 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{
                   delay: 0.15, // Add staggered delay based on index
@@ -1144,6 +1144,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
   const DonationTypeService = () => {
     const [file, setFile] = useState();
     const [image, setImage] = useState();
+    const [DeliveryType, setDeliveryType] = useState("on-site");
     /// Image handler ///
     function handleImage(e) {
       const file = e.target.files[0]; // Get the selected file
@@ -1162,6 +1163,10 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         // Read the file as a data URL
         reader.readAsDataURL(file);
       }
+    }
+
+    const handleDeliveryType = (type) => {
+      setDeliveryType(type);
     }
 
 
@@ -1194,30 +1199,32 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
           <div className="flex gap-4">
             <Button
               variant="contained"
+              onClick={() => handleDeliveryType("Remote")}
               sx={{
-                bgcolor: "white",
+                bgcolor: DeliveryType === "Remote" ? "purple.500" : "white",
                 color: "black",
                 textTransform: "none",
                 fontWeight: "bold",
                 borderRadius: "9999px",
-                border: "1px solid #d1d5db",
+                border: DeliveryType === "Remote" ? "1px solid #d1d5db" : "none",
                 '&:hover': {
-                  backgroundColor: "gray",
+                  backgroundColor: DeliveryType === "Remote" ? "purple.600" : "gray",
                 }
               }}>
               I can provide this service remotely
             </Button>
             <Button
               variant="contained"
+              onClick={() => handleDeliveryType("on-site")}
               sx={{
-                bgcolor: "white",
+                bgcolor: DeliveryType === "on-site" ? "purple.500" : "white",
                 color: "black",
                 textTransform: "none",
                 fontWeight: "bold",
                 borderRadius: "9999px",
-                border: "1px solid #d1d5db",
+                border: DeliveryType === "Remote" ? "1px solid #d1d5db" : "none",
                 '&:hover': {
-                  backgroundColor: "gray",
+                  backgroundColor: DeliveryType === "on-site" ? "purple.600" : "gray",
                 }
               }}>
               Requires my presence at a location
@@ -1248,7 +1255,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             }}>
             Donate
           </Button>
-        </form></>
+        </form ></>
     );
   };
 
