@@ -6,7 +6,6 @@ import PeopleIcon from "@mui/icons-material/People";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { SubMenuList } from "../supabase";
 import * as motion from "motion/react-client";
 import { Button } from "@mui/material";
 
@@ -22,6 +21,13 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
     { name: "Community", icon: PeopleIcon, page: "Community" },
     { name: "Profile", icon: AccountBoxIcon, page: "Dashboard" },
   ];
+
+  const SubMenuList = [
+    { name: "About Us", page: "About" },
+    { name: "Support", page: "Support" },
+    { name: "Contact Us", page: "Contact" },
+
+  ]
 
   return (
     <>
@@ -88,28 +94,35 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
         </div>
         {/* User section */}
         {isOpen && (
-          <div className="p-4 border-t">
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 10 }}
+            exit={{ opacity: 0, y: 10 }}
+            className="p-4 border-t">
             <div className="space-y-2">
-              {SubMenuList.map((item, index) => (
-                <button
-                  key={index}
-                  className="w-full text-left px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100 text-sm"
-                  onClick={() => {
-                    if (item.name === "Logout") {
-                      // Handle logout
-                    } else {
-                      // Handle other submenu items
-                    }
-                  }}
-                >
-                  {item.name}
-                </button>
-              ))}
+              <nav>
+                <ul className="space-y-1 px-2">
+                  {SubMenuList.map((item) => (
+                    <li key={item.name}>
+                      <button
+                        onClick={() => {
+                          handlePage(item.page);
+                        }}
+                        className={`w-full flex items-center rounded-lg pl-2 text-left transition-colors ${currentPage === item.page
+                          ? "bg-blue-800 text-gray-50 font-medium"
+                          : "text-blue-500 hover:bg-gray-100"
+                          }`}
+                      >{item.name}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
               <Button variant="contained" className="bg-blue-600 hover:bg-blue-800" fullWidth>
                 Logout
               </Button>
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
       {/* Mobile bottom navigation */}

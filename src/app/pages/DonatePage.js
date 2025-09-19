@@ -177,7 +177,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
     return (
       <>
         {donationType === "none" ? null : <GoBack className="mx-auto" />}
-        <div className="grid grid-rows-3 md:grid-cols-3 gap-8 md:gap-3 mt-2 md:mt-8 md:mx-4 mx:2 pb-20 ">
+        <div className="grid grid-rows-3 md:grid-cols-3 gap-4 md:gap-3 mt-2 md:mt-8 md:mx-4 mx:2 pb-20 ">
           {DonationTypes.map((item, index) =>
             <motion.div
               key={index}
@@ -191,25 +191,32 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
                 mass: 15,
                 duration: 1,
               }}
+              className="mx-auto"
             >
               <Button
                 onClick={() => handleDonationType(item.name)}
                 key={index}
-                className="grid grid-flow-row p-2 rounded-full mx-auto border-4 border-gray-200 shadow-lg"
+                className="p-2 rounded-4xl shadow-lg min-w-80 max-w-80 min-h-80 max-h-80"
                 sx={{
                   bgcolor: "white",
+                  borderRadius: "8000px",
+                  borderWidth: "20px",
+                  borderColor: "gray",
                   textTransform: "none",
                   '&:hover': {
                     bgcolor: "gray.50",
                   }
                 }}>
-                <Lottie
-                  options={defaultOptions1(item.json)}
-                  className="mx-auto my-auto"
-                  height={160}
-                  width={190}
-                />
-                <div className="text-center justify-center text-gray-800 font-bold">{item.name}</div>
+                <div className="grid grid-flow-row gap-0 p-3">
+                  <div className="text-center text-lg justify-center text-blue-800 font-bold p-0.5">{item.name}</div>
+                  <Lottie
+                    options={defaultOptions1(item.json)}
+                    className="mx-auto my-auto max-w-1 max-h-3.5"
+                    height={"200px"}
+                    width={"300px"}
+                  />
+
+                </div>
               </Button>
             </motion.div>
           )}
@@ -255,7 +262,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
               variant="contained"
               sx={{
                 bgcolor: deliveryType === "Drop" ? "blue.600" : "white",
-                color: deliveryType === "Drop" ? "white" : "gray.800",
+                color: deliveryType === "Drop" ? "white" : "black",
                 textTransform: "none",
                 borderRadius: "9999px",
                 border: deliveryType === "Drop" ? "none" : "1px solid #d1d5db",
@@ -271,7 +278,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
               variant="contained"
               sx={{
                 bgcolor: deliveryType === "Pick" ? "blue.600" : "white",
-                color: deliveryType === "Pick" ? "white" : "gray.800",
+                color: deliveryType === "Pick" ? "white" : "black",
                 textTransform: "none",
                 borderRadius: "9999px",
                 border: deliveryType === "Pick" ? "none" : "1px solid #d1d5db",
@@ -338,7 +345,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             value={formData.description}
             onChange={handleChange}
             required
-            className="w-full max-w-md p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full max-w-md p-2 border border-gray-300 rounded"
           ></textarea>
           <input
             type="text"
@@ -347,7 +354,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             value={formData.brand}
             onChange={handleChange}
             required
-            className="w-full max-w-md p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full max-w-md p-2 border border-gray-300 rounded"
           />
 
           <DonateButton loading={loading} />
@@ -392,7 +399,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
       return (
         <form
-          className="flex flex-col items-center justify-center gap-4 p-6 rounded-full bg-white border-3 border-gray-200 w-min min-w-2xl mx-auto"
+          className="flex flex-col items-center justify-center gap-4 p-6 rounded-lg bg-transparent"
           onSubmit={handleSubmit}
         >
           <ImageDialog image={image} handleImage={handleImage} />
@@ -406,14 +413,14 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             value={formData.description}
             onChange={handleChange}
             required
-            className="w-full max-w-md p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full max-w-md p-2 border border-gray-300 rounded"
           ></textarea>
           <select
             name="gender"
             value={formData.gender}
             onChange={handleChange}
             required
-            className="w-full max-w-md p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full max-w-md p-2 border border-gray-300 rounded"
           >
             <option value="">Type of Clothing</option>
             <option value="Men">Men</option>
@@ -907,7 +914,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
               <motion.button
                 key={index} // assuming each Product has a unique id
                 initial={{ opacity: 0, }}
-                animate={{ opacity: 1,  }}
+                animate={{ opacity: 1, }}
                 whileHover={{ scale: 1.05, backgroundColor: "gray.200" }}
                 whileTap={{ scale: 0.95 }}
                 transition={{
@@ -919,7 +926,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
                   duration: 0.3,
                 }}
                 onClick={() => handleGoods(item.name)}
-                className="grid grid-flow-row p-2 rounded-4xl mx-auto border-4 border-gray-200 shadow-lg min-w-80"
+                className="grid grid-flow-row p-2 rounded-4xl mx-auto border-2 border-gray-200 shadow-lg min-w-80"
                 sx={{
                   bgcolor: "white",
                   textTransform: "none",
@@ -966,6 +973,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
           <motion.div
             initial={{ opacity: 0, x: 0 }}
             animate={{ opacity: 1, x: 3 }}
+            className="mt-50"
             transition={{
               delay: 0.5, // Add staggered delay based on index
               type: "spring",
@@ -979,6 +987,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
           <motion.div
             initial={{ opacity: 0, x: 0 }}
             animate={{ opacity: 1, x: 3 }}
+            className="mt-50"
             transition={{
               delay: 0.5, // Add staggered delay based on index
               type: "spring",
@@ -991,6 +1000,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         {selectedGoods === "Electronics" ? <motion.div
           initial={{ opacity: 0, }}
           animate={{ opacity: 1, }}
+          className="mt-50"
           transition={{
             delay: 0.5, // Add staggered delay based on index
             type: "spring",
@@ -1002,6 +1012,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         {selectedGoods === "Furniture" ? <motion.div
           initial={{ opacity: 0, }}
           animate={{ opacity: 1, }}
+          className="mt-50"
           transition={{
             delay: 0.5, // Add staggered delay based on index
             type: "spring",
@@ -1013,6 +1024,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         {selectedGoods === "Medical supplies" ? <motion.div
           initial={{ opacity: 0, }}
           animate={{ opacity: 1, }}
+          className="mt-50"
           transition={{
             delay: 0.5, // Add staggered delay based on index
             type: "spring",
@@ -1024,6 +1036,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         {selectedGoods === "Toys & games" ? <motion.div
           initial={{ opacity: 0, }}
           animate={{ opacity: 1, }}
+          className="mt-50"
           transition={{
             delay: 0.5, // Add staggered delay based on index
             type: "spring",
@@ -1035,6 +1048,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         {selectedGoods === "Hygiene" ? <motion.div
           initial={{ opacity: 0, }}
           animate={{ opacity: 1, }}
+          className="mt-50"
           transition={{
             delay: 0.5, // Add staggered delay based on index
             type: "spring",
@@ -1046,6 +1060,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         {selectedGoods === "Household" ? <motion.div
           initial={{ opacity: 0, }}
           animate={{ opacity: 1, }}
+          className="mt-50"
           transition={{
             delay: 0.5, // Add staggered delay based on index
             type: "spring",
@@ -1188,7 +1203,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
           <ImageDialog image={image} handleImage={handleImage} />
           <select
             required
-            className="w-full max-w-md p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full max-w-md p-2 border border-gray-300 rounded"
           >
             <option value="">Select a Service Category</option>
             <option value="Automotive">Automotive (e.g., mechanic, driver)</option>
@@ -1203,7 +1218,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
           <textarea
             placeholder="Describe the service you are offering (e.g., skills, tools, duration, etc.)"
             required
-            className="w-full max-w-md p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full max-w-md p-2 border border-gray-300 rounded"
           ></textarea>
 
           {/* Service Location */}
@@ -1245,7 +1260,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             type="text"
             placeholder="Availability (e.g., weekdays, weekends, specific times)"
             required
-            className="w-full max-w-md p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full max-w-md p-2 border border-gray-300 rounded"
           />
           <Button
             variant="contained"
