@@ -15,7 +15,7 @@ import { useTheme } from "../layout";
 
 const supabase = createClient(SUPABASE_URL, API_KEY);
 
-const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
+const Sidebar = ({ currentPage, handlePage, isOpen, setIsSidebarOpen }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,7 +23,7 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
   const { themeMode } = useTheme();
 
   const toggleSidebar = () => {
-    setIsOpen(!isOpen);
+    setIsSidebarOpen(!isOpen);
   };
 
   useEffect(() => {
