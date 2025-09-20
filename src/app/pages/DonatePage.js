@@ -1,8 +1,11 @@
 "use client"
 import React, { useState, useEffect } from "react";
-import { SUPABASE_URL_WECARE, API_KEY_WECARE, Colors } from "../supabase";
+import { SUPABASE_URL, API_KEY, Colors } from "../supabase";
 import { createClient } from "@supabase/supabase-js";
-import { Button } from "@mui/material";
+import { Button, TextField, Checkbox, FormControlLabel, Typography, Box } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Lottie from 'react-lottie';
 import animationData1 from '../animations/goods.json';
@@ -10,7 +13,7 @@ import animationData2 from '../animations/service.json';
 import animationData3 from '../animations/cash.json';
 import * as motion from "motion/react-client";
 
-const supabase = createClient(SUPABASE_URL_WECARE, API_KEY_WECARE);
+const supabase = createClient(SUPABASE_URL, API_KEY);
 
 const DonationTypes = [
   { name: "Goods", json: animationData1, color: Colors.red },
@@ -66,12 +69,29 @@ const ImageDialog = ({ handleImage, image }) => {
 const DonatePage = ({ handlePage, scrollToTop }) => {
   const [donationType, setDonationType] = useState("none");
   const [selectedGoods, setSelectedGoods] = useState("none");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check if user is authenticated
+    const checkAuth = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        setIsAuthenticated(!!user);
+      } catch (error) {
+        console.error("Error checking auth:", error);
+        setIsAuthenticated(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
+
     if (scrollToTop) {
       scrollToTop();
     }
-  }, [donationType, selectedGoods, scrollToTop]);
+  }, [scrollToTop]);
 
   const handleDonationType = (selected) => { setDonationType(selected) }
   const handleGoods = (selected) => { setSelectedGoods(selected) && setDonationType(selected) }
@@ -247,10 +267,26 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
       }
     }
 
-    const DeliveryType = () => {
-      const [deliveryType, setDeliveryType] = useState("Pick");
+    const DeliveryType = ({ value, onChange }) => {
+      const [deliveryType, setDeliveryType] = useState(value || "Pick");
 
-      const handleDeliveryType = (type) => { setDeliveryType(type) }
+      const handleDeliveryType = (type) => {
+        console.log('DeliveryType clicked:', type);
+        setDeliveryType(type);
+        onChange(type);
+      }
+
+      // Update local state when prop changes
+      React.useEffect(() => {
+        if (value !== undefined) {
+          setDeliveryType(value);
+        }
+      }, [value]);
+
+      // Debug logging
+      React.useEffect(() => {
+        console.log('DeliveryType - value:', value, 'deliveryType:', deliveryType);
+      }, [value, deliveryType]);
 
       return (
         <div className="grid grid-flow-row">
@@ -265,7 +301,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
                 color: deliveryType === "Drop" ? "white" : "black",
                 textTransform: "none",
                 borderRadius: "9999px",
-                border: deliveryType === "Drop" ? "none" : "1px solid #d1d5db",
+
                 '&:hover': {
                   bgcolor: deliveryType === "Drop" ? "blue.700" : "gray.50",
                 }
@@ -281,7 +317,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
                 color: deliveryType === "Pick" ? "white" : "black",
                 textTransform: "none",
                 borderRadius: "9999px",
-                border: deliveryType === "Pick" ? "none" : "1px solid #d1d5db",
+
                 '&:hover': {
                   bgcolor: deliveryType === "Pick" ? "blue.700" : "gray.50",
                 }
@@ -295,7 +331,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
     const DonateElectronics = () => {
       const [formData, setFormData] = useState({
-        deliveryType: "",
+        delivery_type: "Pick", // Default to valid value
         description: "",
         brand: "",
       });
@@ -312,20 +348,69 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         setLoading(true);
 
         try {
+          // Get the current authenticated user
+          const { data: { user } } = await supabase.auth.getUser();
+
+          if (!user) {
+            alert("Please log in to submit a donation");
+            setLoading(false);
+            return;
+          }
+
+          // Validate required fields
+          if (!formData.delivery_type || !['Pick', 'Drop'].includes(formData.delivery_type)) {
+            alert("Please select a delivery type (Pick up or Drop off)");
+            setLoading(false);
+            return;
+          }
+
+          if (!formData.description.trim()) {
+            alert("Please provide a description");
+            setLoading(false);
+            return;
+          }
+
+          // Debug logging
+          console.log('Submitting donation with formData:', formData);
+
+          // First, ensure user exists in public.users table
+          const { error: userError } = await supabase
+            .from("users")
+            .upsert([{
+              id: user.id,
+              email: user.email,
+              name: user.user_metadata?.name || user.email.split('@')[0]
+            }], { onConflict: 'id' });
+
+          if (userError) {
+            console.error("Error creating user record:", userError);
+            alert("Error setting up user account. Please try logging out and back in.");
+            setLoading(false);
+            return;
+          }
+
           const { error } = await supabase
             .from("donations")
-            .insert([{ category: "Electronics", ...formData }]);
+            .insert([{
+              user_id: user.id,
+              category: "Electronics",
+              ...formData
+            }]);
 
           if (error) {
             console.error("Error submitting donation:", error.message);
+            alert(`Error submitting donation: ${error.message}`);
           } else {
             alert(PopUpMessage);
+            // Reset form and redirect to dashboard
+            setFormData({ delivery_type: "", description: "", brand: "" });
+            setTimeout(() => handlePage('Dashboard'), 1500);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
+          alert("An unexpected error occurred. Please try again.");
         } finally {
           setLoading(false);
-          setFormData({ deliveryType: "", description: "", brand: "" });
         }
       };
 
@@ -336,8 +421,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         >
           <ImageDialog image={image} />
           <DeliveryType
-            value={formData.deliveryType}
-            onChange={(value) => setFormData({ ...formData, deliveryType: value })}
+            value={formData.delivery_type}
+            onChange={(value) => setFormData({ ...formData, delivery_type: value })}
           />
           <textarea
             name="description"
@@ -364,7 +449,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
     const DonateClothing = () => {
       const [formData, setFormData] = useState({
-        deliveryType: "",
+        delivery_type: "Pick", // Default to valid value
         description: "",
         gender: "",
       });
@@ -380,20 +465,66 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         setLoading(true);
 
         try {
+          // Get the current authenticated user
+          const { data: { user } } = await supabase.auth.getUser();
+
+          if (!user) {
+            alert("Please log in to submit a donation");
+            setLoading(false);
+            return;
+          }
+
+          // Validate required fields
+          if (!formData.delivery_type || !['Pick', 'Drop'].includes(formData.delivery_type)) {
+            alert("Please select a delivery type (Pick up or Drop off)");
+            setLoading(false);
+            return;
+          }
+
+          if (!formData.description.trim()) {
+            alert("Please provide a description");
+            setLoading(false);
+            return;
+          }
+
+          // First, ensure user exists in public.users table
+          const { error: userError } = await supabase
+            .from("users")
+            .upsert([{
+              id: user.id,
+              email: user.email,
+              name: user.user_metadata?.name || user.email.split('@')[0]
+            }], { onConflict: 'id' });
+
+          if (userError) {
+            console.error("Error creating user record:", userError);
+            alert("Error setting up user account. Please try logging out and back in.");
+            setLoading(false);
+            return;
+          }
+
           const { error } = await supabase
             .from("donations")
-            .insert([{ category: "Clothing", ...formData }]);
+            .insert([{
+              user_id: user.id,
+              category: "Clothing",
+              ...formData
+            }]);
 
           if (error) {
             console.error("Error submitting donation:", error.message);
+            alert(`Error submitting donation: ${error.message}`);
           } else {
             alert(PopUpMessage);
+            // Reset form and redirect to dashboard
+            setFormData({ delivery_type: "", description: "", gender: "" });
+            setTimeout(() => handlePage('Dashboard'), 1500);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
+          alert("An unexpected error occurred. Please try again.");
         } finally {
           setLoading(false);
-          setFormData({ deliveryType: "", description: "", gender: "" });
         }
       };
 
@@ -404,12 +535,12 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         >
           <ImageDialog image={image} handleImage={handleImage} />
           <DeliveryType
-            value={formData.deliveryType}
-            onChange={(value) => setFormData({ ...formData, deliveryType: value })}
+            value={formData.delivery_type}
+            onChange={(value) => setFormData({ ...formData, delivery_type: value })}
           />
           <textarea
             name="description"
-            placeholder="Description of clothing items" ƒ
+            placeholder="Description of clothing items"
             value={formData.description}
             onChange={handleChange}
             required
@@ -436,7 +567,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
     const DonateBooksAndEducationalMaterials = () => {
       const [formData, setFormData] = useState({
-        deliveryType: "",
+        delivery_type: "Pick", // Default to valid value
         description: "",
         quantity: "",
       });
@@ -452,20 +583,66 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         setLoading(true);
 
         try {
+          // Get the current authenticated user
+          const { data: { user } } = await supabase.auth.getUser();
+
+          if (!user) {
+            alert("Please log in to submit a donation");
+            setLoading(false);
+            return;
+          }
+
+          // Validate required fields
+          if (!formData.delivery_type || !['Pick', 'Drop'].includes(formData.delivery_type)) {
+            alert("Please select a delivery type (Pick up or Drop off)");
+            setLoading(false);
+            return;
+          }
+
+          if (!formData.description.trim()) {
+            alert("Please provide a description");
+            setLoading(false);
+            return;
+          }
+
+          // First, ensure user exists in public.users table
+          const { error: userError } = await supabase
+            .from("users")
+            .upsert([{
+              id: user.id,
+              email: user.email,
+              name: user.user_metadata?.name || user.email.split('@')[0]
+            }], { onConflict: 'id' });
+
+          if (userError) {
+            console.error("Error creating user record:", userError);
+            alert("Error setting up user account. Please try logging out and back in.");
+            setLoading(false);
+            return;
+          }
+
           const { error } = await supabase
             .from("donations")
-            .insert([{ category: "Books and Educational Materials", ...formData }]);
+            .insert([{
+              user_id: user.id,
+              category: "Books and Educational Materials",
+              ...formData
+            }]);
 
           if (error) {
             console.error("Error submitting donation:", error.message);
+            alert(`Error submitting donation: ${error.message}`);
           } else {
             alert(PopUpMessage);
+            // Reset form and redirect to dashboard
+            setFormData({ delivery_type: "", description: "", quantity: "" });
+            setTimeout(() => handlePage('Dashboard'), 1500);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
+          alert("An unexpected error occurred. Please try again.");
         } finally {
           setLoading(false);
-          setFormData({ deliveryType: "", description: "", quantity: "" });
         }
       };
 
@@ -476,8 +653,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         >
           <ImageDialog image={image} handleImage={handleImage} />
           <DeliveryType
-            value={formData.deliveryType}
-            onChange={(value) => setFormData({ ...formData, deliveryType: value })}
+            value={formData.delivery_type}
+            onChange={(value) => setFormData({ ...formData, delivery_type: value })}
           />
           <textarea
             name="description"
@@ -504,7 +681,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
     const DonateNonPerishableFoods = () => {
       const [formData, setFormData] = useState({
-        deliveryType: "",
+        delivery_type: "Pick", // Default to valid value
         description: "",
         expiration_date: "",
       });
@@ -520,20 +697,66 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         setLoading(true);
 
         try {
+          // Get the current authenticated user
+          const { data: { user } } = await supabase.auth.getUser();
+
+          if (!user) {
+            alert("Please log in to submit a donation");
+            setLoading(false);
+            return;
+          }
+
+          // Validate required fields
+          if (!formData.delivery_type || !['Pick', 'Drop'].includes(formData.delivery_type)) {
+            alert("Please select a delivery type (Pick up or Drop off)");
+            setLoading(false);
+            return;
+          }
+
+          if (!formData.description.trim()) {
+            alert("Please provide a description");
+            setLoading(false);
+            return;
+          }
+
+          // First, ensure user exists in public.users table
+          const { error: userError } = await supabase
+            .from("users")
+            .upsert([{
+              id: user.id,
+              email: user.email,
+              name: user.user_metadata?.name || user.email.split('@')[0]
+            }], { onConflict: 'id' });
+
+          if (userError) {
+            console.error("Error creating user record:", userError);
+            alert("Error setting up user account. Please try logging out and back in.");
+            setLoading(false);
+            return;
+          }
+
           const { error } = await supabase
             .from("donations")
-            .insert([{ category: "Non-Perishable Foods", ...formData }]);
+            .insert([{
+              user_id: user.id,
+              category: "Non-Perishable Foods",
+              ...formData
+            }]);
 
           if (error) {
             console.error("Error submitting donation:", error.message);
+            alert(`Error submitting donation: ${error.message}`);
           } else {
             alert(PopUpMessage);
+            // Reset form and redirect to dashboard
+            setFormData({ delivery_type: "", description: "", expiration_date: "" });
+            setTimeout(() => handlePage('Dashboard'), 1500);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
+          alert("An unexpected error occurred. Please try again.");
         } finally {
           setLoading(false);
-          setFormData({ deliveryType: "", description: "", expiration_date: "" });
         }
       };
 
@@ -544,8 +767,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         >
           <ImageDialog image={image} handleImage={handleImage} />
           <DeliveryType
-            value={formData.deliveryType}
-            onChange={(value) => setFormData({ ...formData, deliveryType: value })}
+            value={formData.delivery_type}
+            onChange={(value) => setFormData({ ...formData, delivery_type: value })}
           />
           <textarea
             name="description"
@@ -555,14 +778,20 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             required
             className="w-full max-w-md p-2 border border-gray-300 rounded"
           ></textarea>
-          <input
-            type="text"
-            name="expiration_date"
-            placeholder="Expiration Date (if applicable)"
-            value={formData.expiration_date}
-            onChange={handleChange}
-            className="w-full max-w-md p-2 border border-gray-300 rounded"
-          />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="Expiration Date (if applicable)"
+              value={formData.expiration_date ? new Date(formData.expiration_date) : null}
+              onChange={(newValue) => {
+                setFormData({
+                  ...formData,
+                  expiration_date: newValue ? newValue.toISOString().split('T')[0] : ""
+                });
+              }}
+              slotProps={{ textField: { fullWidth: true, className: "w-full max-w-md" } }}
+              className="w-full max-w-md"
+            />
+          </LocalizationProvider>
 
           <DonateButton loading={loading} />
         </form>
@@ -571,7 +800,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
     const DonateFurniture = () => {
       const [formData, setFormData] = useState({
-        deliveryType: "",
+        delivery_type: "Pick", // Default to valid value
         description: "",
         quantity: "",
       });
@@ -587,20 +816,66 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         setLoading(true);
 
         try {
+          // Get the current authenticated user
+          const { data: { user } } = await supabase.auth.getUser();
+
+          if (!user) {
+            alert("Please log in to submit a donation");
+            setLoading(false);
+            return;
+          }
+
+          // Validate required fields
+          if (!formData.delivery_type || !['Pick', 'Drop'].includes(formData.delivery_type)) {
+            alert("Please select a delivery type (Pick up or Drop off)");
+            setLoading(false);
+            return;
+          }
+
+          if (!formData.description.trim()) {
+            alert("Please provide a description");
+            setLoading(false);
+            return;
+          }
+
+          // First, ensure user exists in public.users table
+          const { error: userError } = await supabase
+            .from("users")
+            .upsert([{
+              id: user.id,
+              email: user.email,
+              name: user.user_metadata?.name || user.email.split('@')[0]
+            }], { onConflict: 'id' });
+
+          if (userError) {
+            console.error("Error creating user record:", userError);
+            alert("Error setting up user account. Please try logging out and back in.");
+            setLoading(false);
+            return;
+          }
+
           const { error } = await supabase
             .from("donations")
-            .insert([{ category: "Furniture", ...formData }]);
+            .insert([{
+              user_id: user.id,
+              category: "Furniture",
+              ...formData
+            }]);
 
           if (error) {
             console.error("Error submitting donation:", error.message);
+            alert(`Error submitting donation: ${error.message}`);
           } else {
             alert(PopUpMessage);
+            // Reset form and redirect to dashboard
+            setFormData({ delivery_type: "", description: "", quantity: "" });
+            setTimeout(() => handlePage('Dashboard'), 1500);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
+          alert("An unexpected error occurred. Please try again.");
         } finally {
           setLoading(false);
-          setFormData({ deliveryType: "", description: "", quantity: "" });
         }
       };
 
@@ -611,8 +886,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         >
           <ImageDialog image={image} handleImage={handleImage} />
           <DeliveryType
-            value={formData.deliveryType}
-            onChange={(value) => setFormData({ ...formData, deliveryType: value })}
+            value={formData.delivery_type}
+            onChange={(value) => setFormData({ ...formData, delivery_type: value })}
           />
           <textarea
             name="description"
@@ -639,7 +914,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
     const DonateMedicalSupplies = () => {
       const [formData, setFormData] = useState({
-        deliveryType: "",
+        delivery_type: "Pick", // Default to valid value
         description: "",
         expiration_date: "",
       });
@@ -655,20 +930,66 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         setLoading(true);
 
         try {
+          // Get the current authenticated user
+          const { data: { user } } = await supabase.auth.getUser();
+
+          if (!user) {
+            alert("Please log in to submit a donation");
+            setLoading(false);
+            return;
+          }
+
+          // Validate required fields
+          if (!formData.delivery_type || !['Pick', 'Drop'].includes(formData.delivery_type)) {
+            alert("Please select a delivery type (Pick up or Drop off)");
+            setLoading(false);
+            return;
+          }
+
+          if (!formData.description.trim()) {
+            alert("Please provide a description");
+            setLoading(false);
+            return;
+          }
+
+          // First, ensure user exists in public.users table
+          const { error: userError } = await supabase
+            .from("users")
+            .upsert([{
+              id: user.id,
+              email: user.email,
+              name: user.user_metadata?.name || user.email.split('@')[0]
+            }], { onConflict: 'id' });
+
+          if (userError) {
+            console.error("Error creating user record:", userError);
+            alert("Error setting up user account. Please try logging out and back in.");
+            setLoading(false);
+            return;
+          }
+
           const { error } = await supabase
             .from("donations")
-            .insert([{ category: "Medical Supplies", ...formData }]);
+            .insert([{
+              user_id: user.id,
+              category: "Medical Supplies",
+              ...formData
+            }]);
 
           if (error) {
             console.error("Error submitting donation:", error.message);
+            alert(`Error submitting donation: ${error.message}`);
           } else {
             alert(PopUpMessage);
+            // Reset form and redirect to dashboard
+            setFormData({ delivery_type: "", description: "", expiration_date: "" });
+            setTimeout(() => handlePage('Dashboard'), 1500);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
+          alert("An unexpected error occurred. Please try again.");
         } finally {
           setLoading(false);
-          setFormData({ deliveryType: "", description: "", expiration_date: "" });
         }
       };
 
@@ -679,8 +1000,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         >
           <ImageDialog image={image} handleImage={handleImage} />
           <DeliveryType
-            value={formData.deliveryType}
-            onChange={(value) => setFormData({ ...formData, deliveryType: value })}
+            value={formData.delivery_type}
+            onChange={(value) => setFormData({ ...formData, delivery_type: value })}
           />
           <textarea
             name="description"
@@ -690,14 +1011,20 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             required
             className="w-full max-w-md p-2 border border-gray-300 rounded"
           ></textarea>
-          <input
-            type="text"
-            name="expiration_date"
-            placeholder="Expiration Date (if applicable)"
-            value={formData.expiration_date}
-            onChange={handleChange}
-            className="w-full max-w-md p-2 border border-gray-300 rounded"
-          />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="Expiration Date (if applicable)"
+              value={formData.expiration_date ? new Date(formData.expiration_date) : null}
+              onChange={(newValue) => {
+                setFormData({
+                  ...formData,
+                  expiration_date: newValue ? newValue.toISOString().split('T')[0] : ""
+                });
+              }}
+              slotProps={{ textField: { fullWidth: true, className: "w-full max-w-md" } }}
+              className="w-full max-w-md"
+            />
+          </LocalizationProvider>
 
           <DonateButton loading={loading} />
         </form>
@@ -706,7 +1033,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
     const DonateHygiene = () => {
       const [formData, setFormData] = useState({
-        deliveryType: "",
+        delivery_type: "Pick", // Default to valid value
         description: "",
       });
       const [loading, setLoading] = useState(false);
@@ -721,20 +1048,66 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         setLoading(true);
 
         try {
+          // Get the current authenticated user
+          const { data: { user } } = await supabase.auth.getUser();
+
+          if (!user) {
+            alert("Please log in to submit a donation");
+            setLoading(false);
+            return;
+          }
+
+          // Validate required fields
+          if (!formData.delivery_type || !['Pick', 'Drop'].includes(formData.delivery_type)) {
+            alert("Please select a delivery type (Pick up or Drop off)");
+            setLoading(false);
+            return;
+          }
+
+          if (!formData.description.trim()) {
+            alert("Please provide a description");
+            setLoading(false);
+            return;
+          }
+
+          // First, ensure user exists in public.users table
+          const { error: userError } = await supabase
+            .from("users")
+            .upsert([{
+              id: user.id,
+              email: user.email,
+              name: user.user_metadata?.name || user.email.split('@')[0]
+            }], { onConflict: 'id' });
+
+          if (userError) {
+            console.error("Error creating user record:", userError);
+            alert("Error setting up user account. Please try logging out and back in.");
+            setLoading(false);
+            return;
+          }
+
           const { error } = await supabase
             .from("donations")
-            .insert([{ category: "Hygiene", ...formData }]);
+            .insert([{
+              user_id: user.id,
+              category: "Hygiene",
+              ...formData
+            }]);
 
           if (error) {
             console.error("Error submitting donation:", error.message);
+            alert(`Error submitting donation: ${error.message}`);
           } else {
             alert(PopUpMessage);
+            // Reset form and redirect to dashboard
+            setFormData({ delivery_type: "", description: "" });
+            setTimeout(() => handlePage('Dashboard'), 1500);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
+          alert("An unexpected error occurred. Please try again.");
         } finally {
           setLoading(false);
-          setFormData({ deliveryType: "", description: "" });
         }
       };
 
@@ -745,8 +1118,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         >
           <ImageDialog image={image} handleImage={handleImage} />
           <DeliveryType
-            value={formData.deliveryType}
-            onChange={(value) => setFormData({ ...formData, deliveryType: value })}
+            value={formData.delivery_type}
+            onChange={(value) => setFormData({ ...formData, delivery_type: value })}
           />
           <textarea
             name="description"
@@ -764,7 +1137,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
     const DonateHousehold = () => {
       const [formData, setFormData] = useState({
-        deliveryType: "",
+        delivery_type: "Pick", // Default to valid value
         description: "",
       });
       const [loading, setLoading] = useState(false);
@@ -779,20 +1152,66 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         setLoading(true);
 
         try {
+          // Get the current authenticated user
+          const { data: { user } } = await supabase.auth.getUser();
+
+          if (!user) {
+            alert("Please log in to submit a donation");
+            setLoading(false);
+            return;
+          }
+
+          // Validate required fields
+          if (!formData.delivery_type || !['Pick', 'Drop'].includes(formData.delivery_type)) {
+            alert("Please select a delivery type (Pick up or Drop off)");
+            setLoading(false);
+            return;
+          }
+
+          if (!formData.description.trim()) {
+            alert("Please provide a description");
+            setLoading(false);
+            return;
+          }
+
+          // First, ensure user exists in public.users table
+          const { error: userError } = await supabase
+            .from("users")
+            .upsert([{
+              id: user.id,
+              email: user.email,
+              name: user.user_metadata?.name || user.email.split('@')[0]
+            }], { onConflict: 'id' });
+
+          if (userError) {
+            console.error("Error creating user record:", userError);
+            alert("Error setting up user account. Please try logging out and back in.");
+            setLoading(false);
+            return;
+          }
+
           const { error } = await supabase
             .from("donations")
-            .insert([{ category: "Household", ...formData }]);
+            .insert([{
+              user_id: user.id,
+              category: "Household",
+              ...formData
+            }]);
 
           if (error) {
             console.error("Error submitting donation:", error.message);
+            alert(`Error submitting donation: ${error.message}`);
           } else {
             alert(PopUpMessage);
+            // Reset form and redirect to dashboard
+            setFormData({ delivery_type: "", description: "" });
+            setTimeout(() => handlePage('Dashboard'), 1500);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
+          alert("An unexpected error occurred. Please try again.");
         } finally {
           setLoading(false);
-          setFormData({ deliveryType: "", description: "" });
         }
       };
 
@@ -803,8 +1222,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         >
           <ImageDialog image={image} handleImage={handleImage} />
           <DeliveryType
-            value={formData.deliveryType}
-            onChange={(value) => setFormData({ ...formData, deliveryType: value })}
+            value={formData.delivery_type}
+            onChange={(value) => setFormData({ ...formData, delivery_type: value })}
           />
           <textarea
             name="description"
@@ -821,7 +1240,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
     const DonateToysAndGames = () => {
       const [formData, setFormData] = useState({
-        deliveryType: "",
+        delivery_type: "Pick", // Default to valid value
         description: "",
         age_group: "",
       });
@@ -837,20 +1256,66 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         setLoading(true);
 
         try {
+          // Get the current authenticated user
+          const { data: { user } } = await supabase.auth.getUser();
+
+          if (!user) {
+            alert("Please log in to submit a donation");
+            setLoading(false);
+            return;
+          }
+
+          // Validate required fields
+          if (!formData.delivery_type || !['Pick', 'Drop'].includes(formData.delivery_type)) {
+            alert("Please select a delivery type (Pick up or Drop off)");
+            setLoading(false);
+            return;
+          }
+
+          if (!formData.description.trim()) {
+            alert("Please provide a description");
+            setLoading(false);
+            return;
+          }
+
+          // First, ensure user exists in public.users table
+          const { error: userError } = await supabase
+            .from("users")
+            .upsert([{
+              id: user.id,
+              email: user.email,
+              name: user.user_metadata?.name || user.email.split('@')[0]
+            }], { onConflict: 'id' });
+
+          if (userError) {
+            console.error("Error creating user record:", userError);
+            alert("Error setting up user account. Please try logging out and back in.");
+            setLoading(false);
+            return;
+          }
+
           const { error } = await supabase
             .from("donations")
-            .insert([{ category: "Toys and Games", ...formData }]);
+            .insert([{
+              user_id: user.id,
+              category: "Toys and Games",
+              ...formData
+            }]);
 
           if (error) {
             console.error("Error submitting donation:", error.message);
+            alert(`Error submitting donation: ${error.message}`);
           } else {
             alert(PopUpMessage);
+            // Reset form and redirect to dashboard
+            setFormData({ delivery_type: "", description: "", age_group: "" });
+            setTimeout(() => handlePage('Dashboard'), 1500);
           }
         } catch (err) {
           console.error("Unexpected error:", err);
+          alert("An unexpected error occurred. Please try again.");
         } finally {
           setLoading(false);
-          setFormData({ deliveryType: "", description: "", age_group: "" });
         }
       };
 
@@ -861,8 +1326,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         >
           <ImageDialog image={image} handleImage={handleImage} />
           <DeliveryType
-            value={formData.deliveryType}
-            onChange={(value) => setFormData({ ...formData, deliveryType: value })}
+            value={formData.delivery_type}
+            onChange={(value) => setFormData({ ...formData, delivery_type: value })}
           />
           <textarea
             name="description"
@@ -1173,8 +1638,23 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
       </div>)
   }
   const DonationTypeService = () => {
-    const [file, setFile] = useState();
+    const [formData, setFormData] = useState({
+      service_category: "",
+      description: "",
+      service_location: "",
+      availability: {
+        monday: { selected: false, startTime: "", endTime: "" },
+        tuesday: { selected: false, startTime: "", endTime: "" },
+        wednesday: { selected: false, startTime: "", endTime: "" },
+        thursday: { selected: false, startTime: "", endTime: "" },
+        friday: { selected: false, startTime: "", endTime: "" },
+        saturday: { selected: false, startTime: "", endTime: "" },
+        sunday: { selected: false, startTime: "", endTime: "" },
+      },
+    });
     const [image, setImage] = useState();
+    const [loading, setLoading] = useState(false);
+
     /// Image handler ///
     function handleImage(e) {
       const file = e.target.files[0]; // Get the selected file
@@ -1186,8 +1666,6 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
         // Set up an event listener for when the file is read
         reader.onloadend = () => {
-          const base64String = reader.result.split(',')[1]; // Strip off the data URL prefix
-          setFile(base64String)
           // You can now use base64String to send it to your database
         };
         // Read the file as a data URL
@@ -1195,13 +1673,175 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
       }
     }
 
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData({ ...formData, [name]: value });
+    };
+
+    const handleLocationChange = (location) => {
+      setFormData({ ...formData, service_location: location });
+    };
+
+    const handleDayToggle = (day) => {
+      setFormData({
+        ...formData,
+        availability: {
+          ...formData.availability,
+          [day]: {
+            ...formData.availability[day],
+            selected: !formData.availability[day].selected,
+          },
+        },
+      });
+    };
+
+    const handleTimeChange = (day, field, value) => {
+      setFormData({
+        ...formData,
+        availability: {
+          ...formData.availability,
+          [day]: {
+            ...formData.availability[day],
+            [field]: value,
+          },
+        },
+      });
+    };
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setLoading(true);
+
+      try {
+        // Get the current authenticated user
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+          alert("Please log in to submit a donation");
+          setLoading(false);
+          return;
+        }
+
+        // Validate required fields
+        if (!formData.service_category) {
+          alert("Please select a service category");
+          setLoading(false);
+          return;
+        }
+
+        if (!formData.description.trim()) {
+          alert("Please provide a service description");
+          setLoading(false);
+          return;
+        }
+
+        if (!formData.service_location) {
+          alert("Please select a service location option");
+          setLoading(false);
+          return;
+        }
+
+        // Validate availability - at least one day must be selected
+        const hasSelectedDays = Object.values(formData.availability).some(day => day.selected);
+        if (!hasSelectedDays) {
+          alert("Please select at least one day for your availability");
+          setLoading(false);
+          return;
+        }
+
+        // Validate time ranges for selected days
+        const selectedDaysData = Object.entries(formData.availability).filter(([_, data]) => data.selected);
+        for (const [day, data] of selectedDaysData) {
+          if (!data.startTime || !data.endTime) {
+            alert(`Please provide both start and end times for ${day.charAt(0).toUpperCase() + day.slice(1)}`);
+            setLoading(false);
+            return;
+          }
+          if (data.startTime >= data.endTime) {
+            alert(`End time must be after start time for ${day.charAt(0).toUpperCase() + day.slice(1)}`);
+            setLoading(false);
+            return;
+          }
+        }
+
+        // Debug logging
+        console.log('Submitting service donation with formData:', formData);
+
+        // First, ensure user exists in public.users table
+        const { error: userError } = await supabase
+          .from("users")
+          .upsert([{
+            id: user.id,
+            email: user.email,
+            name: user.user_metadata?.name || user.email.split('@')[0]
+          }], { onConflict: 'id' });
+
+        if (userError) {
+          console.error("Error creating user record:", userError);
+          alert("Error setting up user account. Please try logging out and back in.");
+          setLoading(false);
+          return;
+        }
+
+        // Format availability data for database
+        const selectedDays = Object.entries(formData.availability)
+          .filter(([_, data]) => data.selected)
+          .map(([day, data]) => `${day.charAt(0).toUpperCase() + day.slice(1)}: ${data.startTime} - ${data.endTime}`)
+          .join(', ');
+
+        const { error } = await supabase
+          .from("service_donations")
+          .insert([{
+            user_id: user.id,
+            service_category: formData.service_category,
+            description: formData.description,
+            location_preference: formData.service_location,
+            availability: selectedDays,
+          }]);
+
+        if (error) {
+          console.error("Error submitting service donation:", error.message);
+          alert(`Error submitting service donation: ${error.message}`);
+        } else {
+          alert(PopUpMessage);
+          // Reset form and redirect to dashboard
+          setFormData({
+            service_category: "",
+            description: "",
+            service_location: "",
+            availability: {
+              monday: { selected: false, startTime: "", endTime: "" },
+              tuesday: { selected: false, startTime: "", endTime: "" },
+              wednesday: { selected: false, startTime: "", endTime: "" },
+              thursday: { selected: false, startTime: "", endTime: "" },
+              friday: { selected: false, startTime: "", endTime: "" },
+              saturday: { selected: false, startTime: "", endTime: "" },
+              sunday: { selected: false, startTime: "", endTime: "" },
+            },
+          });
+          setImage(null);
+          setTimeout(() => handlePage('Dashboard'), 1500);
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        alert("An unexpected error occurred. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
     return (
       <>
         <GoBackMain />
-        <form className="flex flex-col items-center justify-center gap-4 p-6 rounded-lg bg-transparent">
+        <form
+          className="flex flex-col items-center justify-center gap-4 p-6 rounded-lg bg-transparent"
+          onSubmit={handleSubmit}
+        >
           <ImageDialog image={image} handleImage={handleImage} />
           <select
+            name="service_category"
+            value={formData.service_category}
+            onChange={handleChange}
             required
             className="w-full max-w-md p-2 border border-gray-300 rounded"
           >
@@ -1216,72 +1856,161 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
 
           {/* Custom Service Description */}
           <textarea
+            name="description"
             placeholder="Describe the service you are offering (e.g., skills, tools, duration, etc.)"
+            value={formData.description}
+            onChange={handleChange}
             required
             className="w-full max-w-md p-2 border border-gray-300 rounded"
           ></textarea>
 
           {/* Service Location */}
-          <div className="flex gap-4">
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: "white",
-                color: "gray.800",
-                textTransform: "none",
-                fontWeight: "bold",
-                borderRadius: "9999px",
-                border: "1px solid #d1d5db",
-                '&:hover': {
-                  backgroundColor: "gray.50",
-                }
-              }}>
-              I can provide this service remotely
-            </Button>
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: "white",
-                color: "gray.800",
-                textTransform: "none",
-                fontWeight: "bold",
-                borderRadius: "9999px",
-                border: "1px solid #d1d5db",
-                '&:hover': {
-                  backgroundColor: "gray.50",
-                }
-              }}>
-              Requires my presence at a location
-            </Button>
+          <div className="grid grid-flow-row">
+            <div className="text-left text-gray-600 pb-3">Service Location</div>
+            <div className="grid grid-cols-1 gap-3">
+              <Button
+                onClick={() => handleLocationChange("Remote")}
+                className="text-gray-800 font-bold"
+                variant="contained"
+                sx={{
+                  bgcolor: formData.service_location === "Remote" ? "blue.600" : "white",
+                  color: formData.service_location === "Remote" ? "white" : "black",
+                  textTransform: "none",
+                  borderRadius: "9999px",
+                  '&:hover': {
+                    bgcolor: formData.service_location === "Remote" ? "blue.700" : "gray.50",
+                  }
+                }}>
+                I can provide this service remotely
+              </Button>
+              <Button
+                onClick={() => handleLocationChange("InPerson")}
+                className="text-gray-800 font-bold"
+                variant="contained"
+                sx={{
+                  bgcolor: formData.service_location === "InPerson" ? "blue.600" : "white",
+                  color: formData.service_location === "InPerson" ? "white" : "black",
+                  textTransform: "none",
+                  borderRadius: "9999px",
+                  '&:hover': {
+                    bgcolor: formData.service_location === "InPerson" ? "blue.700" : "gray.50",
+                  }
+                }}>
+                Requires my presence at a location
+              </Button>
+            </div>
           </div>
 
           {/* Availability */}
-          <input
-            type="text"
-            placeholder="Availability (e.g., weekdays, weekends, specific times)"
-            required
-            className="w-full max-w-md p-2 border border-gray-300 rounded"
-          />
-          <Button
-            variant="contained"
-            sx={{
-              bgcolor: "blue.600",
-              color: "white",
-              textTransform: "none",
-              fontWeight: "bold",
-              borderRadius: "9999px",
-              paddingX: 8,
-              paddingY: 3,
-              fontSize: "lg",
-              '&:hover': {
-                bgcolor: "blue.700",
-              }
-            }}>
-            Donate
-          </Button>
+          <div className="w-full max-w-md">
+            <Typography variant="h6" className="text-left text-gray-600 pb-3">
+              Availability
+            </Typography>
+            <div className="grid grid-cols-1 gap-3">
+              {Object.entries(formData.availability).map(([day, data]) => (
+                <div key={day} className="flex items-center gap-3 p-2 border border-gray-200 rounded">
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={data.selected}
+                        onChange={() => handleDayToggle(day)}
+                        sx={{
+                          color: "gray.400",
+                          '&.Mui-checked': {
+                            color: "blue.600",
+                          },
+                        }}
+                      />
+                    }
+                    label={day.charAt(0).toUpperCase() + day.slice(1)}
+                    sx={{ marginRight: 1 }}
+                  />
+                  {data.selected && (
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="time"
+                        value={data.startTime}
+                        onChange={(e) => handleTimeChange(day, 'startTime', e.target.value)}
+                        className="p-1 border border-gray-300 rounded text-sm"
+                      />
+                      <span className="text-gray-500">to</span>
+                      <input
+                        type="time"
+                        value={data.endTime}
+                        onChange={(e) => handleTimeChange(day, 'endTime', e.target.value)}
+                        className="p-1 border border-gray-300 rounded text-sm"
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <DonateButton loading={loading} />
         </form></>
     );
   };
+
+  // Show loading spinner while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login prompt if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+        <div className="relative h-[300px] bg-gradient-to-r from-blue-600 to-purple-700">
+          <div className="absolute inset-0 bg-black opacity-30"></div>
+          <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h1 className="text-4xl font-bold mb-4">Donate</h1>
+            </motion.div>
+            <motion.p
+              className="text-xl max-w-3xl"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              Make a lasting impact in your community by donating goods, cash, or services to those who need it most.
+            </motion.p>
+          </div>
+        </div>
+        <div className="max-w-md mx-auto px-4 py-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="bg-white rounded-2xl shadow-lg p-8 text-center"
+          >
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Login Required</h2>
+            <p className="text-gray-600 mb-6">
+              Please log in to your account to submit donations and track your impact.
+            </p>
+            <Button
+              onClick={() => handlePage('Login')}
+              variant="contained"
+              className="bg-blue-600 hover:bg-blue-700 py-3 px-6"
+            >
+              Go to Login
+            </Button>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">

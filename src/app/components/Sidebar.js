@@ -1,17 +1,54 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import PeopleIcon from "@mui/icons-material/People";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import LoginIcon from "@mui/icons-material/Login";
 import * as motion from "motion/react-client";
 import { Button } from "@mui/material";
+import { createClient } from "@supabase/supabase-js";
+import { SUPABASE_URL, API_KEY } from "../supabase";
+import { useTheme } from "../layout";
+
+const supabase = createClient(SUPABASE_URL, API_KEY);
 
 const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Get theme context
+  const { themeMode } = useTheme();
+
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
+  };
+
+  useEffect(() => {
+    // Get initial session
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+    };
+
+    getSession();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+        setIsLoading(false);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLoginPage = () => {
+    handlePage('Login');
   };
 
   // Navigation items for the main sidebar
@@ -32,9 +69,9 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
   return (
     <>
       {/* Sidebar for desktop */}
-      <div className={`hidden lg:flex flex-col h-screen bg-white shadow-lg transition-all duration-300 ease-in-out ${isOpen ? "w-64" : "w-20"}`}>
+      <div className={`hidden lg:flex flex-col h-screen theme-bg-primary shadow-lg transition-all duration-300 ease-in-out border-r theme-border ${isOpen ? "w-64" : "w-20"}`}>
         {/* Sidebar header */}
-        <div className="flex items-center justify-between p-4 border-b">
+        <div className="flex items-center justify-between p-4 theme-border border-b">
           {isOpen && (
             <motion.div
               initial={{ opacity: 0 }}
@@ -44,12 +81,12 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
               <div className="bg-blue-600 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold">
                 W
               </div>
-              <span className="text-xl font-bold text-gray-800">WeCare</span>
+              <span className="text-xl font-bold theme-text-primary">WeCare</span>
             </motion.div>
           )}
           <button
             onClick={toggleSidebar}
-            className="p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+            className="p-2 rounded-lg theme-text-secondary hover:theme-bg-tertiary"
           >
             {isOpen ? (
               <ChevronLeftIcon className="h-5 w-5" />
@@ -70,8 +107,8 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
                       handlePage(item.page);
                     }}
                     className={`w-full flex items-center rounded-lg px-3 py-3 text-left transition-colors ${currentPage === item.page
-                      ? "bg-blue-50 text-blue-600 font-medium"
-                      : "text-gray-700 hover:bg-gray-100"
+                      ? "theme-bg-tertiary text-blue-600 font-medium"
+                      : "theme-text-secondary hover:theme-bg-tertiary"
                       }`}
                   >
                     <div className="flex items-center">
@@ -98,7 +135,7 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 10 }}
             exit={{ opacity: 0, y: 10 }}
-            className="p-4 border-t">
+            className="p-4 theme-border border-t">
             <div className="space-y-2">
               <nav>
                 <ul className="space-y-1 px-2">
@@ -109,8 +146,8 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
                           handlePage(item.page);
                         }}
                         className={`w-full flex items-center rounded-lg pl-2 text-left transition-colors ${currentPage === item.page
-                          ? "bg-blue-800 text-gray-50 font-medium"
-                          : "text-blue-500 hover:bg-gray-100"
+                          ? "theme-bg-tertiary text-blue-600 font-medium"
+                          : "text-blue-500 hover:theme-bg-tertiary"
                           }`}
                       >{item.name}
                       </button>
@@ -118,15 +155,35 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
                   ))}
                 </ul>
               </nav>
-              <Button variant="contained" className="bg-blue-600 hover:bg-blue-800" fullWidth>
-                Logout
-              </Button>
+              {!isLoading && (
+                user ? (
+                  <div className="flex items-center space-x-2 p-2 theme-bg-secondary rounded-lg">
+                    <AccountBoxIcon className="h-5 w-5 text-blue-600" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium theme-text-primary truncate">
+                        {user.email || 'User'}
+                      </p>
+                      <p className="text-xs theme-text-secondary">Signed in</p>
+                    </div>
+                  </div>
+                ) : (
+                  <Button
+                    variant="contained"
+                    className="bg-blue-600 hover:bg-blue-800"
+                    fullWidth
+                    startIcon={<LoginIcon />}
+                    onClick={handleLoginPage}
+                  >
+                    Login
+                  </Button>
+                )
+              )}
             </div>
           </motion.div>
         )}
       </div>
       {/* Mobile bottom navigation */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 theme-bg-primary theme-border border-t z-50">
         <div className="grid grid-cols-4">
           {navItems.map((item) => (
             <button
@@ -136,7 +193,7 @@ const Sidebar = ({ currentPage, handlePage, isOpen, setIsOpen }) => {
               }}
               className={`flex flex-col items-center justify-center py-2 px-1 ${currentPage === item.page
                 ? "text-blue-600"
-                : "text-gray-500"
+                : "theme-text-secondary"
                 }`}
             >
               <item.icon className="h-6 w-6" />
