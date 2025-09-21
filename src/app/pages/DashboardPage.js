@@ -32,6 +32,11 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
   const [saveMessage, setSaveMessage] = useState(null);
   const [themeSaving, setThemeSaving] = useState(false);
   const [themeMessage, setThemeMessage] = useState(null);
+  const [recentActivity, setRecentActivity] = useState([]);
+  const [activityLoading, setActivityLoading] = useState(true);
+  const [totalPoints, setTotalPoints] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
 
   // Get theme context
   const { themeMode, setThemeMode, theme } = useTheme();
@@ -80,10 +85,100 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
       }
     };
 
+    // Fetch recent activity data
+    const fetchRecentActivity = async () => {
+      try {
+        setActivityLoading(true);
+
+        // Fetch user's donations from the last 30 days
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+        const { data: donations, error } = await supabase
+          .from('donations')
+          .select('*')
+          .eq('user_id', user.id)
+          .gte('created_at', thirtyDaysAgo.toISOString())
+          .order('created_at', { ascending: false })
+          .limit(50);
+
+        if (error) {
+          console.error('Error fetching recent activity:', error);
+          setRecentActivity([]);
+          setTotalPoints(0);
+        } else {
+          // Transform donations into activity format and calculate points
+          const activities = donations.map(donation => {
+            const points = calculatePoints(donation);
+            return {
+              id: donation.id,
+              type: donation.category,
+              description: getActivityDescription(donation),
+              date: donation.created_at,
+              points: points,
+              quantity: donation.quantity || 1
+            };
+          });
+
+          setRecentActivity(activities);
+
+          // Calculate total points
+          const total = activities.reduce((sum, activity) => sum + activity.points, 0);
+          setTotalPoints(total);
+        }
+      } catch (error) {
+        console.error('Unexpected error fetching recent activity:', error);
+        setRecentActivity([]);
+        setTotalPoints(0);
+      } finally {
+        setActivityLoading(false);
+      }
+    };
+
+    // Calculate points based on donation category and quantity
+    const calculatePoints = (donation) => {
+      const quantity = donation.quantity || 1;
+      switch (donation.category?.toLowerCase()) {
+        case 'goods':
+        case 'clothing':
+        case 'books':
+        case 'food':
+          return quantity * 50; // 50 points per item
+        case 'service':
+        case 'volunteer':
+          return quantity * 100; // 100 points per hour/service
+        case 'cash':
+        case 'money':
+          return quantity * 30; // 30 points per unit of currency
+        default:
+          return quantity * 25; // Default 25 points per item
+      }
+    };
+
+    // Get human-readable activity description
+    const getActivityDescription = (donation) => {
+      const category = donation.category?.toLowerCase();
+      const quantity = donation.quantity || 1;
+
+      if (category === 'cash' || category === 'money') {
+        return `Cash Donation of ${quantity} unit${quantity !== 1 ? 's' : ''}`;
+      } else if (category === 'service' || category === 'volunteer') {
+        return `Volunteered ${quantity} hour${quantity !== 1 ? 's' : ''}`;
+      } else {
+        return `${donation.category || 'Item'} Donation${quantity > 1 ? ` (${quantity} items)` : ''}`;
+      }
+    };
+
     if (user) {
       fetchTotalDonations();
+      fetchRecentActivity();
     }
   }, [user]);
+
+  // Reset pagination when new activity data is loaded
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [recentActivity]);
 
   // Fetch user profile data
   useEffect(() => {
@@ -310,6 +405,77 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
   };
 
   const handleDashPage = (selected) => { setDashPage(selected) }
+
+  // Get appropriate icon for activity type
+  const getActivityIcon = (activityType) => {
+    const type = activityType?.toLowerCase();
+    switch (type) {
+      case 'clothing':
+      case 'goods':
+        return '👕';
+      case 'books':
+        return '📚';
+      case 'food':
+      case 'meals':
+        return '🍽️';
+      case 'cash':
+      case 'money':
+        return '💰';
+      case 'service':
+      case 'volunteer':
+        return '🤝';
+      case 'electronics':
+        return '📱';
+      default:
+        return '📦';
+    }
+  };
+
+  // Get relative time string
+  const getTimeAgo = (dateString) => {
+    const now = new Date();
+    const date = new Date(dateString);
+    const diffInSeconds = Math.floor((now - date) / 1000);
+
+    if (diffInSeconds < 60) {
+      return 'just now';
+    } else if (diffInSeconds < 3600) {
+      const minutes = Math.floor(diffInSeconds / 60);
+      return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+    } else if (diffInSeconds < 86400) {
+      const hours = Math.floor(diffInSeconds / 3600);
+      return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+    } else if (diffInSeconds < 604800) {
+      const days = Math.floor(diffInSeconds / 86400);
+      return `${days} day${days !== 1 ? 's' : ''} ago`;
+    } else {
+      const weeks = Math.floor(diffInSeconds / 604800);
+      return `${weeks} week${weeks !== 1 ? 's' : ''} ago`;
+    }
+  };
+
+  // Pagination helpers
+  const getPaginatedActivities = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return recentActivity.slice(startIndex, endIndex);
+  };
+
+  const getTotalPages = () => {
+    return Math.ceil(recentActivity.length / itemsPerPage);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < getTotalPages()) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   const DetailsPage = () => {
     const [edit, setEdit] = useState("ProfileView")
@@ -664,7 +830,15 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
                   </div>
                   <div>
                     <p className="text-gray-600 text-sm">Recent Activity</p>
-                    <p className="font-medium">{getAccountDetails().donation_history.recent_activity} hours ago</p>
+                    <p className="font-medium">
+                      {activityLoading ? (
+                        <span>Loading...</span>
+                      ) : recentActivity.length > 0 ? (
+                        getTimeAgo(recentActivity[0].date)
+                      ) : (
+                        'No recent activity'
+                      )}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -768,9 +942,15 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
               </p>
             </div>
             <div className="bg-white rounded-2xl shadow-lg p-6 text-center">
-              <div className="text-4xl mb-4">❤️</div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">People Helped</h3>
-              <p className="text-3xl font-bold text-green-600">500+</p>
+              <div className="text-4xl mb-4">⭐</div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Total Points</h3>
+              <p className="text-3xl font-bold text-green-600">
+                {activityLoading ? (
+                  <span className="text-lg">Loading...</span>
+                ) : (
+                  `${totalPoints} pts`
+                )}
+              </p>
             </div>
             <div className="bg-white rounded-2xl shadow-lg p-6 text-center">
               <div className="text-4xl mb-4">🏆</div>
@@ -781,32 +961,71 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
 
           <div className="bg-white rounded-2xl shadow-lg p-8">
             <h3 className="text-2xl font-bold text-gray-800 mb-6">Recent Activity</h3>
-            <div className="space-y-4">
-              <div className="flex items-center p-4 bg-gray-50 rounded-lg">
-                <div className="text-blue-600 text-2xl mr-4">👕</div>
-                <div>
-                  <p className="font-medium">Clothing Donation</p>
-                  <p className="text-gray-600 text-sm">2 days ago</p>
-                </div>
-                <div className="ml-auto text-green-600 font-medium">+50 pts</div>
+            {activityLoading ? (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading recent activity...</p>
               </div>
-              <div className="flex items-center p-4 bg-gray-50 rounded-lg">
-                <div className="text-blue-600 text-2xl mr-4">📚</div>
-                <div>
-                  <p className="font-medium">Book Drive Participation</p>
-                  <p className="text-gray-600 text-sm">1 week ago</p>
-                </div>
-                <div className="ml-auto text-green-600 font-medium">+30 pts</div>
+            ) : recentActivity.length === 0 ? (
+              <div className="text-center py-8">
+                <div className="text-4xl mb-4">📊</div>
+                <p className="text-gray-600 mb-2">No recent activity</p>
+                <p className="text-gray-500 text-sm">Your donation activities will appear here</p>
               </div>
-              <div className="flex items-center p-4 bg-gray-50 rounded-lg">
-                <div className="text-blue-600 text-2xl mr-4"> volunte</div>
-                <div>
-                  <p className="font-medium">Volunteered at Shelter</p>
-                  <p className="text-gray-600 text-sm">2 weeks ago</p>
+            ) : (
+              <>
+                <div className="space-y-4">
+                  {getPaginatedActivities().map((activity) => (
+                    <div key={activity.id} className="flex items-center p-4 bg-gray-50 rounded-lg">
+                      <div className="text-blue-600 text-2xl mr-4">
+                        {getActivityIcon(activity.type)}
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium">{activity.description}</p>
+                        <p className="text-gray-600 text-sm">
+                          {new Date(activity.date).toLocaleDateString()} ({getTimeAgo(activity.date)})
+                        </p>
+                      </div>
+                      <div className="text-green-600 font-medium">
+                        +{activity.points} pts
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="ml-auto text-green-600 font-medium">+100 pts</div>
-              </div>
-            </div>
+
+                {/* Pagination Controls */}
+                {getTotalPages() > 1 && (
+                  <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
+                    <div className="text-sm text-gray-600">
+                      Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, recentActivity.length)} of {recentActivity.length} activities
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        onClick={handlePrevPage}
+                        disabled={currentPage === 1}
+                        variant="outlined"
+                        size="small"
+                        className="text-gray-600 border-gray-300 hover:bg-gray-50 disabled:opacity-50"
+                      >
+                        Previous
+                      </Button>
+                      <span className="text-sm text-gray-600 px-2">
+                        Page {currentPage} of {getTotalPages()}
+                      </span>
+                      <Button
+                        onClick={handleNextPage}
+                        disabled={currentPage === getTotalPages()}
+                        variant="outlined"
+                        size="small"
+                        className="text-gray-600 border-gray-300 hover:bg-gray-50 disabled:opacity-50"
+                      >
+                        Next
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </motion.div>
       </div>
