@@ -1,11 +1,5 @@
-import { useEffect, useState } from "react";
-import {
-    motion,
-    useMotionValue,
-    useTransform,
-    animate,
-} from "framer-motion";
-import { interpolate } from "flubber";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 /* -------------------------- MUI -------------------------- */
 import {
@@ -15,89 +9,116 @@ import {
     Button,
     Grid,
     Paper,
+    Typography,
+    Alert,
+    CircularProgress,
+    Divider,
+    Stack,
 } from "@mui/material";
-
-const colors = [
-    "#fff312",
-    "#ff0088",
-    "#dd00ee",
-    "#9911ff",
-    "#0d63f8",
-    "#0cdcf7",
-    "#4ff0b7",
-];
-
-const paths =
-    ["M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z",
-        "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"]
+import { Email, Phone, LocationOn, Send } from "@mui/icons-material";
 
 /* -------------------------------------------------
-   Functional Component for the morphing SVG
+   Form state management and validation
    ------------------------------------------------- */
-function MorphingSVG() {
-    // index of the *current* shape
-    const [current, setCurrent] = useState(0);
-    // progress goes from 0 → 1 for each transition
-    const progress = useMotionValue(0);
+function useContactForm() {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+    });
+    const [errors, setErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState(null);
 
-    const next = (current + 1) % paths.length;
+    const validateForm = () => {
+        const newErrors = {};
 
-    // Interpolate the path and the fill colour based on progress 0‑1
-    const d = useTransform(
-        progress,
-        [0, 1],
-        [paths[current], paths[next]],
-        {
-            mixer: (a, b) => interpolate(a, b, { maxSegmentLength: 0.1 }),
+        if (!formData.name.trim()) {
+            newErrors.name = 'Name is required';
         }
-    );
-    const fill = useTransform(
-        progress,
-        [0, 1],
-        [colors[current], colors[next]]
-    );
 
-    // Run the animation loop
-    useEffect(() => {
-        const controls = animate(progress, 1, {
-            duration: 3,
-            ease: "easeInOut",
-            onComplete: () => {
-                setCurrent(next);            // advance to the next shape
-                progress.set(0);             // restart progress for the next cycle
-            },
-        });
-        return () => controls.stop();
-    }, [current, next, progress]);
+        if (!formData.email.trim()) {
+            newErrors.email = 'Email is required';
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            newErrors.email = 'Email is invalid';
+        }
 
-    return (
-        <svg width={240} height={240} viewBox="0 0 24 24">
-            {/* a faint glowing circle behind the shape – just for visual flair */}
-            <motion.circle
-                cx={12}
-                cy={12}
-                r={9}
-                fill={fill}
-                opacity={0.2}
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ repeat: Infinity, duration: 3 }}
-            />
-            {/* actual morphing shape */}
-            <motion.path
-                d={d}
-                fill={fill}
-                stroke="#ffffff"
-                strokeWidth={0.5}
-                style={{ filter: "drop-shadow(0 0 6px rgba(0,0,0,0.4))" }}
-            />
-        </svg>
-    );
+        if (!formData.subject.trim()) {
+            newErrors.subject = 'Subject is required';
+        }
+
+        if (!formData.message.trim()) {
+            newErrors.message = 'Message is required';
+        } else if (formData.message.trim().length < 10) {
+            newErrors.message = 'Message must be at least 10 characters';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleInputChange = (field) => (event) => {
+        const value = event.target.value;
+        setFormData(prev => ({ ...prev, [field]: value }));
+
+        // Clear error when user starts typing
+        if (errors[field]) {
+            setErrors(prev => ({ ...prev, [field]: '' }));
+        }
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
+
+        setIsSubmitting(true);
+        setSubmitStatus(null);
+
+        try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // Here you would typically send the data to your backend
+            console.log('Form submitted:', formData);
+
+            setSubmitStatus('success');
+            setFormData({ name: '', email: '', subject: '', message: '' });
+        } catch (error) {
+            setSubmitStatus('error');
+            console.error('Form submission error:', error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    return {
+        formData,
+        errors,
+        isSubmitting,
+        submitStatus,
+        handleInputChange,
+        handleSubmit
+    };
 }
 
+
 /* -------------------------------------------------
-   Contact‑Us page
-   ------------------------------------------------- */
+    Contact‑Us page
+    ------------------------------------------------- */
 export default function ContactUs() {
+    const {
+        formData,
+        errors,
+        isSubmitting,
+        submitStatus,
+        handleInputChange,
+        handleSubmit
+    } = useContactForm();
+
     return (
         <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
             {/* -------------------------------------------------
@@ -143,10 +164,10 @@ export default function ContactUs() {
                 }}
             >
                 <Container maxWidth="lg">
-                    <Grid container spacing={6} alignItems="center">
+                    <Grid container spacing={6} direction="column" alignItems="center">
 
-                        {/* ----- Right side: the contact form inside a Paper ----- */}
-                        <Grid item xs={12} md={7}>
+                        {/* ----- Top: Contact Information ----- */}
+                        <Grid item xs={12} md={8} lg={6}>
                             <motion.div
                                 variants={{
                                     hidden: { opacity: 0, y: 20 },
@@ -158,16 +179,177 @@ export default function ContactUs() {
                                     sx={{
                                         p: 4,
                                         borderRadius: 3,
-                                        background: "rgba(255,255,255,0.85)",   // translucent background
+                                        background: "rgba(255,255,255,0.85)",
                                         backdropFilter: "blur(8px)",
+                                        mb: 4,
+                                        maxWidth: '600px',
+                                        width: '100%'
                                     }}
                                 >
-                                    {/* Render the MorphingSVG component directly */}
-                                    <MorphingSVG />
-                                </Paper>
+                                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main', textAlign: 'center' }}>
+                                        Get in Touch
+                                    </Typography>
+                                    <Typography variant="body1" sx={{ mb: 3, color: 'text.secondary', textAlign: 'center' }}>
+                                        We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+                                    </Typography>
 
+                                    <Box sx={{ mb: 3, pl: 2 }}>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                                            <Email sx={{ mr: 2, color: 'primary.main' }} />
+                                            <Box>
+                                                <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                                                    Email
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    hello@wecare.org
+                                                </Typography>
+                                            </Box>
+                                        </Box>
+
+                                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                                            <Phone sx={{ mr: 2, color: 'primary.main' }} />
+                                            <Box>
+                                                <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                                                    Phone
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    +1 (555) 123-4567
+                                                </Typography>
+                                            </Box>
+                                        </Box>
+
+                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <LocationOn sx={{ mr: 2, color: 'primary.main' }} />
+                                            <Box>
+                                                <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                                                    Address
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    123 Care Street<br />
+                                                    Compassion City, CC 12345
+                                                </Typography>
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                </Paper>
                             </motion.div>
                         </Grid>
+                        {/* ----- Bottom: Contact Form ----- */}
+                        <Grid item xs={12} md={8} lg={6}>
+                            <motion.div
+                                variants={{
+                                    hidden: { opacity: 0, y: 20 },
+                                    visible: { opacity: 1, y: 0 },
+                                }}
+                            >
+                                <Paper
+                                    elevation={6}
+                                    sx={{
+                                        p: 4,
+                                        borderRadius: 3,
+                                        background: "rgba(255,255,255,0.85)",
+                                        backdropFilter: "blur(8px)",
+                                        maxWidth: '600px',
+                                        width: '100%'
+                                    }}
+                                >
+                                    <Typography
+                                        variant="h5"
+                                        gutterBottom
+                                        sx={{ fontWeight: "bold", color: "primary.main", mb: 3 }}
+                                    >
+                                        Send us a Message
+                                    </Typography>
+
+                                    {submitStatus === "success" && (
+                                        <Alert severity="success" sx={{ mb: 3 }}>
+                                            Thank you for your message! We'll get back to you soon.
+                                        </Alert>
+                                    )}
+
+                                    {submitStatus === "error" && (
+                                        <Alert severity="error" sx={{ mb: 3 }}>
+                                            Something went wrong. Please try again later.
+                                        </Alert>
+                                    )}
+
+                                    <Box component="form" onSubmit={handleSubmit}>
+                                        <Stack spacing={3}>
+                                            <TextField
+                                                fullWidth
+                                                label="Name"
+                                                value={formData.name}
+                                                onChange={handleInputChange("name")}
+                                                error={!!errors.name}
+                                                helperText={errors.name}
+                                                variant="outlined"
+                                                disabled={isSubmitting}
+                                            />
+
+                                            <TextField
+                                                fullWidth
+                                                label="Email"
+                                                type="email"
+                                                value={formData.email}
+                                                onChange={handleInputChange("email")}
+                                                error={!!errors.email}
+                                                helperText={errors.email}
+                                                variant="outlined"
+                                                disabled={isSubmitting}
+                                            />
+
+                                            <TextField
+                                                fullWidth
+                                                label="Subject"
+                                                value={formData.subject}
+                                                onChange={handleInputChange("subject")}
+                                                error={!!errors.subject}
+                                                helperText={errors.subject}
+                                                variant="outlined"
+                                                disabled={isSubmitting}
+                                            />
+
+                                            <TextField
+                                                fullWidth
+                                                label="Message"
+                                                multiline
+                                                rows={4}
+                                                value={formData.message}
+                                                onChange={handleInputChange("message")}
+                                                error={!!errors.message}
+                                                helperText={errors.message}
+                                                variant="outlined"
+                                                disabled={isSubmitting}
+                                            />
+
+                                            {/* Centered Button */}
+                                            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+                                                <Button
+                                                    type="submit"
+                                                    variant="contained"
+                                                    size="large"
+                                                    disabled={isSubmitting}
+                                                    startIcon={
+                                                        isSubmitting ? <CircularProgress size={20} /> : <Send />
+                                                    }
+                                                    sx={{
+                                                        py: 1.5,
+                                                        px: 4,
+                                                        fontSize: "1.1rem",
+                                                        borderRadius: 2,
+                                                        minWidth: "200px",
+                                                    }}
+                                                >
+                                                    {isSubmitting ? "Sending..." : "Send Message"}
+                                                </Button>
+                                            </Box>
+                                        </Stack>
+                                    </Box>
+                                </Paper>
+                            </motion.div>
+                        </Grid>
+
+
                     </Grid>
                 </Container>
             </motion.main>

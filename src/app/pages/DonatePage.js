@@ -22,15 +22,15 @@ const DonationTypes = [
 ];
 
 const AllGoodsDonations = [
-  { "name": "Clothing", "color": Colors.red },
-  { "name": "Non - perishable food", "color": Colors.red },
-  { "name": "Books & educatutional materials", "color": Colors.green },
-  { "name": "Electronics", "color": Colors.green },
-  { "name": "Furniture", "color": Colors.yellow },
-  { "name": "Medical supplies", "color": Colors.yellow },
-  { "name": "Toys & games", "color": Colors.orange },
-  { "name": "Hygiene", "color": Colors.orange },
-  { "name": "Household", "color": Colors.blue }
+  { "name": "Clothing", "color": Colors.red, lottie: require('../animations/clothing.json') },
+  { "name": "Non - perishable food", "color": Colors.red, lottie: require('../animations/nonperishable.json') },
+  { "name": "Books & educatutional materials", "color": Colors.green, lottie: require('../animations/goods.json') },
+  { "name": "Electronics", "color": Colors.green, lottie: require('../animations/electronics.json') },
+  { "name": "Furniture", "color": Colors.yellow, lottie: require('../animations/furniture.json') },
+  { "name": "Medical supplies", "color": Colors.yellow, lottie: require('../animations/goods.json') },
+  { "name": "Toys & games", "color": Colors.orange, lottie: require('../animations/toys.json') },
+  { "name": "Hygiene", "color": Colors.orange, lottie: require('../animations/hygiene.json') },
+  { "name": "Household", "color": Colors.blue, lottie: require('../animations/goods.json') }
 ]
 
 const ImageDialog = ({ handleImage, image }) => {
@@ -1405,7 +1405,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
                       options={{
                         loop: true,
                         autoplay: true,
-                        animationData: require('../animations/cash.json'),
+                        animationData: item.lottie,
                         rendererSettings: {
                           preserveAspectRatio: 'xMidYMid slice'
                         }
