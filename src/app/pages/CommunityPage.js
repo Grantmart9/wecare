@@ -1,8 +1,12 @@
 "use client"
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as motion from "motion/react-client"
+import { useAuth } from "../authContext";
 
-const CommunityPage = () => {
+const CommunityPage = ({ handlePage }) => {
+  // Get auth context
+  const { user } = useAuth();
+
   // Mock data for community content
   const socialMediaPosts = [
     {
@@ -89,20 +93,78 @@ const CommunityPage = () => {
     {
       id: 1,
       title: "Community Garden Tour",
-      thumbnail: "/placeholder-video-1.jpg",
+      youtubeId: "dQw4w9WgXcQ", // Example YouTube video ID
       duration: "3:45"
     },
     {
       id: 2,
       title: "Volunteer Spotlight: Maria's Story",
-      thumbnail: "/placeholder-video-2.jpg",
+      youtubeId: "dQw4w9WgXcQ", // Example YouTube video ID
       duration: "5:22"
     }
   ];
 
+  // State for video modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentVideo, setCurrentVideo] = useState(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // Video modal handlers
+  const openVideoModal = (video) => {
+    setCurrentVideo(video);
+    setIsModalOpen(true);
+  };
+
+  const closeVideoModal = () => {
+    setIsModalOpen(false);
+    setCurrentVideo(null);
+  };
+
+  // VideoModal component
+  const VideoModal = () => {
+    if (!isModalOpen || !currentVideo) return null;
+
+    return (
+      <motion.div
+        className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={closeVideoModal}
+      >
+        <motion.div
+          className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex justify-between items-center p-4 border-b">
+            <h3 className="text-xl font-bold text-gray-800">{currentVideo.title}</h3>
+            <button
+              onClick={closeVideoModal}
+              className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+            >
+              ×
+            </button>
+          </div>
+          <div className="relative pb-[56.25%] h-0">
+            <iframe
+              src={`https://www.youtube.com/embed/${currentVideo.youtubeId}?autoplay=1`}
+              className="absolute top-0 left-0 w-full h-full"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title={currentVideo.title}
+            />
+          </div>
+        </motion.div>
+      </motion.div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
@@ -126,14 +188,17 @@ const CommunityPage = () => {
           >
             Where neighbors become friends and together we make a difference
           </motion.p>
-          <motion.button
-            className="bg-white text-blue-600 font-bold py-3 px-8 rounded-full text-lg hover:bg-gray-100 transition duration-300"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            Join Us Today
-          </motion.button>
+          {!user && (
+            <motion.button
+              onClick={() => handlePage('Login')}
+              className="bg-white text-blue-600 font-bold py-3 px-8 rounded-full text-lg hover:bg-gray-100 transition duration-300"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              Join Us Today
+            </motion.button>
+          )}
         </div>
       </div>
 
@@ -237,15 +302,32 @@ const CommunityPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 * index }}
               >
-                <div className="relative">
-                  <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-64" />
+                <div className="relative cursor-pointer" onClick={() => openVideoModal(video)}>
+                  <img
+                    src={`https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`}
+                    alt={video.title}
+                    className="w-full h-64 object-cover hover:opacity-90 transition duration-300"
+                    onError={(e) => {
+                      e.target.src = `https://img.youtube.com/vi/${video.youtubeId}/0.jpg`;
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition duration-300 flex items-center justify-center">
+                    <div className="bg-red-600 text-white rounded-full p-4 opacity-0 hover:opacity-100 transition duration-300">
+                      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </div>
                   <div className="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-2 py-1 rounded">
                     {video.duration}
                   </div>
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-800 mb-2">{video.title}</h3>
-                  <button className="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg transition duration-300 flex items-center">
+                  <button
+                    onClick={() => openVideoModal(video)}
+                    className="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg transition duration-300 flex items-center"
+                  >
                     <span>▶</span>
                     <span className="ml-2">Watch Video</span>
                   </button>
@@ -293,6 +375,9 @@ const CommunityPage = () => {
           </div>
         </motion.section>
       </div>
+
+      {/* Video Modal */}
+      <VideoModal />
     </div>
   );
 }

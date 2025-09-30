@@ -12,6 +12,7 @@ import animationData1 from '../animations/goods.json';
 import animationData2 from '../animations/service.json';
 import animationData3 from '../animations/cash.json';
 import * as motion from "motion/react-client";
+import { useAnimate } from "motion/react";
 
 const supabase = createClient(SUPABASE_URL, API_KEY);
 
@@ -64,6 +65,191 @@ const ImageDialog = ({ handleImage, image }) => {
         <img width={150} alt={image} src={image} />
       </div>
     </>)
+}
+
+const SvgPathLoader = () => {
+  const [scope, animate] = useAnimate();
+
+  useEffect(() => {
+    const animateLoader = async () => {
+      // Calculate total animation duration (longest letter + its delay)
+      const totalDuration = 4000; // 4 seconds total
+
+      // W animation - runs for full duration
+      animate(
+        [
+          [".w1", { pathLength: 0.6, pathOffset: 0 }],
+          [".w1", { pathLength: 0.01, pathOffset: 0 }],
+          [".w2", { pathLength: 0.6, pathOffset: 0.6 }, { at: "<" }]
+        ],
+        { duration: 2.5, ease: "linear" }
+      );
+
+      // e animation - runs for full duration
+      animate(
+        [
+          [".e1", { pathLength: 0.6, pathOffset: 0 }],
+          [".e1", { pathLength: 0.01, pathOffset: 0 }],
+          [".e2", { pathLength: 0.6, pathOffset: 0.6 }, { at: "<" }]
+        ],
+        { duration: 2, ease: "linear", delay: 0.3 }
+      );
+
+      // C animation - runs for full duration
+      animate(
+        [
+          [".c1", { pathLength: 0.7, pathOffset: 0 }],
+          [".c1", { pathLength: 0.01, pathOffset: 0 }]
+        ],
+        { duration: 2.2, ease: "linear", delay: 0.6 }
+      );
+
+      // a animation - runs for full duration
+      animate(
+        [
+          [".a1", { pathLength: 0.6, pathOffset: 0 }],
+          [".a1", { pathLength: 0.01, pathOffset: 0 }],
+          [".a2", { pathLength: 0.6, pathOffset: 0.6 }, { at: "<" }]
+        ],
+        { duration: 2, ease: "linear", delay: 0.9 }
+      );
+
+      // r animation - runs for full duration
+      animate(
+        [
+          [".r1", { pathLength: 0.6, pathOffset: 0 }],
+          [".r1", { pathLength: 0.01, pathOffset: 0 }],
+          [".r2", { pathLength: 0.6, pathOffset: 0.6 }, { at: "<" }]
+        ],
+        { duration: 2, ease: "linear", delay: 1.2 }
+      );
+
+      // e animation (second e) - runs for full duration
+      animate(
+        [
+          [".e3", { pathLength: 0.6, pathOffset: 0 }],
+          [".e3", { pathLength: 0.01, pathOffset: 0 }],
+          [".e4", { pathLength: 0.6, pathOffset: 0.6 }, { at: "<" }]
+        ],
+        { duration: 2, ease: "linear", delay: 1.5 }
+      );
+
+      // Set a timeout to end loading after animation completes
+      setTimeout(() => {
+        // Animation completed, loading state will end naturally
+      }, totalDuration);
+    };
+    animateLoader();
+  }, []);
+
+  return (
+    <svg
+      ref={scope}
+      width="120mm"
+      height="40mm"
+      viewBox="0 0 120 40"
+    >
+      {/* W */}
+      <motion.path
+        className="w1"
+        initial={{ pathLength: 0.6, pathOffset: 0.6 }}
+        d="M 2,35 L 8,8 L 12,25 L 16,8 L 22,35"
+        stroke="#3B82F6"
+        strokeWidth="2"
+        fill="none"
+      />
+      <motion.path
+        className="w2"
+        initial={{ pathLength: 0, pathOffset: 1 }}
+        d="M 2,35 L 8,8 L 12,25 L 16,8 L 22,35"
+        stroke="#3B82F6"
+        strokeWidth="2"
+        fill="none"
+      />
+
+      {/* e */}
+      <motion.path
+        className="e1"
+        initial={{ pathLength: 0.6, pathOffset: 0.6 }}
+        d="M 28,20 L 35,20 L 33,18 L 30,18 L 30,22 L 33,22 L 35,20"
+        stroke="#8B5CF6"
+        strokeWidth="2"
+        fill="none"
+      />
+      <motion.path
+        className="e2"
+        initial={{ pathLength: 0, pathOffset: 1 }}
+        d="M 28,20 L 35,20 L 33,18 L 30,18 L 30,22 L 33,22 L 35,20"
+        stroke="#8B5CF6"
+        strokeWidth="2"
+        fill="none"
+      />
+
+      {/* C */}
+      <motion.path
+        className="c1"
+        initial={{ pathLength: 0.7, pathOffset: 0.7 }}
+        d="M 42,15 Q 38,12 38,18 Q 38,24 42,27"
+        stroke="#10B981"
+        strokeWidth="2"
+        fill="none"
+      />
+
+      {/* a */}
+      <motion.path
+        className="a1"
+        initial={{ pathLength: 0.6, pathOffset: 0.6 }}
+        d="M 48,27 Q 52,25 54,22 L 54,27 L 56,27 L 56,18 L 54,18 L 50,22 Q 48,24 48,27"
+        stroke="#F59E0B"
+        strokeWidth="2"
+        fill="none"
+      />
+      <motion.path
+        className="a2"
+        initial={{ pathLength: 0, pathOffset: 1 }}
+        d="M 48,27 Q 52,25 54,22 L 54,27 L 56,27 L 56,18 L 54,18 L 50,22 Q 48,24 48,27"
+        stroke="#F59E0B"
+        strokeWidth="2"
+        fill="none"
+      />
+
+      {/* r */}
+      <motion.path
+        className="r1"
+        initial={{ pathLength: 0.6, pathOffset: 0.6 }}
+        d="M 62,27 L 62,18 L 64,18 L 68,20 L 68,22 L 64,20 L 64,27"
+        stroke="#EF4444"
+        strokeWidth="2"
+        fill="none"
+      />
+      <motion.path
+        className="r2"
+        initial={{ pathLength: 0, pathOffset: 1 }}
+        d="M 62,27 L 62,18 L 64,18 L 68,20 L 68,22 L 64,20 L 64,27"
+        stroke="#EF4444"
+        strokeWidth="2"
+        fill="none"
+      />
+
+      {/* e (second e) */}
+      <motion.path
+        className="e3"
+        initial={{ pathLength: 0.6, pathOffset: 0.6 }}
+        d="M 74,20 L 81,20 L 79,18 L 76,18 L 76,22 L 79,22 L 81,20"
+        stroke="#8B5CF6"
+        strokeWidth="2"
+        fill="none"
+      />
+      <motion.path
+        className="e4"
+        initial={{ pathLength: 0, pathOffset: 1 }}
+        d="M 74,20 L 81,20 L 79,18 L 76,18 L 76,22 L 79,22 L 81,20"
+        stroke="#8B5CF6"
+        strokeWidth="2"
+        fill="none"
+      />
+    </svg>
+  );
 }
 
 const DonatePage = ({ handlePage, scrollToTop }) => {
@@ -1952,13 +2138,13 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
     );
   };
 
-  // Show loading spinner while checking authentication
+
+  // Show SVG path loading animation while checking authentication
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <SvgPathLoader />
         </div>
       </div>
     );

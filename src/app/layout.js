@@ -2,6 +2,7 @@
 import { ThemeProvider } from "@mui/material";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { createAppTheme } from "./themeprovider";
+import { AuthProvider } from "./authContext";
 import "./globals.css";
 
 // Create theme context
@@ -64,12 +65,12 @@ const AppThemeProvider = ({ children }) => {
     if (mode === 'dark') {
       root.classList.add('dark');
       body.classList.add('dark');
-      body.style.backgroundColor = '#111827'; // gray-900
+      body.className = 'dark bg-gradient-to-r from-blue-600 to-purple-700';
       body.style.color = '#f9fafb'; // gray-50
     } else {
       root.classList.remove('dark');
       body.classList.remove('dark');
-      body.style.backgroundColor = '#f9fafb'; // gray-50
+      body.className = 'bg-gradient-to-r from-blue-600 to-purple-700';
       body.style.color = '#1f2937'; // gray-800
     }
   };
@@ -100,7 +101,9 @@ const AppThemeProvider = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={value}>
-      <ThemeProvider theme={currentTheme}>{children}</ThemeProvider>
+      <ThemeProvider theme={currentTheme}>
+        <AuthProvider>{children}</AuthProvider>
+      </ThemeProvider>
     </ThemeContext.Provider>
   );
 };
@@ -108,7 +111,7 @@ const AppThemeProvider = ({ children }) => {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="h-full w-full transition-colors duration-300">
+      <body className="transition-colors duration-300">
         <AppThemeProvider>{children}</AppThemeProvider>
       </body>
     </html>

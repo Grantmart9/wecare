@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Lottie from "lottie-react";
 
 /* -------------------------- MUI -------------------------- */
 import {
@@ -17,7 +16,6 @@ import {
 } from "@mui/material";
 
 /* ------------------------ Local data --------------------- */
-import aboutAnimation from "../assets/about-animation.json";
 import { team } from "../data/about";
 import { fadeInUp, stagger } from "../animations/about";
 
@@ -67,18 +65,9 @@ export default function AboutPage() {
         variants={stagger}
       >
         <Container maxWidth="lg">
-          {/* ---------- Hero – Lottie + heading ---------- */}
+          {/* ---------- Hero – simple design ---------- */}
           <Box textAlign="center" mb={8}>
             <motion.div variants={fadeInUp}>
-              <Box display="flex" justifyContent="center" mb={3}>
-                {/* ----  Lottie with explicit size  ---- */}
-                <Lottie
-                  animationData={aboutAnimation}
-                  loop
-                  style={{ width: 320, height: 320 }}   // ← ensures it appears
-                />
-              </Box>
-
               <Typography variant="h3" component="h1" gutterBottom>
                 Our Story
               </Typography>
@@ -89,7 +78,6 @@ export default function AboutPage() {
               </Typography>
             </motion.div>
           </Box>
-
           {/* ---------- Team cards ---------- */}
           <motion.div variants={fadeInUp}>
             <Typography

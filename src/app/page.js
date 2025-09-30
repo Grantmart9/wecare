@@ -8,12 +8,11 @@ import DashboardPage from "./pages/DashboardPage";
 import AboutPage from "./pages/AboutPage";
 import ContactUsPage from "./pages/ContactUsPage";
 import LoginPage from "./pages/LoginPage";
-import Sidebar from "./components/Sidebar";
+import TopNavbar from "./components/TopNavbar";
 import { useTheme } from "./layout";
 
 export default function Home() {
   const [CurrentPage, setCurrentPage] = useState("Home")
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const scrollContainerRef = useRef(null);
 
   // Get theme context
@@ -38,15 +37,14 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={`flex h-screen theme-bg-secondary transition-colors duration-300 ${themeMode === 'dark' ? 'dark' : ''}`}>
-      <Sidebar
+    <div className={`min-h-screen transition-colors duration-300 ${themeMode === 'dark' ? 'dark' : ''}`} style={{ backgroundColor: 'transparent' }}>
+      <TopNavbar
         currentPage={CurrentPage}
         handlePage={handlePage}
-        isOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
+        scrollToTop={scrollToTop}
       />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pt-4 pb-20 lg:pb-4 lg:pt-4 theme-bg-primary">
+      <div className="pt-16">
+        <div ref={scrollContainerRef} className="min-h-screen overflow-y-auto" style={{ backgroundColor: 'transparent' }}>
           {
             <>
               {CurrentPage === "Home" ? <Homepage handlePage={handlePage} CurrentPage={CurrentPage} /> : null}
