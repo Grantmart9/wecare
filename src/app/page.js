@@ -21,9 +21,12 @@ export default function Home() {
   const handlePage = (Page) => {
     setCurrentPage(Page);
     console.log("Current Page:", Page);
+    // Auto-scroll to top when changing pages
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop = 0;
     }
+    // Also scroll the window to top for complete reset
+    window.scrollTo(0, 0);
   }
 
   const scrollToTop = () => {
