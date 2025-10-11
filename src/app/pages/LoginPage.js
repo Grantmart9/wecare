@@ -24,28 +24,32 @@ const LoginForm = ({ loginData, handleLoginChange, handleLogin, loading, showPas
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.3 }}
     >
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="grid grid-flow-row gap-4">
             <TextField
                 fullWidth
                 label="Email"
                 name="email"
                 type="email"
+                size="small"
                 value={loginData.email}
                 onChange={handleLoginChange}
                 required
                 disabled={loading}
                 variant="outlined"
+                className="mb-4"
             />
             <TextField
                 fullWidth
                 label="Password"
                 name="password"
+                size="small"
                 type={showPassword ? 'text' : 'password'}
                 value={loginData.password}
                 onChange={handleLoginChange}
                 required
                 disabled={loading}
                 variant="outlined"
+                className="mb-4"
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
@@ -80,7 +84,7 @@ const RegisterForm = ({ registerData, handleRegisterChange, handleRegister, load
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.3 }}
     >
-        <form onSubmit={handleRegister} className="space-y-4">
+        <form onSubmit={handleRegister} className="grid grid-flow-row gap-4">
             <TextField
                 fullWidth
                 label="Full Name"
@@ -90,6 +94,7 @@ const RegisterForm = ({ registerData, handleRegisterChange, handleRegister, load
                 required
                 disabled={loading}
                 variant="outlined"
+                size="small"
             />
             <TextField
                 fullWidth
@@ -101,6 +106,7 @@ const RegisterForm = ({ registerData, handleRegisterChange, handleRegister, load
                 required
                 disabled={loading}
                 variant="outlined"
+                size="small"
             />
             <TextField
                 fullWidth
@@ -112,6 +118,7 @@ const RegisterForm = ({ registerData, handleRegisterChange, handleRegister, load
                 required
                 disabled={loading}
                 variant="outlined"
+                size="small"
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
@@ -135,6 +142,7 @@ const RegisterForm = ({ registerData, handleRegisterChange, handleRegister, load
                 required
                 disabled={loading}
                 variant="outlined"
+                size="small"
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
