@@ -99,10 +99,10 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                             className="flex items-center space-x-2 cursor-pointer"
                             onClick={() => handleNavClick('Home')}
                         >
-                            <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white w-10 h-5 rounded-xl flex items-center justify-center font-bold shadow-lg">
+                            <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold shadow-lg">
                                 W
                             </div>
-                            <span className={`text-xl font-bold transition-colors duration-300 ${isScrolled ? 'text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white'
+                            <span className={`text-3xl font-bold transition-colors duration-300 ${isScrolled ? 'text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white'
                                 }`}>
                                 WeCare
                             </span>
@@ -119,10 +119,10 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                                         whileTap={{ scale: 0.95 }}
                                         onClick={() => handleNavClick(item.page)}
                                         className={`flex items-center space-x-2 px-3 py-2 rounded-lg font-medium transition-all duration-200 ${currentPage === item.page
-                                            ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 shadow-md'
-                                            : `hover:bg-gray-100 dark:hover:bg-gray-800 ${isScrolled
-                                                ? 'text-gray-900 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
-                                                : 'text-gray-900 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white/10'
+                                            ? ' bg-transparent  text-blue-600 dark:text-orange-200'
+                                            : ` ${isScrolled
+                                                ? 'text-gray-900 dark:text-gray-300 '
+                                                : 'text-gray-900 dark:text-gray-200 '
                                             }`
                                             }`}
                                     >
@@ -140,7 +140,7 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                         onClick={() => handleNavClick(item.page)}
-                                        className={`px-3 py-2 rounded-lg font-medium transition-all duration-200 ${currentPage === item.page
+                                        className={`px-3 py-2 rounded-lg text-sm transition-all duration-200 ${currentPage === item.page
                                             ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 shadow-md'
                                             : `hover:bg-gray-100 dark:hover:bg-gray-800 ${isScrolled
                                                 ? 'text-gray-900 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
@@ -157,26 +157,7 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                             <div className="flex items-center space-x-4">
                                 {!isLoading && (
                                     user ? (
-                                        <motion.div
-                                            initial={{ opacity: 0, scale: 0.8 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            className={`flex items-center space-x-2 px-3 py-2 rounded-lg ${isScrolled
-                                                ? 'theme-bg-secondary'
-                                                : 'bg-white/10 backdrop-blur-sm'
-                                                }`}
-                                        >
-                                            <AccountBoxIcon className="h-5 w-5 text-blue-600" />
-                                            <div className="flex-1 min-w-0">
-                                                <p className={`text-sm font-medium truncate ${isScrolled ? 'text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white'
-                                                    }`}>
-                                                    {user.email || 'User'}
-                                                </p>
-                                                <p className={`text-xs ${isScrolled ? 'text-gray-600 dark:text-gray-300' : 'text-gray-700 dark:text-gray-300'
-                                                    }`}>
-                                                    Signed in
-                                                </p>
-                                            </div>
-                                        </motion.div>
+                                        <div className="block w-28"></div>
                                     ) : (
                                         <motion.div
                                             whileHover={{ scale: 1.05 }}

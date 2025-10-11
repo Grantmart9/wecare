@@ -112,11 +112,15 @@ const Homepage = ({ handlePage }) => {
               onClick={() => handlePage("Donate")}
               className="rounded-full px-8 py-3 text-lg font-bold"
               sx={{
-                bgcolor: "white",
-                color: "blue.600",
+                bgcolor: "transparent",
+                color: "white",
+
                 textTransform: "none",
                 '&:hover': {
                   bgcolor: "gray.100",
+                  scale: 1.05,
+                  color: "yellow",
+                  transition: "all 0.3s ease-in-out",
                 }
               }}
             >

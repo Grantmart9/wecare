@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { SUPABASE_URL, API_KEY, Colors } from "../supabase";
 import { createClient } from "@supabase/supabase-js";
-import { Button, TextField, Checkbox, FormControlLabel, Typography, Box } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
