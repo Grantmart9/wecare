@@ -100,7 +100,7 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                             onClick={() => handleNavClick('Home')}
                         >
                             <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold shadow-lg">
-                                W
+                                WC
                             </div>
                             <span className={`text-3xl font-bold transition-colors duration-300 ${isScrolled ? 'text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white'
                                 }`}>

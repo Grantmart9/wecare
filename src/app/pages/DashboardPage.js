@@ -35,6 +35,8 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
   const [recentActivity, setRecentActivity] = useState([]);
   const [activityLoading, setActivityLoading] = useState(true);
   const [totalPoints, setTotalPoints] = useState(0);
+  const [userRank, setUserRank] = useState(0);
+  const [rankLoading, setRankLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
 
@@ -135,6 +137,59 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
       }
     };
 
+    // Fetch all users' total points for rank calculation
+    const fetchUserRankings = async () => {
+      try {
+        setRankLoading(true);
+
+        // Fetch all donations from all users
+        const { data: allDonations, error } = await supabase
+          .from('donations')
+          .select('user_id, category, quantity, created_at');
+
+        if (error) {
+          console.error('Error fetching user rankings:', error);
+          setUserRank(0);
+          return;
+        }
+
+        if (!allDonations || allDonations.length === 0) {
+          setUserRank(1); // First user gets rank 1
+          return;
+        }
+
+        // Calculate total points for each user
+        const userPointsMap = {};
+
+        allDonations.forEach(donation => {
+          const userId = donation.user_id;
+          const points = calculatePoints(donation);
+
+          if (userPointsMap[userId]) {
+            userPointsMap[userId] += points;
+          } else {
+            userPointsMap[userId] = points;
+          }
+        });
+
+        // Convert to array and sort by points descending
+        const userRankings = Object.entries(userPointsMap)
+          .map(([userId, points]) => ({ userId, points }))
+          .sort((a, b) => b.points - a.points);
+
+        // Find current user's rank
+        const currentUserIndex = userRankings.findIndex(user => user.userId === user.id);
+        const rank = currentUserIndex !== -1 ? currentUserIndex + 1 : userRankings.length + 1;
+
+        setUserRank(rank);
+      } catch (error) {
+        console.error('Unexpected error fetching user rankings:', error);
+        setUserRank(0);
+      } finally {
+        setRankLoading(false);
+      }
+    };
+
     // Calculate points based on donation category and quantity
     const calculatePoints = (donation) => {
       const quantity = donation.quantity || 1;
@@ -172,6 +227,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
     if (user) {
       fetchTotalDonations();
       fetchRecentActivity();
+      fetchUserRankings();
     }
   }, [user]);
 
@@ -955,7 +1011,13 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
             <div className="bg-white rounded-2xl shadow-lg p-6 text-center">
               <div className="text-4xl mb-4">🏆</div>
               <h3 className="text-xl font-bold text-gray-800 mb-2">Community Rank</h3>
-              <p className="text-3xl font-bold text-purple-600">#12</p>
+              <p className="text-3xl font-bold text-purple-600">
+                {rankLoading ? (
+                  <span className="text-lg">Loading...</span>
+                ) : (
+                  `#${userRank}`
+                )}
+              </p>
             </div>
           </div>
 
