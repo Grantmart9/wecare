@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  //output: "export",
+  output: "export",
   trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
   webpack: (config, { isServer }) => {
     // Add file-loader for font files
     config.module.rules.push({

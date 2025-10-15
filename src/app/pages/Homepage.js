@@ -110,7 +110,7 @@ const Homepage = ({ handlePage }) => {
           >
             <Button
               onClick={() => handlePage("Donate")}
-              className="rounded-full px-8 py-3 text-lg font-bold"
+              className="rounded-full px-8 py-3 bg-gradient-to-r from-yellow-200 to-yellow-400"
               sx={{
                 bgcolor: "transparent",
                 color: "white",
@@ -124,7 +124,7 @@ const Homepage = ({ handlePage }) => {
                 }
               }}
             >
-              Donate Now
+              <div className="text-lg font-bold text-purple-800"> Donate Now</div>
             </Button>
           </motion.div>
         </div>
@@ -314,7 +314,7 @@ const Homepage = ({ handlePage }) => {
           />
           <Button
             onClick={() => handlePage("Donate")}
-            className="rounded-full px-8 py-3 text-lg font-bold mt-4"
+            className="rounded-full px-8 py-3 bg-gradient-to-r from-yellow-200 to-yellow-400"
             sx={{
               bgcolor: "white",
               color: "blue.600",
@@ -324,7 +324,7 @@ const Homepage = ({ handlePage }) => {
               }
             }}
           >
-            Start Donating Today
+            <div className="text-lg font-bold text-purple-800">Start Donating Today</div>
           </Button>
         </div>
       </motion.div>

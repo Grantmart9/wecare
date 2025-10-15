@@ -6,12 +6,13 @@ import { Button, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Lottie from 'react-lottie';
 import animationData1 from '../animations/goods.json';
 import animationData2 from '../animations/service.json';
 import animationData3 from '../animations/cash.json';
 import loadingAnimation from '../animations/loading.json';
+import Image from 'next/image';
+import backButtonImage from '../images/backbutton.png';
 import * as motion from "motion/react-client";
 import { useAnimate } from "motion/react";
 
@@ -327,7 +328,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             disableRipple={true}
             sx={{ backgroundColor: "transparent", textTransform: "none", color: "gray.800" }}
             onClick={() => handleGoods("none")}>
-            <ArrowBackIcon />
+            <Image src={backButtonImage} alt="Back" width={24} height={24} />
           </Button>
           Donate | {donationType}
         </div>
@@ -356,7 +357,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
             disableRipple={true}
             sx={{ backgroundColor: "transparent", textTransform: "none", color: "gray.800" }}
             onClick={() => handleGoods1("none")}>
-            <ArrowBackIcon />
+            <Image src={backButtonImage} alt="Back" width={24} height={24} />
           </Button>
           Donate | {donationType}
         </div>
@@ -1548,7 +1549,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
     };
 
     return (
-      <div className="text-center">
+      <div className="text-center pt-5">
         {selectedGoods === "none" ? <> <GoBackMain /></> :
           <div className="flex justify-start"><GoBack className="mx-auto" />{" "}{selectedGoods === "none" ? null
             :
@@ -1609,7 +1610,7 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
                     />
                   </div>
                 </div>
-                <div>
+                <div className="text-lg font-semibold text-gray-700">
                   {item.name}
                 </div>
               </motion.button>
