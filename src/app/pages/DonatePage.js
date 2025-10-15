@@ -11,6 +11,7 @@ import Lottie from 'react-lottie';
 import animationData1 from '../animations/goods.json';
 import animationData2 from '../animations/service.json';
 import animationData3 from '../animations/cash.json';
+import loadingAnimation from '../animations/loading.json';
 import * as motion from "motion/react-client";
 import { useAnimate } from "motion/react";
 
@@ -25,13 +26,13 @@ const DonationTypes = [
 const AllGoodsDonations = [
   { "name": "Clothing", "color": Colors.red, lottie: require('../animations/clothing.json') },
   { "name": "Non - perishable food", "color": Colors.red, lottie: require('../animations/nonperishable.json') },
-  { "name": "Books & educatutional materials", "color": Colors.green, lottie: require('../animations/goods.json') },
+  { "name": "Books & educatutional materials", "color": Colors.green, lottie: require('../animations/books.json') },
   { "name": "Electronics", "color": Colors.green, lottie: require('../animations/electronics.json') },
   { "name": "Furniture", "color": Colors.yellow, lottie: require('../animations/furniture.json') },
-  { "name": "Medical supplies", "color": Colors.yellow, lottie: require('../animations/goods.json') },
+  { "name": "Medical supplies", "color": Colors.yellow, lottie: require('../animations/medical.json') },
   { "name": "Toys & games", "color": Colors.orange, lottie: require('../animations/toys.json') },
   { "name": "Hygiene", "color": Colors.orange, lottie: require('../animations/hygiene.json') },
-  { "name": "Household", "color": Colors.blue, lottie: require('../animations/goods.json') }
+  { "name": "Household", "color": Colors.blue, lottie: require('../animations/household.json') }
 ]
 
 const ImageDialog = ({ handleImage, image }) => {
@@ -294,6 +295,15 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
         preserveAspectRatio: "xMidYMid slice",
       },
     };
+  };
+
+  const loadingOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: loadingAnimation,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
   };
 
   const GoBack = () => {
@@ -2139,12 +2149,16 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
   };
 
 
-  // Show SVG path loading animation while checking authentication
+  // Show Lottie loading animation while checking authentication
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
         <div className="text-center">
-          <SvgPathLoader />
+          <Lottie
+            options={loadingOptions}
+            height={200}
+            width={200}
+          />
         </div>
       </div>
     );
