@@ -7,7 +7,6 @@
   "private": true,
   "dependencies": {
     "@adobe/react-spectrum": "^3.36.1",
-    "@craco/craco": "^7.1.0",
     "@date-io/core": "^3.2.0",
     "@date-io/moment": "^3.2.0",
     "@emotion/react": "^11.14.0",
@@ -52,7 +51,6 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "bootstrap": "5.3.3",
     "components": "^0.1.0",
-    "customize-cra": "^1.0.0",
     "d3": "^7.9.0",
     "date-fns": "2.30.0",
     "dayjs": "^1.11.12",
@@ -86,7 +84,6 @@
     "react-preloaders": "^3.0.3",
     "react-router-dom": "^7.1.5",
     "react-router-hash-link": "^2.3.1",
-    "react-scripts": "5.0.1",
     "react-simple-maps": "^3.0.0",
     "react-time": "^4.3.0",
     "react-time-picker": "^7.0.0",
