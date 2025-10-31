@@ -5,6 +5,10 @@
   "homepage": "http://wecare.co.za",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=22.0.0 <24.0.0",
+    "npm": ">=10.0.0"
+  },
   "dependencies": {
     "@adobe/react-spectrum": "^3.36.1",
     "@date-io/core": "^3.2.0",
