@@ -143,7 +143,7 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                                             }`
                                             }`}
                                     >
-                                        {item.name},
+                                        {item.name}
                                     </motion.button>
                                 ))}
                             </div>
