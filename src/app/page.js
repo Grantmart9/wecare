@@ -46,7 +46,7 @@ export default function Home() {
         handlePage={handlePage}
         scrollToTop={scrollToTop}
       />
-      <div className="pt-16">
+      <div className="pt-0">
         <div ref={scrollContainerRef} className="min-h-screen overflow-y-auto" style={{ backgroundColor: 'transparent' }}>
           {
             <>

@@ -82,10 +82,10 @@ const Homepage = ({ handlePage }) => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen theme-bg-primary">
       {/* Hero Section */}
-      <div className="relative h-[500px] md:h-[600px] bg-gradient-to-r from-blue-600 to-purple-700">
-        <div className="absolute inset-0 bg-black opacity-30"></div>
+      <div className="relative h-[500px] md:h-[600px] gradient-hero">
+        <div className="absolute inset-0 bg-black opacity-20"></div>
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -110,21 +110,20 @@ const Homepage = ({ handlePage }) => {
           >
             <Button
               onClick={() => handlePage("Donate")}
-              className="rounded-full px-8 py-3 bg-gradient-to-r from-yellow-200 to-yellow-400"
+              className="btn-accent"
               sx={{
-                bgcolor: "transparent",
-                color: "white",
-
                 textTransform: "none",
+                fontSize: "18px",
+                paddingX: "32px",
+                paddingY: "12px",
+                borderRadius: "12px",
                 '&:hover': {
-                  bgcolor: "gray.100",
-                  scale: 1.05,
-                  color: "yellow",
-                  transition: "all 0.3s ease-in-out",
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 8px 25px rgba(249, 115, 22, 0.4)",
                 }
               }}
             >
-              <div className="text-lg font-bold text-purple-800"> Donate Now</div>
+              <div className="font-bold">Donate Now</div>
             </Button>
           </motion.div>
         </div>
@@ -132,29 +131,32 @@ const Homepage = ({ handlePage }) => {
 
       {/* Impact Stats Section */}
       <motion.div
-        className="py-12 bg-white"
+        className="py-16 theme-bg-secondary"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-4">Our Collective Impact</h2>
-          <p className="text-gray-600 text-center mb-12 max-w-3xl mx-auto">
-            Together, we're building stronger communities and changing lives through the power of giving.
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold theme-text-primary mb-4">Our Collective Impact</h2>
+            <div className="w-24 h-1 gradient-primary mx-auto mb-6"></div>
+            <p className="text-xl theme-text-secondary max-w-3xl mx-auto">
+              Together, we're building stronger communities and changing lives through the power of giving.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {impactStats.map((stat, index) => (
               <motion.div
                 key={index}
-                className="text-center"
+                className="modern-card text-center p-8"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 * index }}
               >
-                <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
+                <div className="text-4xl md:text-5xl font-bold theme-text-primary mb-3">
                   <AnimatedNumber value={stat.number} />+
                 </div>
-                <div className="text-gray-700">{stat.label}</div>
+                <div className="theme-text-secondary font-medium">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -163,7 +165,7 @@ const Homepage = ({ handlePage }) => {
 
       { /* How It Works Section */}
       <motion.div
-        className="bg-gradient-to-b from-gray-50 to-white"
+        className="gradient-section py-20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -174,23 +176,24 @@ const Homepage = ({ handlePage }) => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            <h2 className="text-4xl font-bold text-center text-gray-800 mb-3 pt-3">How Your Donation Helps</h2>
-            <div className="w-24 h-1 bg-blue-600 mx-auto mb-6"></div>
-            <p className="text-gray-600 text-center mb-16 max-w-2xl mx-auto text-lg">
+            <h2 className="text-4xl font-bold text-center theme-text-primary mb-3 pt-3">How Your Donation Helps</h2>
+            <div className="w-24 h-1 gradient-primary mx-auto mb-6"></div>
+            <p className="theme-text-secondary text-center mb-16 max-w-2xl mx-auto text-xl">
               Every contribution creates ripples of positive change in our community.
             </p>
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
             {donationTypes.map((type, index) => (
               <motion.div
                 key={index}
-                className="group hover:transform hover:scale-105 transition-all duration-300"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
+                className="group"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 * index }}
+                whileHover={{ y: -8 }}
               >
-                <div className=" rounded-2xl shadow-xl p-8 h-full border border-gray-100 hover:border-blue-500 transition-colors duration-300">
-                  <div className="bg-gradient-to-r from-blue-600 to-purple-700 rounded-xl shadow-md p-4 transform rotate-4 transition-transform hover:rotate-0 duration-300 max-w-72 mx-auto mb-6">
+                <div className="modern-card-interactive p-8 h-full">
+                  <div className="gradient-primary rounded-2xl shadow-lg p-6 transform rotate-2 transition-transform duration-300 hover:rotate-0 max-w-80 mx-auto mb-8">
                     <div className="w-32 h-32 mx-auto">
                       <Lottie
                         options={{
@@ -208,8 +211,8 @@ const Homepage = ({ handlePage }) => {
                       />
                     </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-6">{type.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{type.description}</p>
+                  <h3 className="text-2xl font-bold theme-text-primary mb-4 mt-6 text-center">{type.title}</h3>
+                  <p className="theme-text-secondary leading-relaxed text-center">{type.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -229,7 +232,7 @@ const Homepage = ({ handlePage }) => {
 
       {/* Community Section */}
       <motion.div
-        className="py-10 bg-white"
+        className="py-16 theme-bg-card"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -240,14 +243,14 @@ const Homepage = ({ handlePage }) => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            <h2 className="text-4xl font-bold text-center text-gray-800 mb-3">Join Our Community</h2>
-            <div className="w-24 h-1 bg-blue-600 mx-auto mb-6"></div>
-            <p className="text-gray-600 text-center mb-16 max-w-2xl mx-auto text-lg">
+            <h2 className="text-4xl font-bold text-center theme-text-primary mb-3">Join Our Community</h2>
+            <div className="w-24 h-1 gradient-primary mx-auto mb-6"></div>
+            <p className="theme-text-secondary text-center mb-16 max-w-2xl mx-auto text-xl">
               Be part of a movement that's making real change happen.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {community.map((item, index) => (
               <motion.div
                 key={index}
@@ -255,25 +258,11 @@ const Homepage = ({ handlePage }) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 * index }}
               >
-                <Button
-                  variant="contained"
-                  sx={{
-                    background: 'linear-gradient(145deg, #ffffff, #f3f4f6)',
-                    boxShadow: '8px 8px 16px #d1d1d1, -8px -8px 16px #ffffff',
-                    textTransform: 'none',
-                    height: '100%',
-                    padding: '2rem',
-                    '&:hover': {
-                      transform: 'translateY(-5px)',
-                      boxShadow: '12px 12px 20px #d1d1d1, -12px -12px 20px #ffffff',
-                    }
-                  }}
-                  className="flex flex-col items-center w-full rounded-2xl transition-all duration-300"
-                >
-                  <div className="text-4xl mb-4">{item.icon}</div>
-                  <div className="text-2xl font-bold text-gray-800 mb-2">{item.name}</div>
-                  <div className="text-gray-600 text-center">{item.description}</div>
-                </Button>
+                <div className="modern-card-interactive flex flex-col items-center w-full h-full p-8 text-center">
+                  <div className="text-5xl mb-6 theme-text-primary">{item.icon}</div>
+                  <h3 className="text-2xl font-bold theme-text-primary mb-3">{item.name}</h3>
+                  <p className="theme-text-secondary">{item.description}</p>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -282,49 +271,61 @@ const Homepage = ({ handlePage }) => {
 
       {/* Featured Causes Section */}
       <motion.div
-        className="py-5 bg-gray-50"
+        className="py-16 theme-bg-secondary"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.8 }}
       >
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-4">Featured Causes</h2>
-          <p className="text-gray-600 text-center mb-12 max-w-3xl mx-auto">
-            Discover the current initiatives that need your support.
-          </p>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold theme-text-primary mb-4">Featured Causes</h2>
+            <div className="w-24 h-1 gradient-primary mx-auto mb-6"></div>
+            <p className="theme-text-secondary max-w-3xl mx-auto text-lg">
+              Discover the current initiatives that need your support.
+            </p>
+          </div>
           <FeaturedCauses />
         </div>
       </motion.div>
 
       {/* Closing Section */}
       <motion.div
-        className="py-16 bg-gradient-to-r from-blue-600 to-purple-700 text-white"
+        className="gradient-hero py-20 text-white"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 1.0 }}
       >
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Make a Difference?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to Make a Difference?</h2>
+          <p className="text-xl mb-12 max-w-2xl mx-auto opacity-90">
             Join thousands of donors who are transforming lives and strengthening communities.
           </p>
-          <Lottie
-            options={defaultOptions}
-            className="mx-auto w-64 h-64"
-          />
+          <div className="mb-12">
+            <Lottie
+              options={defaultOptions}
+              className="mx-auto w-64 h-64"
+            />
+          </div>
           <Button
             onClick={() => handlePage("Donate")}
-            className="rounded-full px-8 py-3 bg-gradient-to-r from-yellow-200 to-yellow-400"
+            className="btn-secondary bg-white hover:bg-gray-50 text-white hover:text-primary-color"
             sx={{
-              bgcolor: "white",
-              color: "blue.600",
-              textTransform: "none",
+              border: "2px solid white",
+              backgroundColor: "transparent",
+              color: "white",
+              fontSize: "18px",
+              paddingX: "32px",
+              paddingY: "14px",
+              fontWeight: "bold",
               '&:hover': {
-                bgcolor: "gray.100",
+                backgroundColor: "white",
+                color: "var(--primary-color)",
+                transform: "translateY(-2px)",
+                boxShadow: "0 8px 25px rgba(255, 255, 255, 0.3)",
               }
             }}
           >
-            <div className="text-lg font-bold text-purple-800">Start Donating Today</div>
+            Start Donating Today
           </Button>
         </div>
       </motion.div>

@@ -11,7 +11,7 @@ import * as motion from "motion/react-client";
 import { Button } from "@mui/material";
 import { createClient } from "@supabase/supabase-js";
 import { SUPABASE_URL, API_KEY } from "../supabase";
-import { useTheme } from "../layout";
+// Light theme only - no theme switching needed
 
 const supabase = createClient(SUPABASE_URL, API_KEY);
 
@@ -21,8 +21,7 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    // Get theme context
-    const { themeMode } = useTheme();
+    // Light theme only - no theme switching needed
 
     useEffect(() => {
         // Get initial session
@@ -87,7 +86,7 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-                    ? 'backdrop-blur-lg bg-white/80 dark:bg-gray-900/80 shadow-lg border-b border-gray-200/20 dark:border-gray-700/20'
+                    ? 'backdrop-blur-lg bg-white/90 shadow-lg border-b border-gray-200/30'
                     : 'bg-transparent'
                     }`}
             >
@@ -96,14 +95,13 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                         {/* Logo */}
                         <motion.div
                             whileHover={{ scale: 1.05 }}
-                            className="flex items-center space-x-2 cursor-pointer"
+                            className="flex items-center space-x-3 cursor-pointer"
                             onClick={() => handleNavClick('Home')}
                         >
-                            <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold shadow-lg">
+                            <div className="gradient-primary text-white w-12 h-12 rounded-2xl flex items-center justify-center font-bold shadow-lg">
                                 WC
                             </div>
-                            <span className={`text-3xl font-bold transition-colors duration-300 ${isScrolled ? 'text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white'
-                                }`}>
+                            <span className="text-3xl font-bold text-white transition-colors duration-300">
                                 WeCare
                             </span>
                         </motion.div>
@@ -118,12 +116,9 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                         onClick={() => handleNavClick(item.page)}
-                                        className={`flex items-center space-x-2 px-3 py-2 rounded-lg font-medium transition-all duration-200 ${currentPage === item.page
-                                            ? ' bg-transparent  text-blue-600 dark:text-orange-200'
-                                            : ` ${isScrolled
-                                                ? 'text-gray-900 dark:text-gray-300 '
-                                                : 'text-gray-900 dark:text-gray-200 '
-                                            }`
+                                        className={`flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-200 ${currentPage === item.page
+                                            ? 'theme-bg-accent text-gray-700 shadow-md'
+                                            : `text-white hover:text-white hover:theme-bg-tertiary`
                                             }`}
                                     >
                                         <item.icon className="h-5 w-5" />
@@ -141,10 +136,10 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                                         whileTap={{ scale: 0.95 }}
                                         onClick={() => handleNavClick(item.page)}
                                         className={`px-3 py-2 rounded-lg text-sm transition-all duration-200 ${currentPage === item.page
-                                            ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 shadow-md'
-                                            : `hover:bg-gray-100 dark:hover:bg-gray-800 ${isScrolled
-                                                ? 'text-gray-900 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
-                                                : 'text-gray-900 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white/10'
+                                            ? 'bg-blue-100 text-blue-600 shadow-md'
+                                            : `hover:bg-gray-100 ${isScrolled
+                                                ? 'theme-text-primary hover:text-blue-600'
+                                                : 'theme-text-primary hover:text-blue-600 hover:bg-white/10'
                                             }`
                                             }`}
                                     >
@@ -165,10 +160,18 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                                         >
                                             <Button
                                                 variant="contained"
-                                                className={`shadow-lg ${isScrolled
-                                                    ? 'bg-blue-600 hover:bg-blue-700'
-                                                    : 'bg-white text-blue-600 hover:bg-gray-100'
-                                                    }`}
+                                                className="btn-primary shadow-lg"
+                                                sx={{
+                                                    backgroundColor: isScrolled ? "var(--primary-color)" : "white",
+                                                    color: isScrolled ? "white" : "var(--primary-color)",
+                                                    border: isScrolled ? "none" : "2px solid var(--primary-color)",
+                                                    '&:hover': {
+                                                        backgroundColor: isScrolled ? "var(--primary-dark)" : "var(--primary-color)",
+                                                        color: "white",
+                                                        transform: "translateY(-2px)",
+                                                        boxShadow: "var(--shadow-lg)",
+                                                    }
+                                                }}
                                                 startIcon={<LoginIcon />}
                                                 onClick={handleLoginPage}
                                                 size="small"
@@ -187,8 +190,8 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                                 whileTap={{ scale: 0.95 }}
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                                 className={`p-2 rounded-lg ${isScrolled
-                                    ? 'text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                                    : 'text-gray-900 dark:text-gray-200 hover:bg-white/10'
+                                    ? 'theme-text-primary hover:bg-gray-100'
+                                    : 'theme-text-primary hover:bg-white/10'
                                     }`}
                             >
                                 {isMobileMenuOpen ? (
@@ -209,7 +212,7 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                         opacity: isMobileMenuOpen ? 1 : 0
                     }}
                     transition={{ duration: 0.3 }}
-                    className="md:hidden overflow-hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg border-t border-gray-200/20 dark:border-gray-700/20"
+                    className="md:hidden overflow-hidden bg-white/95 backdrop-blur-lg border-t border-gray-200/30"
                 >
                     <div className="px-4 py-6 space-y-4">
                         {/* Main Navigation Items */}
@@ -225,8 +228,8 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                                     transition={{ delay: 0.1 }}
                                     onClick={() => handleNavClick(item.page)}
                                     className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${currentPage === item.page
-                                        ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
-                                        : 'theme-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800'
+                                        ? 'bg-blue-100 text-blue-600'
+                                        : 'theme-text-secondary hover:bg-gray-100'
                                         }`}
                                 >
                                     <item.icon className="h-5 w-5" />
@@ -236,7 +239,7 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                         </div>
 
                         {/* Submenu Items */}
-                        <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
+                        <div className="border-t border-gray-200 pt-4 space-y-2">
                             {SubMenuList.map((item, index) => (
                                 <motion.button
                                     key={item.name}
@@ -248,8 +251,8 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                                     transition={{ delay: 0.2 + index * 0.05 }}
                                     onClick={() => handleNavClick(item.page)}
                                     className={`w-full text-left px-4 py-2 rounded-lg font-medium transition-colors ${currentPage === item.page
-                                        ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
-                                        : 'theme-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800'
+                                        ? 'bg-blue-100 text-blue-600'
+                                        : 'theme-text-secondary hover:bg-gray-100'
                                         }`}
                                 >
                                     {item.name}
@@ -258,7 +261,7 @@ const TopNavbar = ({ currentPage, handlePage, scrollToTop }) => {
                         </div>
 
                         {/* Mobile User Section */}
-                        <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                        <div className="border-t border-gray-200 pt-4">
                             {!isLoading && (
                                 user ? (
                                     <div className="flex items-center space-x-3 p-3 theme-bg-secondary rounded-lg">

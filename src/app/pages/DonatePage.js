@@ -413,19 +413,15 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
               <Button
                 onClick={() => handleDonationType(item.name)}
                 key={index}
-                className="p-2 rounded-4xl shadow-lg min-w-80 max-w-80 min-h-80 max-h-80"
+                className="modern-card-interactive p-6 min-w-80 max-w-80 min-h-80 max-h-80"
                 sx={{
-                  bgcolor: "white",
-                  borderRadius: "8000px",
-                  borderWidth: "20px",
-                  borderColor: "gray",
                   textTransform: "none",
                   '&:hover': {
-                    bgcolor: "gray.50",
+                    borderColor: "var(--primary-color)",
                   }
                 }}>
-                <div className="grid grid-flow-row gap-0 p-3">
-                  <div className="text-center text-lg justify-center text-blue-800 font-bold p-0.5">{item.name}</div>
+                <div className="grid grid-flow-row gap-4 p-4">
+                  <div className="text-center text-xl justify-center theme-text-primary font-bold">{item.name}</div>
                   <Lottie
                     options={defaultOptions1(item.json)}
                     className="mx-auto my-auto max-w-1 max-h-3.5"
@@ -1588,15 +1584,11 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
                   duration: 0.3,
                 }}
                 onClick={() => handleGoods(item.name)}
-                className="grid grid-flow-row p-2 rounded-4xl mx-auto border-2 border-gray-200 shadow-lg min-w-80"
+                className="modern-card-interactive grid grid-flow-row p-4 mx-auto min-w-80"
                 sx={{
-                  bgcolor: "white",
                   textTransform: "none",
-                  '&:hover': {
-                    bgcolor: "gray.50",
-                  }
                 }}>
-                <div className="bg-gradient-to-r from-blue-600 to-purple-700 rounded-xl shadow-md p-4 transform rotate-4 transition-transform hover:rotate-0 duration-300 max-w-72 mx-auto mb-6">
+                <div className="gradient-primary rounded-2xl shadow-lg p-4 transform rotate-2 transition-transform hover:rotate-0 duration-300 max-w-72 mx-auto mb-6">
                   <div className="w-16 h-16 mx-auto">
                     <Lottie
                       options={{
@@ -1812,19 +1804,23 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
               }}>
               <Button key={index}
                 fullWidth={true}
-                className="rounded-lg text-teal-950"
+                className="modern-card-interactive"
                 sx={{
-                  bgcolor: "white",
-                  color: "gray.800",
+                  bgcolor: "var(--bg-card)",
+                  color: "var(--text-primary)",
                   textTransform: "none",
-                  fontWeight: "bold",
-                  borderRadius: "9999px",
-                  border: "1px solid #d1d5db",
-                  paddingX: 6,
-                  paddingY: 2,
+                  fontWeight: "600",
+                  borderRadius: "12px",
+                  border: "2px solid var(--border-color)",
+                  paddingX: "24px",
+                  paddingY: "16px",
                   maxWidth: "300px",
                   '&:hover': {
-                    backgroundColor: "gray.50",
+                    backgroundColor: "var(--primary-color)",
+                    color: "white",
+                    borderColor: "var(--primary-color)",
+                    transform: "translateY(-2px)",
+                    boxShadow: "var(--shadow-lg)",
                   }
                 }}>
                 {item.name}
@@ -2169,8 +2165,8 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-        <div className="relative h-[300px] bg-gradient-to-r from-blue-600 to-purple-700">
-          <div className="absolute inset-0 bg-black opacity-30"></div>
+        <div className="relative h-[300px] gradient-hero">
+          <div className="absolute inset-0 bg-black opacity-20"></div>
           <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
@@ -2214,10 +2210,10 @@ const DonatePage = ({ handlePage, scrollToTop }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen theme-bg-primary">
       {donationType === "none" ?
-        <div className="relative h-[300px] bg-gradient-to-r from-blue-600 to-purple-700">
-          <div className="absolute inset-0 bg-black opacity-30"></div>
+        <div className="relative h-[300px] gradient-hero">
+          <div className="absolute inset-0 bg-black opacity-20"></div>
           <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
             <motion.div
               initial={{ opacity: 0, y: -20 }}

@@ -1,11 +1,11 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import { Button, TextField } from "@mui/material";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Image from "next/image";
 import * as motion from "motion/react-client"
 import avatar from "../images/avatar.jpg";
+import backButtonImage from "../images/backbutton.png";
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -16,7 +16,7 @@ import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
 import LoginIcon from '@mui/icons-material/Login';
 import { createClient } from "@supabase/supabase-js";
 import { SUPABASE_URL, API_KEY } from "../supabase";
-import { useTheme } from "../layout";
+// Removed theme import - app uses light theme only
 
 const supabase = createClient(SUPABASE_URL, API_KEY);
 
@@ -30,8 +30,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
   const [profileLoading, setProfileLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState(null);
-  const [themeSaving, setThemeSaving] = useState(false);
-  const [themeMessage, setThemeMessage] = useState(null);
+  // Removed theme preferences - app uses light theme only
   const [recentActivity, setRecentActivity] = useState([]);
   const [activityLoading, setActivityLoading] = useState(true);
   const [totalPoints, setTotalPoints] = useState(0);
@@ -40,8 +39,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
 
-  // Get theme context
-  const { themeMode, setThemeMode, theme } = useTheme();
+  // Light theme only - no theme switching needed
 
   useEffect(() => {
     // Get initial session
@@ -263,12 +261,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
 
     if (user) {
       fetchUserProfile();
-      // Load theme preference
-      loadThemePreference().then(savedTheme => {
-        if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
-          setThemeMode(savedTheme);
-        }
-      });
+      // Light theme only - no theme preference loading needed
     } else {
       setUserProfile(null);
       setProfileLoading(false);
@@ -311,109 +304,11 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
     }
   };
 
-  // Save theme preference to Supabase
-  const saveThemePreference = async (theme) => {
-    try {
-      setThemeSaving(true);
-      setThemeMessage(null);
+  // Theme preference functions removed - app uses light theme only
 
-      // First, check if user preferences exist
-      const { data: existingPrefs, error: fetchError } = await supabase
-        .from('user_preferences')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
+  // Load theme preference function removed - light theme only
 
-      if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116 = not found
-        console.error('Error fetching user preferences:', fetchError);
-        setThemeMessage({ type: 'error', text: 'Failed to save theme preference.' });
-        return false;
-      }
-
-      let result;
-      if (existingPrefs) {
-        // Update existing preferences
-        const { data, error } = await supabase
-          .from('user_preferences')
-          .update({
-            theme: theme,
-            updated_at: new Date().toISOString()
-          })
-          .eq('user_id', user.id)
-          .select()
-          .single();
-
-        if (error) {
-          console.error('Error updating theme preference:', error);
-          setThemeMessage({ type: 'error', text: 'Failed to save theme preference.' });
-          return false;
-        }
-        result = data;
-      } else {
-        // Create new preferences
-        const { data, error } = await supabase
-          .from('user_preferences')
-          .insert({
-            user_id: user.id,
-            theme: theme,
-            email_notifications: true, // default values
-            push_notifications: false,
-            sms_notifications: false,
-            language: 'en'
-          })
-          .select()
-          .single();
-
-        if (error) {
-          console.error('Error creating user preferences:', error);
-          setThemeMessage({ type: 'error', text: 'Failed to save theme preference.' });
-          return false;
-        }
-        result = data;
-      }
-
-      setThemeMessage({ type: 'success', text: 'Theme preference saved!' });
-      return true;
-    } catch (error) {
-      console.error('Unexpected error saving theme:', error);
-      setThemeMessage({ type: 'error', text: 'An unexpected error occurred.' });
-      return false;
-    } finally {
-      setThemeSaving(false);
-    }
-  };
-
-  // Load theme preference from Supabase
-  const loadThemePreference = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('user_preferences')
-        .select('theme')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error && error.code !== 'PGRST116') { // PGRST116 = not found
-        console.error('Error loading theme preference:', error);
-        return null;
-      }
-
-      return data?.theme || null;
-    } catch (error) {
-      console.error('Unexpected error loading theme:', error);
-      return null;
-    }
-  };
-
-  // Handle theme change
-  const handleThemeChange = async (newTheme) => {
-    setThemeMode(newTheme);
-    const success = await saveThemePreference(newTheme);
-    if (success) {
-      setTimeout(() => {
-        setThemeMessage(null);
-      }, 3000);
-    }
-  };
+  // Theme change function removed - light theme only
 
   const handleLogout = async () => {
     try {
@@ -1151,72 +1046,22 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
             <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">App Preferences</h2>
             <div className="space-y-6">
               <div>
-                <p className="font-medium mb-4">Theme</p>
-                <div className="grid grid-cols-3 gap-4">
-                  <button
-                    onClick={() => handleThemeChange('light')}
-                    disabled={themeSaving}
-                    className={`p-4 border-2 rounded-lg transition-all duration-200 ${themeMode === 'light'
-                      ? 'border-blue-600 bg-blue-50 text-blue-700'
-                      : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
-                      }`}
-                  >
-                    <div className="flex items-center justify-center mb-2">
-                      <div className="w-4 h-4 bg-yellow-400 rounded-full mr-2"></div>
-                      <div className="w-4 h-4 bg-white border border-gray-300 rounded mr-2"></div>
-                      <div className="w-4 h-4 bg-gray-800 rounded"></div>
+                <p className="font-medium mb-4">Appearance</p>
+                <div className="modern-card p-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-gradient-to-r from-orange-400 to-teal-500 rounded-lg flex items-center justify-center">
+                      <div className="w-4 h-4 bg-white rounded-sm"></div>
                     </div>
-                    <p className="font-medium">Light</p>
-                  </button>
-                  <button
-                    onClick={() => handleThemeChange('dark')}
-                    disabled={themeSaving}
-                    className={`p-4 border-2 rounded-lg transition-all duration-200 ${themeMode === 'dark'
-                      ? 'border-blue-600 bg-blue-50 text-blue-700'
-                      : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
-                      }`}
-                  >
-                    <div className="flex items-center justify-center mb-2">
-                      <div className="w-4 h-4 bg-gray-800 rounded-full mr-2"></div>
-                      <div className="w-4 h-4 bg-gray-700 border border-gray-600 rounded mr-2"></div>
-                      <div className="w-4 h-4 bg-gray-900 rounded"></div>
+                    <div>
+                      <p className="font-medium">Light Theme</p>
+                      <p className="text-gray-600 text-sm">Clean, modern light interface</p>
                     </div>
-                    <p className="font-medium">Dark</p>
-                  </button>
-                  <button
-                    onClick={() => handleThemeChange('system')}
-                    disabled={themeSaving}
-                    className={`p-4 border-2 rounded-lg transition-all duration-200 ${themeMode === 'system'
-                      ? 'border-blue-600 bg-blue-50 text-blue-700'
-                      : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
-                      }`}
-                  >
-                    <div className="flex items-center justify-center mb-2">
-                      <div className="w-4 h-4 bg-gradient-to-r from-yellow-400 to-gray-800 rounded-full mr-2"></div>
-                      <div className="w-4 h-4 bg-gradient-to-r from-white to-gray-700 border border-gray-300 rounded mr-2"></div>
-                      <div className="w-4 h-4 bg-gradient-to-r from-gray-800 to-gray-900 rounded"></div>
-                    </div>
-                    <p className="font-medium">System</p>
-                  </button>
+                  </div>
                 </div>
-                {themeMessage && (
-                  <div className={`mt-4 p-3 rounded-lg text-sm font-medium ${themeMessage.type === 'success'
-                    ? 'bg-green-100 text-green-800 border border-green-300'
-                    : 'bg-red-100 text-red-800 border border-red-300'
-                    }`}>
-                    {themeMessage.text}
-                  </div>
-                )}
-                {themeSaving && (
-                  <div className="mt-4 flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
-                    <span className="text-sm text-gray-600">Saving theme preference...</span>
-                  </div>
-                )}
               </div>
               <div>
                 <p className="font-medium mb-2">Language</p>
-                <select className="w-full p-3 border border-gray-300 rounded-lg">
+                <select className="modern-input w-full">
                   <option>English</option>
                   <option>Spanish</option>
                   <option>French</option>
@@ -1322,7 +1167,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
     {
       name: "App Settings",
       buttons: [
-        { icon: <SettingsIcon fontSize="large" />, name: "App Preferences", description: "Manage your app preferences", page: "Preferences" }
+        { icon: <SettingsIcon fontSize="large" />, name: "App Preferences", description: "Language and display settings", page: "Preferences" }
       ]
     },
     {
@@ -1428,7 +1273,7 @@ const DashboardPage = ({ handlePage, scrollToTop }) => {
               duration: 0.5,
             }}>
             <div className="flex-inline text-lg text-gray-800 text-left ml-2 font-bold mt-4">
-              <Button onClick={() => setDashPage("none")} disableRipple={true}><ArrowBackIcon sx={{ color: "gray.800" }} /></Button> My Profile | {DashPage}
+              <Button onClick={() => setDashPage("none")} disableRipple={true}><Image src={backButtonImage} alt="Back" width={24} height={24} /></Button> My Profile | {DashPage}
             </div>
           </motion.div>
         </div>}
