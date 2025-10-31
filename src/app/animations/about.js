@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import * as motion from "motion/react-client"
 
 // Animation variants for the About page
 export const fadeInUp = {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import * as motion from "motion/react-client"
 
 import { emailData, phoneData, faqData } from "../data";
 import { pageVariant, cardVariant } from "../animations";

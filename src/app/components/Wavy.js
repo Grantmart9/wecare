@@ -1,7 +1,13 @@
 "use client"
 
-import { animate, stagger } from "motion"
+import { animate } from "motion/react-client"
 import { useEffect, useRef } from "react"
+
+// Simple stagger function implementation
+const stagger = (delay, options = {}) => {
+    const { startDelay = 0 } = options;
+    return (index) => startDelay + (index * delay);
+};
 
 export default function WavyText() {
     const containerRef = useRef(null)
@@ -17,28 +23,28 @@ export default function WavyText() {
             containerRef.current.style.visibility = "visible"
 
             const staggerDelay = 0.2
+            const staggerFn = stagger(staggerDelay, { startDelay: -staggerDelay * chars.length })
 
-            animate(
-                chars,
-                { y: [-5, 1] },
-                {
-                    repeat: Infinity,
-                    repeatType: "mirror",
-                    ease: "easeInOut",
-                    duration: 2,
-                    delay: stagger(
-                        staggerDelay,
-                        { startDelay: -staggerDelay * chars.length }
-                    ),
-                }
-            )
+            chars.forEach((char, index) => {
+                animate(
+                    char,
+                    { y: [-5, 1] },
+                    {
+                        repeat: Infinity,
+                        repeatType: "mirror",
+                        ease: "easeInOut",
+                        duration: 2,
+                        delay: staggerFn(index),
+                    }
+                )
+            })
         })
     }, [])
 
     return (
         <div className="flex" ref={containerRef}>
             <h1 className="h1">
-                <span style={{fontFamily:"unset"}} className="wavy text-gray-50 text-6xl">WeCare</span>
+                <span style={{ fontFamily: "unset" }} className="wavy text-gray-50 text-6xl">WeCare</span>
             </h1>
             <Stylesheet />
         </div>

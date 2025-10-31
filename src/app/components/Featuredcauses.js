@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import * as motion from "motion/react-client"
 import HelpChildren from "../images/HelpChildren.svg"
 import SupportFamilies from "../images/SupportFamilies.svg"
 import Empower from "../images/Empower.svg"
