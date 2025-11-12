@@ -8,8 +8,8 @@ export interface Colors {
   yellow: string;
 }
 
-export const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ya2lpaWNmdmJyYXV3eWRybGluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgzNzY1MDMsImV4cCI6MjA3Mzk1MjUwM30.ioep82qf7hq2qQsSraOlPWqHVmbgP_nkhTYJ0jbkKtA";
-export const SUPABASE_URL = "https://mrkiiicfvbrauwydrlin.supabase.co";
+export const API_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 export const NEXT_PUBLIC_GOOGLE_API_KEY = "AIzaSyDFqp0PGp-vOy_BLx-ljnGZcUks9VbJgXM"
 
 /// Color palette ////

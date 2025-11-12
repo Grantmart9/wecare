@@ -60,6 +60,8 @@ export default function Home() {
         currentPage={currentPage}
         handlePage={handlePage}
         scrollToTop={scrollToTop}
+        sx={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50 }}
+        
       />
       <div className="pt-0">
         <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: 'transparent' }}>

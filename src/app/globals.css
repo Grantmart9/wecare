@@ -216,7 +216,7 @@ body {
 }
 
 .gradient-hero {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 50%, var(--secondary-light) 100%);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color) 0%, var(--primary-color) 0%);
 }
 
 .gradient-section {

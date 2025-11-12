@@ -1,10 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
+  // appDir is now the default in Next.js 13+, no need for experimental flag
   images: {
-    domains: ["images.unsplash.com", "via.placeholder.com"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+      },
+    ],
     unoptimized: true, // Add this for static export
   },
   // Conditionally set output based on environment
@@ -12,17 +19,11 @@ const nextConfig = {
     output: 'export',
     trailingSlash: true, // Add trailing slashes for better CPanel compatibility
   } : {}),
-  // Only add rewrites in development (not for static export)
-  ...(process.env.NODE_ENV !== 'production' ? {
-    async rewrites() {
-      return [
-        {
-          source: '/api/:path*',
-          destination: process.env.NEXT_PUBLIC_API_URL + '/:path*',
-        },
-      ];
-    },
-  } : {}),
+  // API rewrites removed - using Supabase directly instead of custom backend
+  // Set turbopack root to silence lockfile warning
+  turbopack: {
+    root: process.cwd(),
+  },
 };
 
 module.exports = nextConfig;

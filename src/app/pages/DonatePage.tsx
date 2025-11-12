@@ -91,35 +91,67 @@ interface ImageDialogProps {
 
 const ImageDialog: React.FC<ImageDialogProps> = ({ handleImage, image }) => {
   return (
-    <>
-      <Button
-        sx={{
-          textTransform: "none",
-          bgcolor: "white",
-          color: "gray.800",
-          border: "1px solid #d1d5db",
-          fontWeight: "bold",
-          borderRadius: "9999px",
-          paddingX: 6,
-          paddingY: 2,
-          '&:hover': {
-            backgroundColor: "gray.50",
-          }
-        }}>
-        <label style={{ cursor: 'pointer' }}>
-          Upload a picture
+    <div className="space-y-4">
+      <div className="text-center">
+        <h3 className="text-lg font-semibold text-gray-800 mb-2">Add Photos (Optional)</h3>
+        <p className="text-gray-600 text-sm">Photos help us better understand the donated items</p>
+      </div>
+      
+      <div className="flex justify-center">
+        <Button
+          component="label"
+          sx={{
+            textTransform: "none",
+            bgcolor: "white",
+            color: "teal.600",
+            border: "2px dashed #14b8a6",
+            fontWeight: "bold",
+            borderRadius: "20px",
+            paddingX: 8,
+            paddingY: 3,
+            '&:hover': {
+              bgcolor: "rgba(20, 184, 166, 0.05)",
+              borderColor: "#0d9488",
+            }
+          }}
+        >
+          <div className="flex flex-col items-center space-y-2">
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            <div>
+              <div className="font-bold">Upload a picture</div>
+              <div className="text-sm text-teal-500">Click to browse files</div>
+            </div>
+          </div>
           <input
             accept="image/*"
             type="file"
             onChange={handleImage}
             style={{ display: 'none' }}
           />
-        </label>
-      </Button>
-      <div className="flex align-center justify-center">
-        <img width={150} alt={image} src={image} />
+        </Button>
       </div>
-    </>)
+      
+      <div className="flex justify-center">
+        {image ? (
+          <div className="relative">
+            <img
+              width={200}
+              alt="Uploaded image"
+              src={image}
+              className="rounded-2xl shadow-lg border-2 border-teal-100"
+            />
+            <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full flex items-center justify-center">
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+          </div>
+        ) : null}
+      </div>
+    </div>
+  )
 }
 
 const SvgPathLoader = () => {
@@ -317,7 +349,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
     // Check if user is authenticated
     const checkAuth = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const { data: { user }, error } = await supabase.auth.getUser();
         setIsAuthenticated(!!user);
       } catch (error) {
         console.error("Error checking auth:", error);
@@ -334,9 +366,16 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
     }
   }, [scrollToTop]);
 
-  const handleDonationType = (selected: string) => { setDonationType(selected) }
-  const handleGoods = (selected: string) => { setSelectedGoods(selected); setDonationType(selected); }
-  const handleGoods1 = (selected: string) => { setDonationType(selected) }
+  const handleDonationType = (selected: string) => {
+    setDonationType(selected)
+  }
+  const handleGoods = (selected: string) => {
+    setSelectedGoods(selected);
+    setDonationType("Goods"); // Always set to Goods for goods donation flow
+  }
+  const handleGoods1 = (selected: string) => {
+    setDonationType(selected)
+  }
 
   const PopUpMessage = "Donation submitted successfully ! \nCheck out your dashboard to view your donations"
 
@@ -420,26 +459,57 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
 
   const DonateButton: React.FC<{ loading: boolean }> = ({ loading }) => {
     return (
-      <Button
-        type="submit"
-        variant="contained"
-        sx={{
-          bgcolor: "blue.600",
-          color: "white",
-          textTransform: "none",
-          fontWeight: "bold",
-          borderRadius: "9999px",
-          paddingX: 8,
-          paddingY: 3,
-          fontSize: "lg",
-          '&:hover': {
-            bgcolor: "blue.700",
-          }
-        }}
-        disabled={loading}
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="flex justify-center"
       >
-        {loading ? "Submitting..." : "Donate"}
-      </Button>
+        <Button
+          type="submit"
+          disabled={loading}
+          className="group relative overflow-hidden px-12 py-4 text-lg font-bold text-white rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
+          sx={{
+            background: "linear-gradient(135deg, #14b8a6, #06b6d4)",
+            '&:hover': {
+              background: "linear-gradient(135deg, #0d9488, #0891b2)",
+              boxShadow: "0 25px 50px -12px rgba(20, 184, 166, 0.4)",
+            },
+            '&:disabled': {
+              background: "linear-gradient(135deg, #6b7280, #9ca3af)",
+              boxShadow: "none",
+            },
+            textTransform: "none",
+            borderRadius: "50px",
+            border: "2px solid transparent",
+            position: "relative",
+          }}
+        >
+          {/* Animated background shimmer */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+          
+          <div className="relative flex items-center space-x-3">
+            {loading ? (
+              <>
+                <svg className="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Submitting...</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+                <span>Donate Now</span>
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+              </>
+            )}
+          </div>
+        </Button>
+      </motion.div>
     )
   }
 
@@ -448,16 +518,23 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
       <>
         {donationType === "none" ? null : <GoBack />}
         <div className="container mx-auto px-4 py-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-              Choose Your Donation Type
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Select how you'd like to make a difference in your community
-            </p>
+          <div className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-6">
+                Choose Your Donation Type
+              </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full mx-auto mb-6"></div>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Select how you'd like to make a lasting impact in your community
+              </p>
+            </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {DonationTypes.map((item, index) =>
               <motion.div
                 key={index}
@@ -472,12 +549,12 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
                 }}
                 className="group"
               >
-                <div className="relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-teal-200 transform hover:-translate-y-2">
+                <div className="relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-teal-100 hover:border-teal-300 transform hover:-translate-y-3 hover:scale-105">
                   {/* Gradient background overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-teal-50 via-white to-orange-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-teal-50 via-white to-cyan-50 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
 
                   {/* Content */}
-                  <div className="relative p-8">
+                  <div className="relative p-10">
                     <Button
                       onClick={() => handleDonationType(item.name)}
                       className="w-full h-full bg-transparent hover:bg-transparent p-0 border-0 shadow-none"
@@ -490,49 +567,71 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
                         minHeight: "auto",
                       }}
                     >
-                      <div className="text-center space-y-6">
+                      <div className="text-center space-y-8">
                         {/* Icon container with gradient background */}
-                        <div className="relative mx-auto w-32 h-32 rounded-full bg-gradient-to-br from-teal-100 to-orange-100 flex items-center justify-center shadow-inner group-hover:shadow-lg transition-shadow duration-300">
-                          <div className="w-24 h-24">
+                        <div className="relative mx-auto w-36 h-36 rounded-2xl bg-gradient-to-br from-teal-100 to-cyan-100 flex items-center justify-center shadow-xl group-hover:shadow-2xl transition-all duration-300 border border-teal-200">
+                          <div className="w-28 h-28">
                             <Lottie
                               options={defaultOptions1(item.json)}
-                              height={96}
-                              width={96}
+                              height={112}
+                              width={112}
                             />
                           </div>
                         </div>
 
                         {/* Title */}
-                        <div className="space-y-2">
-                          <h3 className="text-2xl font-bold text-gray-800 group-hover:text-teal-700 transition-colors duration-300">
+                        <div className="space-y-4">
+                          <h3 className="text-3xl font-bold bg-gradient-to-r from-teal-700 to-cyan-700 bg-clip-text text-transparent group-hover:from-teal-600 group-hover:to-cyan-600 transition-all duration-300">
                             {item.name}
                           </h3>
-                          <div className="w-16 h-1 bg-gradient-to-r from-teal-400 to-orange-400 rounded-full mx-auto group-hover:w-24 transition-all duration-300"></div>
+                          <div className="w-20 h-1.5 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full mx-auto group-hover:w-28 transition-all duration-300"></div>
                         </div>
 
                         {/* Description */}
-                        <p className="text-gray-600 text-sm leading-relaxed">
+                        <p className="text-gray-700 text-base leading-relaxed font-medium">
                           {item.name === "Goods" && "Donate physical items and essentials"}
                           {item.name === "Cash" && "Make financial contributions"}
                           {item.name === "Service" && "Offer your time and skills"}
                         </p>
+
+                        {/* CTA Button */}
+                        <div className="pt-4">
+                          <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                            <span>Get Started</span>
+                            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                          </div>
+                        </div>
                       </div>
                     </Button>
                   </div>
 
                   {/* Hover effect border */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-teal-300 transition-colors duration-300 pointer-events-none"></div>
+                  <div className="absolute inset-0 rounded-3xl border-2 border-transparent group-hover:border-teal-400 transition-all duration-300 pointer-events-none"></div>
                 </div>
               </motion.div>
             )}
           </div>
 
           {/* Call to action */}
-          <div className="text-center mt-16">
-            <p className="text-gray-500 text-sm">
-              Every contribution makes a difference in someone's life
-            </p>
-          </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="text-center mt-20"
+          >
+            <div className="inline-flex items-center bg-gradient-to-r from-teal-50 to-cyan-50 rounded-2xl px-8 py-4 border border-teal-100">
+              <div className="w-12 h-12 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full flex items-center justify-center mr-4">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </div>
+              <p className="text-gray-700 font-medium">
+                Every contribution makes a difference in someone's life
+              </p>
+            </div>
+          </motion.div>
         </div>
       </>
     )
@@ -569,59 +668,96 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
       const [deliveryType, setDeliveryType] = useState<string>(value || "Pick");
 
       const handleDeliveryType = (type: string) => {
-        console.log('DeliveryType clicked:', type);
         setDeliveryType(type);
         onChange(type);
       }
 
-      // Update local state when prop changes
       React.useEffect(() => {
         if (value !== undefined) {
           setDeliveryType(value);
         }
       }, [value]);
 
-      // Debug logging
-      React.useEffect(() => {
-        console.log('DeliveryType - value:', value, 'deliveryType:', deliveryType);
-      }, [value, deliveryType]);
-
       return (
-        <div className="grid grid-flow-row">
-          <div className="text-left text-gray-600 pb-3">Delivery Type</div>
-          <div className="grid grid-cols-2 gap-3">
-            <Button
-              onClick={() => handleDeliveryType("Drop")}
-              className="text-gray-800 font-bold"
-              variant="contained"
-              sx={{
-                bgcolor: deliveryType === "Drop" ? "blue.600" : "white",
-                color: deliveryType === "Drop" ? "white" : "black",
-                textTransform: "none",
-                borderRadius: "9999px",
-
-                '&:hover': {
-                  bgcolor: deliveryType === "Drop" ? "blue.700" : "gray.50",
-                }
-              }}>
-              I will deliver the goods
-            </Button>
-            <Button
-              onClick={() => handleDeliveryType("Pick")}
-              className="text-gray-800 font-bold"
-              variant="contained"
-              sx={{
-                bgcolor: deliveryType === "Pick" ? "blue.600" : "white",
-                color: deliveryType === "Pick" ? "white" : "black",
-                textTransform: "none",
-                borderRadius: "9999px",
-
-                '&:hover': {
-                  bgcolor: deliveryType === "Pick" ? "blue.700" : "gray.50",
-                }
-              }}>
-              Request a pickup
-            </Button>
+        <div className="space-y-4">
+          <div className="text-left">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">Delivery Preference</h3>
+            <p className="text-gray-600 text-sm">How would you like to handle the donation?</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Button
+                onClick={() => handleDeliveryType("Drop")}
+                className={`w-full p-6 h-auto font-semibold transition-all duration-300 ${
+                  deliveryType === "Drop"
+                    ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-xl border-2 border-teal-300'
+                    : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-teal-300 hover:bg-teal-50'
+                }`}
+                sx={{
+                  textTransform: "none",
+                  borderRadius: "20px",
+                  '&:hover': {
+                    backgroundColor: deliveryType === "Drop" ? "transparent" : "rgba(20, 184, 166, 0.05)",
+                  }
+                }}
+              >
+                <div className="text-center space-y-3">
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto ${
+                    deliveryType === "Drop" ? 'bg-white/20' : 'bg-gradient-to-br from-teal-100 to-cyan-100'
+                  }`}>
+                    <svg className={`w-6 h-6 ${deliveryType === "Drop" ? 'text-white' : 'text-teal-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="font-bold text-lg">I'll Deliver</div>
+                    <div className={`text-sm ${deliveryType === "Drop" ? 'text-teal-100' : 'text-gray-500'}`}>
+                      Drop off items yourself
+                    </div>
+                  </div>
+                </div>
+              </Button>
+            </motion.div>
+            
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Button
+                onClick={() => handleDeliveryType("Pick")}
+                className={`w-full p-6 h-auto font-semibold transition-all duration-300 ${
+                  deliveryType === "Pick"
+                    ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-xl border-2 border-teal-300'
+                    : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-teal-300 hover:bg-teal-50'
+                }`}
+                sx={{
+                  textTransform: "none",
+                  borderRadius: "20px",
+                  '&:hover': {
+                    backgroundColor: deliveryType === "Pick" ? "transparent" : "rgba(20, 184, 166, 0.05)",
+                  }
+                }}
+              >
+                <div className="text-center space-y-3">
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto ${
+                    deliveryType === "Pick" ? 'bg-white/20' : 'bg-gradient-to-br from-teal-100 to-cyan-100'
+                  }`}>
+                    <svg className={`w-6 h-6 ${deliveryType === "Pick" ? 'text-white' : 'text-teal-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="font-bold text-lg">Request Pickup</div>
+                    <div className={`text-sm ${deliveryType === "Pick" ? 'text-teal-100' : 'text-gray-500'}`}>
+                      We'll collect from you
+                    </div>
+                  </div>
+                </div>
+              </Button>
+            </motion.div>
           </div>
         </div>
       )
@@ -710,26 +846,60 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
       };
 
       return (
-        <form
-          className="flex flex-col items-center justify-center gap-4 p-6 rounded-lg bg-transparent"
-          onSubmit={handleSubmit}
-        >
-          <ImageDialog image={image || ""} handleImage={handleImage} />
-          <DeliveryType
-            value={formData.delivery_type || ""}
-            onChange={(value) => setFormData({ ...formData, delivery_type: value })}
-          />
-          <textarea
-            name="description"
-            placeholder="List of hygiene products (e.g., soap, toothpaste)"
-            value={formData.description}
-            onChange={handleChange}
-            required
-            className="w-full max-w-md p-2 border border-gray-300 rounded"
-          ></textarea>
-
-          <DonateButton loading={loading} />
-        </form>
+        <div className="max-w-2xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="bg-white rounded-3xl shadow-xl border border-teal-100 p-10"
+          >
+            {/* Header */}
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-teal-200">
+                <svg className="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                </svg>
+              </div>
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-2">
+                Donate Hygiene Products
+              </h2>
+              <p className="text-gray-600">
+                Help others maintain good health and hygiene
+              </p>
+            </div>
+  
+            <form
+              className="space-y-8"
+              onSubmit={handleSubmit}
+            >
+              <ImageDialog image={image || ""} handleImage={handleImage} />
+              
+              <DeliveryType
+                value={formData.delivery_type || ""}
+                onChange={(value) => setFormData({ ...formData, delivery_type: value })}
+              />
+              
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-gray-700">
+                  Description of Items
+                </label>
+                <textarea
+                  name="description"
+                  placeholder="List of hygiene products (e.g., soap, toothpaste, shampoo, deodorant, toothbrushes)"
+                  value={formData.description}
+                  onChange={handleChange}
+                  required
+                  rows={4}
+                  className="w-full p-4 border-2 border-gray-200 rounded-2xl focus:border-teal-500 focus:ring-4 focus:ring-teal-100 transition-all duration-300 text-gray-700 placeholder-gray-400"
+                />
+              </div>
+  
+              <div className="flex justify-center">
+                <DonateButton loading={loading} />
+              </div>
+            </form>
+          </motion.div>
+        </div>
       );
     };
 
@@ -972,40 +1142,61 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
           </div>
         }
         {selectedGoods === "none" ?
-          <div className="grid grid-flow-row sm:grid-cols-2 xl:grid-cols-3 gap-6 mx-2 pt-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pt-8">
             {AllGoodsDonations.map((item, index) =>
               <motion.button
-                key={index} // assuming each Product has a unique id
-                initial={{ opacity: 0, }}
-                animate={{ opacity: 1, }}
-                whileHover={{ scale: 1.05, backgroundColor: "gray.200" }}
-                whileTap={{ scale: 0.95 }}
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.98 }}
                 transition={{
-                  delay: index * 0.15, // Add staggered delay based on index
+                  delay: index * 0.1,
                   type: "spring",
                   stiffness: 300,
                   damping: 30,
-                  mass: 2,
-                  duration: 0.3,
+                  duration: 0.5,
                 }}
                 onClick={() => handleGoods(item.name)}
-                className="modern-card-interactive grid grid-flow-row p-4 mx-auto min-w-80">
-                <div className="gradient-primary rounded-2xl shadow-lg p-4 transform rotate-2 transition-transform hover:rotate-0 duration-300 max-w-72 mx-auto mb-6">
-                  <div className="w-16 h-16 mx-auto">
-                    <Lottie
-                      options={{
-                        loop: true,
-                        autoplay: true,
-                        animationData: item.lottie,
-                        rendererSettings: {
-                          preserveAspectRatio: 'xMidYMid slice'
-                        }
-                      }}
-                    />
+                className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-teal-100 hover:border-teal-300 p-8"
+              >
+                {/* Gradient overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-teal-50/50 to-cyan-50/50 opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                
+                <div className="relative text-center space-y-6">
+                  {/* Icon */}
+                  <div className="mx-auto w-20 h-20 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 border border-teal-200">
+                    <div className="w-16 h-16">
+                      <Lottie
+                        options={{
+                          loop: true,
+                          autoplay: true,
+                          animationData: item.lottie,
+                          rendererSettings: {
+                            preserveAspectRatio: 'xMidYMid slice'
+                          }
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="text-lg font-semibold text-gray-700">
-                  {item.name}
+                  
+                  {/* Title */}
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-800 group-hover:text-teal-700 transition-colors duration-300 mb-2">
+                      {item.name}
+                    </h3>
+                    <div className="w-12 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full mx-auto group-hover:w-16 transition-all duration-300"></div>
+                  </div>
+                  
+                  {/* CTA */}
+                  <div className="opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-medium rounded-full text-sm shadow-lg">
+                      <span>Donate Now</span>
+                      <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </motion.button>
             )
@@ -1134,15 +1325,15 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
     const handleCash = (selected: string) => { setSelectedCash(selected) }
 
     const paymentTypes: PaymentType[] = [
-      { "name": "Credit/debit card", "color": Colors.green },
-      { "name": "EFT", "color": Colors.green },
-      { "name": "Cash", "color": Colors.yellow },
-      { "name": "SnapScan", "color": Colors.red },
-      { "name": "Zapper", "color": Colors.red },
-      { "name": "Payfast", "color": Colors.red },
-      { "name": "Apple Pay", "color": Colors.blue },
-      { "name": "Google Pay", "color": Colors.blue },
-      { "name": "Samsung Pay", "color": Colors.blue },
+      { "name": "Credit/debit card", "color": "teal" },
+      { "name": "EFT", "color": "teal" },
+      { "name": "Cash", "color": "cyan" },
+      { "name": "SnapScan", "color": "teal" },
+      { "name": "Zapper", "color": "teal" },
+      { "name": "Payfast", "color": "teal" },
+      { "name": "Apple Pay", "color": "cyan" },
+      { "name": "Google Pay", "color": "cyan" },
+      { "name": "Samsung Pay", "color": "cyan" },
     ]
 
     useEffect(() => {
@@ -1155,14 +1346,20 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
     return (
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-6">
             Choose Your Payment Method
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <div className="w-24 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full mx-auto mb-6"></div>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Select a secure and convenient way to make your financial contribution
           </p>
-        </div>
+        </motion.div>
 
         {/* Navigation */}
         {selectedCash === "none" ? (
@@ -1184,11 +1381,11 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
         )}
 
         {/* Payment Methods Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {paymentTypes.map((item, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 delay: 0.1 * index,
@@ -1199,11 +1396,10 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
               }}
               className="group"
             >
-              <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 p-6 border border-gray-100 hover:border-green-200 transform hover:-translate-y-1">
-                {/* Payment method icon and name */}
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg transition-shadow duration-300">
-                    <div className="text-2xl">
+              <div className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 p-8 border border-teal-100 hover:border-teal-300 transform hover:-translate-y-2">
+                <div className="text-center space-y-6">
+                  <div className="w-20 h-20 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl flex items-center justify-center mx-auto group-hover:shadow-lg transition-all duration-300 border border-teal-200">
+                    <div className="text-3xl">
                       {item.name === "Credit/debit card" && "💳"}
                       {item.name === "EFT" && "🏦"}
                       {item.name === "Cash" && "💵"}
@@ -1216,11 +1412,14 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-green-700 transition-colors duration-300">
-                    {item.name}
-                  </h3>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-teal-700 transition-colors duration-300">
+                      {item.name}
+                    </h3>
+                    <div className="w-12 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full mx-auto group-hover:w-16 transition-all duration-300"></div>
+                  </div>
 
-                  <p className="text-gray-600 text-sm mb-4">
+                  <p className="text-gray-600 text-sm leading-relaxed">
                     {item.name === "Credit/debit card" && "Secure online payment"}
                     {item.name === "EFT" && "Direct bank transfer"}
                     {item.name === "Cash" && "In-person donation"}
@@ -1232,20 +1431,19 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
                     {item.name === "Samsung Pay" && "Samsung wallet payment"}
                   </p>
 
-                  {/* Select button */}
                   <Button
                     onClick={() => handleCash(item.name)}
-                    className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
+                    className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 ${
                       selectedCash === item.name
-                        ? 'bg-green-500 hover:bg-green-600 text-white shadow-lg'
-                        : 'bg-gray-100 hover:bg-green-500 text-gray-700 hover:text-white'
+                        ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-xl'
+                        : 'bg-gray-50 hover:bg-gradient-to-r hover:from-teal-50 hover:to-cyan-50 text-gray-700 border border-gray-200 hover:border-teal-200'
                     }`}
                     sx={{
                       textTransform: "none",
-                      borderRadius: "12px",
+                      borderRadius: "16px",
                       '&:hover': {
-                        transform: "translateY(-1px)",
-                        boxShadow: "0 8px 25px rgba(34, 197, 94, 0.3)",
+                        transform: "translateY(-2px)",
+                        boxShadow: selectedCash === item.name ? "0 20px 40px -12px rgba(20, 184, 166, 0.4)" : "0 8px 25px -12px rgba(0, 0, 0, 0.15)",
                       }
                     }}
                   >
@@ -1260,36 +1458,40 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
         {/* Selected payment info */}
         {selectedCash !== "none" && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mt-12 max-w-2xl mx-auto"
+            className="mt-16 max-w-2xl mx-auto"
           >
-            <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 border border-green-200">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl text-white">✓</span>
+            <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-3xl p-10 border border-teal-200 shadow-xl">
+              <div className="text-center space-y-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto">
+                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                  Payment Method Selected
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  You've chosen <span className="font-semibold text-green-600">{selectedCash}</span> as your payment method.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <div>
+                  <h3 className="text-3xl font-bold text-gray-800 mb-2">
+                    Payment Method Selected
+                  </h3>
+                  <p className="text-gray-600">
+                    You've chosen <span className="font-semibold text-teal-600">{selectedCash}</span> as your payment method.
+                  </p>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                   <Button
                     onClick={() => handleCash("none")}
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg transition-all duration-300"
+                    className="bg-white hover:bg-gray-50 text-gray-700 font-semibold py-3 px-6 rounded-xl border border-gray-200 transition-all duration-300"
                     sx={{ textTransform: "none" }}
                   >
                     Change Method
                   </Button>
                   <Button
-                    className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl"
+                    className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
                     sx={{
                       textTransform: "none",
                       '&:hover': {
-                        transform: "translateY(-1px)",
+                        transform: "translateY(-2px)",
                       }
                     }}
                   >
@@ -1306,13 +1508,15 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="text-center mt-12"
+          className="text-center mt-16"
         >
-          <div className="inline-flex items-center bg-white rounded-full px-6 py-3 shadow-md border border-gray-200">
-            <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center mr-3">
-              <span className="text-white text-xs">🔒</span>
+          <div className="inline-flex items-center bg-white rounded-2xl px-8 py-4 shadow-lg border border-teal-100">
+            <div className="w-12 h-12 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full flex items-center justify-center mr-4">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
             </div>
-            <span className="text-gray-600 text-sm font-medium">
+            <span className="text-gray-700 font-medium">
               All payments are secure and encrypted
             </span>
           </div>
@@ -1514,124 +1718,203 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
     };
 
     return (
-      <>
-        <GoBackMain />
-        <form
-          className="flex flex-col items-center justify-center gap-4 p-6 rounded-lg bg-transparent"
-          onSubmit={handleSubmit}
+      <div className="max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="bg-white rounded-3xl shadow-xl border border-teal-100 p-10"
         >
-          <ImageDialog image={image || ""} handleImage={handleImage} />
-          <select
-            name="service_category"
-            value={formData.service_category}
-            onChange={handleChange}
-            required
-            className="w-full max-w-md p-2 border border-gray-300 rounded"
+          {/* Header */}
+          <div className="text-center mb-10">
+            <div className="w-20 h-20 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-teal-200">
+              <svg className="w-10 h-10 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-3">
+              Offer Your Services
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Share your skills and time to make a meaningful impact
+            </p>
+          </div>
+
+          <form
+            className="space-y-10"
+            onSubmit={handleSubmit}
           >
-            <option value="">Select a Service Category</option>
-            <option value="Automotive">Automotive (e.g., mechanic, driver)</option>
-            <option value="Professional">Professional (e.g., accounting, legal)</option>
-            <option value="HomeMaintenance">Home Maintenance (e.g., welding, plumbing)</option>
-            <option value="Educational">Educational (e.g., tutoring, workshops)</option>
-            <option value="Medical">Medical (e.g., counseling, health checks)</option>
-            <option value="Other">Other</option>
-          </select>
-
-          {/* Custom Service Description */}
-          <textarea
-            name="description"
-            placeholder="Describe the service you are offering (e.g., skills, tools, duration, etc.)"
-            value={formData.description}
-            onChange={handleChange}
-            required
-            className="w-full max-w-md p-2 border border-gray-300 rounded"
-          ></textarea>
-
-          {/* Service Location */}
-          <div className="grid grid-flow-row">
-            <div className="text-left text-gray-600 pb-3">Service Location</div>
-            <div className="grid grid-cols-1 gap-3">
-              <Button
-                onClick={() => handleLocationChange("Remote")}
-                className="text-gray-800 font-bold"
-                variant="contained"
-                sx={{
-                  bgcolor: formData.service_location === "Remote" ? "blue.600" : "white",
-                  color: formData.service_location === "Remote" ? "white" : "black",
-                  textTransform: "none",
-                  borderRadius: "9999px",
-                  '&:hover': {
-                    bgcolor: formData.service_location === "Remote" ? "blue.700" : "gray.50",
-                  }
-                }}>
-                I can provide this service remotely
-              </Button>
-              <Button
-                onClick={() => handleLocationChange("InPerson")}
-                className="text-gray-800 font-bold"
-                variant="contained"
-                sx={{
-                  bgcolor: formData.service_location === "InPerson" ? "blue.600" : "white",
-                  color: formData.service_location === "InPerson" ? "white" : "black",
-                  textTransform: "none",
-                  borderRadius: "9999px",
-                  '&:hover': {
-                    bgcolor: formData.service_location === "InPerson" ? "blue.700" : "gray.50",
-                  }
-                }}>
-                Requires my presence at a location
-              </Button>
+            <ImageDialog image={image || ""} handleImage={handleImage} />
+            
+            {/* Service Category */}
+            <div className="space-y-3">
+              <label className="block text-lg font-semibold text-gray-800">
+                Service Category
+              </label>
+              <select
+                name="service_category"
+                value={formData.service_category}
+                onChange={handleChange}
+                required
+                className="w-full p-4 border-2 border-gray-200 rounded-2xl focus:border-teal-500 focus:ring-4 focus:ring-teal-100 transition-all duration-300 text-gray-700 text-lg"
+              >
+                <option value="">Select a Service Category</option>
+                <option value="Automotive">Automotive (e.g., mechanic, driver)</option>
+                <option value="Professional">Professional (e.g., accounting, legal)</option>
+                <option value="HomeMaintenance">Home Maintenance (e.g., welding, plumbing)</option>
+                <option value="Educational">Educational (e.g., tutoring, workshops)</option>
+                <option value="Medical">Medical (e.g., counseling, health checks)</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
-          </div>
 
-          {/* Availability */}
-          <div className="w-full max-w-md">
-            <Typography variant="h6" className="text-left text-gray-600 pb-3">
-              Availability
-            </Typography>
-            <div className="grid grid-cols-1 gap-3">
-              {Object.entries(formData.availability || {}).map(([day, data]) => (
-                <div key={day} className="flex items-center gap-3 p-2 border border-gray-200 rounded">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={data.selected}
-                        onChange={() => handleDayToggle(day)}
-                        sx={{
-                          color: "gray.400",
-                          '&.Mui-checked': {
-                            color: "blue.600",
-                          },
-                        }}
-                      />
-                    }
-                    label={day.charAt(0).toUpperCase() + day.slice(1)}
-                    sx={{ marginRight: 1 }}
-                  />
-                  {data.selected && (
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="time"
-                        value={data.startTime}
-                        onChange={(e) => handleTimeChange(day, 'startTime', e.target.value)}
-                        className="p-1 border border-gray-300 rounded text-sm"
-                      />
-                      <span className="text-gray-500">to</span>
-                      <input
-                        type="time"
-                        value={data.endTime}
-                        onChange={(e) => handleTimeChange(day, 'endTime', e.target.value)}
-                        className="p-1 border border-gray-300 rounded text-sm"
-                      />
+            {/* Service Description */}
+            <div className="space-y-3">
+              <label className="block text-lg font-semibold text-gray-800">
+                Service Description
+              </label>
+              <textarea
+                name="description"
+                placeholder="Describe the service you are offering (e.g., skills, tools, duration, specializations, etc.)"
+                value={formData.description}
+                onChange={handleChange}
+                required
+                rows={5}
+                className="w-full p-4 border-2 border-gray-200 rounded-2xl focus:border-teal-500 focus:ring-4 focus:ring-teal-100 transition-all duration-300 text-gray-700 placeholder-gray-400 text-lg"
+              />
+            </div>
+
+            {/* Service Location */}
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">Service Location</h3>
+                <p className="text-gray-600">How would you prefer to provide your service?</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button
+                    onClick={() => handleLocationChange("Remote")}
+                    className={`w-full p-6 h-auto font-semibold transition-all duration-300 ${
+                      formData.service_location === "Remote"
+                        ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-xl border-2 border-teal-300'
+                        : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-teal-300 hover:bg-teal-50'
+                    }`}
+                    sx={{
+                      textTransform: "none",
+                      borderRadius: "20px",
+                    }}
+                  >
+                    <div className="text-center space-y-4">
+                      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto ${
+                        formData.service_location === "Remote" ? 'bg-white/20' : 'bg-gradient-to-br from-teal-100 to-cyan-100'
+                      }`}>
+                        <svg className={`w-8 h-8 ${formData.service_location === "Remote" ? 'text-white' : 'text-teal-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <div className="font-bold text-xl mb-2">Remote Service</div>
+                        <div className={`text-sm ${formData.service_location === "Remote" ? 'text-teal-100' : 'text-gray-500'}`}>
+                          I can provide this service online or over the phone
+                        </div>
+                      </div>
                     </div>
-                  )}
-                </div>
-              ))}
+                  </Button>
+                </motion.div>
+                
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button
+                    onClick={() => handleLocationChange("InPerson")}
+                    className={`w-full p-6 h-auto font-semibold transition-all duration-300 ${
+                      formData.service_location === "InPerson"
+                        ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-xl border-2 border-teal-300'
+                        : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-teal-300 hover:bg-teal-50'
+                    }`}
+                    sx={{
+                      textTransform: "none",
+                      borderRadius: "20px",
+                    }}
+                  >
+                    <div className="text-center space-y-4">
+                      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto ${
+                        formData.service_location === "InPerson" ? 'bg-white/20' : 'bg-gradient-to-br from-teal-100 to-cyan-100'
+                      }`}>
+                        <svg className={`w-8 h-8 ${formData.service_location === "InPerson" ? 'text-white' : 'text-teal-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <div className="font-bold text-xl mb-2">In-Person Service</div>
+                        <div className={`text-sm ${formData.service_location === "InPerson" ? 'text-teal-100' : 'text-gray-500'}`}>
+                          I can meet people at their location
+                        </div>
+                      </div>
+                    </div>
+                  </Button>
+                </motion.div>
+              </div>
             </div>
-          </div>
 
-          <DonateButton loading={loading} />
-        </form></>
+            {/* Availability */}
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">Availability</h3>
+                <p className="text-gray-600">Select the days and times you're available to help</p>
+              </div>
+              <div className="grid grid-cols-1 gap-4">
+                {Object.entries(formData.availability || {}).map(([day, data]) => (
+                  <div key={day} className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-200 hover:border-teal-200 transition-all duration-300">
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={data.selected}
+                          onChange={() => handleDayToggle(day)}
+                          sx={{
+                            color: "gray.400",
+                            '&.Mui-checked': {
+                              color: "teal.600",
+                            },
+                          }}
+                        />
+                      }
+                      label={<span className="font-semibold text-gray-800 capitalize">{day}</span>}
+                      sx={{ marginRight: 1 }}
+                    />
+                    {data.selected && (
+                      <div className="flex items-center gap-3 ml-auto">
+                        <input
+                          type="time"
+                          value={data.startTime}
+                          onChange={(e) => handleTimeChange(day, 'startTime', e.target.value)}
+                          className="p-2 border border-gray-300 rounded-lg text-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                        />
+                        <span className="text-gray-500 font-medium">to</span>
+                        <input
+                          type="time"
+                          value={data.endTime}
+                          onChange={(e) => handleTimeChange(day, 'endTime', e.target.value)}
+                          className="p-2 border border-gray-300 rounded-lg text-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex justify-center">
+              <DonateButton loading={loading} />
+            </div>
+          </form>
+        </motion.div>
+      </div>
     );
   };
 
@@ -1639,7 +1922,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
   // Show Lottie loading animation while checking authentication
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-teal-50 to-cyan-50 flex items-center justify-center">
         <div className="text-center">
           <Lottie
             options={loadingOptions}
@@ -1654,7 +1937,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
   // Show login prompt if not authenticated
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+      <div className="min-h-screen bg-gradient-to-b from-teal-50 to-cyan-50">
         <div className="relative h-[300px] gradient-hero">
           <div className="absolute inset-0 bg-black opacity-20"></div>
           <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
@@ -1680,16 +1963,27 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white rounded-2xl shadow-lg p-8 text-center"
+            className="bg-white rounded-3xl shadow-xl p-10 text-center border border-teal-100"
           >
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Login Required</h2>
-            <p className="text-gray-600 mb-6">
+            <div className="w-20 h-20 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-teal-200">
+              <svg className="w-10 h-10 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h5a3 3 0 013 3v1"></path>
+              </svg>
+            </div>
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Login Required</h2>
+            <p className="text-gray-600 mb-8 text-lg">
               Please log in to your account to submit donations and track your impact.
             </p>
             <Button
               onClick={() => handlePage('Login')}
               variant="contained"
-              className="bg-blue-600 hover:bg-blue-700 py-3 px-6"
+              className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+              sx={{
+                textTransform: "none",
+                '&:hover': {
+                  transform: "translateY(-2px)",
+                }
+              }}
             >
               Go to Login
             </Button>
@@ -1701,7 +1995,8 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
 
   return (
     <div className="min-h-screen theme-bg-primary">
-      {donationType === "none" ?
+      {/* Hero Section - Only show when no donation type is selected */}
+      {donationType === "none" && (
         <div className="relative h-[300px] gradient-hero">
           <div className="absolute inset-0 bg-black opacity-20"></div>
           <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
@@ -1721,11 +2016,16 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
               Make a lasting impact in your community by donating goods, cash, or services to those who need it most.
             </motion.p>
           </div>
-        </div> : null}
-      {donationType === "none" ? <><NoDonationTypeSelected /></> : null}
-      {donationType === "Goods" ? <><DonationTypeGoods handleDonationType={handleDonationType} handleGoods={handleGoods} /></> : null}
-      {donationType === "Cash" ? <><DonationTypeCash /></> : null}
-      {donationType === "Service" ? <><DonationTypeService /></> : null}
+        </div>
+      )}
+      
+      {/* Main Content - Conditional Rendering */}
+      <div className="container mx-auto px-4 py-8">
+        {donationType === "none" && <NoDonationTypeSelected />}
+        {donationType === "Goods" && <DonationTypeGoods handleDonationType={handleDonationType} handleGoods={handleGoods} />}
+        {donationType === "Cash" && <DonationTypeCash />}
+        {donationType === "Service" && <DonationTypeService />}
+      </div>
     </div>
   )
 }

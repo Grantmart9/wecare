@@ -30,9 +30,10 @@ interface TopNavbarProps {
   currentPage: string;
   handlePage: (page: string) => void;
   scrollToTop: () => void;
+  sx?: React.CSSProperties & { className?: string };
 }
 
-const TopNavbar: React.FC<TopNavbarProps> = ({ currentPage, handlePage, scrollToTop }) => {
+const TopNavbar: React.FC<TopNavbarProps> = ({ currentPage, handlePage, scrollToTop,sx }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -104,7 +105,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({ currentPage, handlePage, scrollTo
           isScrolled
             ? 'backdrop-blur-lg bg-white/90 shadow-lg border-b border-gray-200/30'
             : 'gradient-hero'
-        }`}
+        } ${sx?.className || ''}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">

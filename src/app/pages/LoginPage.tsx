@@ -64,6 +64,31 @@ const LoginForm = ({ loginData, handleLoginChange, handleLogin, loading, showPas
         disabled={loading}
         variant="outlined"
         className="mb-4"
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#d1d5db',
+            },
+            '&:hover fieldset': {
+              borderColor: '#9ca3af',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#3b82f6',
+            },
+            '& input': {
+              color: '#111827',
+            },
+            '& input::placeholder': {
+              color: '#6b7280',
+            },
+          },
+          '& .MuiInputLabel-root': {
+            color: '#374151',
+            '&.Mui-focused': {
+              color: '#3b82f6',
+            },
+          },
+        }}
       />
       <TextField
         fullWidth
@@ -83,11 +108,37 @@ const LoginForm = ({ loginData, handleLoginChange, handleLogin, loading, showPas
               <IconButton
                 onClick={() => setShowPassword(!showPassword)}
                 edge="end"
+                className="text-gray-600 hover:text-gray-900"
               >
                 {showPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             </InputAdornment>
           ),
+        }}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#d1d5db',
+            },
+            '&:hover fieldset': {
+              borderColor: '#9ca3af',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#3b82f6',
+            },
+            '& input': {
+              color: '#111827',
+            },
+            '& input::placeholder': {
+              color: '#6b7280',
+            },
+          },
+          '& .MuiInputLabel-root': {
+            color: '#374151',
+            '&.Mui-focused': {
+              color: '#3b82f6',
+            },
+          },
         }}
       />
       <Button
@@ -96,7 +147,14 @@ const LoginForm = ({ loginData, handleLoginChange, handleLogin, loading, showPas
         variant="contained"
         disabled={loading}
         startIcon={<LoginIcon />}
-        className="bg-blue-600 hover:bg-blue-700 py-3"
+        className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+        sx={{
+          backgroundColor: '#1d4ed8',
+          '&:hover': {
+            backgroundColor: '#1e40af',
+          },
+          textTransform: 'none',
+        }}
       >
         {loading ? "Signing in..." : "Sign In"}
       </Button>
@@ -133,6 +191,31 @@ const RegisterForm = ({ registerData, handleRegisterChange, handleRegister, load
         disabled={loading}
         variant="outlined"
         size="small"
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#d1d5db',
+            },
+            '&:hover fieldset': {
+              borderColor: '#9ca3af',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#22c55e',
+            },
+            '& input': {
+              color: '#111827',
+            },
+            '& input::placeholder': {
+              color: '#6b7280',
+            },
+          },
+          '& .MuiInputLabel-root': {
+            color: '#374151',
+            '&.Mui-focused': {
+              color: '#22c55e',
+            },
+          },
+        }}
       />
       <TextField
         fullWidth
@@ -145,6 +228,31 @@ const RegisterForm = ({ registerData, handleRegisterChange, handleRegister, load
         disabled={loading}
         variant="outlined"
         size="small"
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#d1d5db',
+            },
+            '&:hover fieldset': {
+              borderColor: '#9ca3af',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#22c55e',
+            },
+            '& input': {
+              color: '#111827',
+            },
+            '& input::placeholder': {
+              color: '#6b7280',
+            },
+          },
+          '& .MuiInputLabel-root': {
+            color: '#374151',
+            '&.Mui-focused': {
+              color: '#22c55e',
+            },
+          },
+        }}
       />
       <TextField
         fullWidth
@@ -163,11 +271,37 @@ const RegisterForm = ({ registerData, handleRegisterChange, handleRegister, load
               <IconButton
                 onClick={() => setShowPassword(!showPassword)}
                 edge="end"
+                className="text-gray-600 hover:text-gray-900"
               >
                 {showPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             </InputAdornment>
           ),
+        }}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#d1d5db',
+            },
+            '&:hover fieldset': {
+              borderColor: '#9ca3af',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#22c55e',
+            },
+            '& input': {
+              color: '#111827',
+            },
+            '& input::placeholder': {
+              color: '#6b7280',
+            },
+          },
+          '& .MuiInputLabel-root': {
+            color: '#374151',
+            '&.Mui-focused': {
+              color: '#22c55e',
+            },
+          },
         }}
       />
       <TextField
@@ -187,11 +321,37 @@ const RegisterForm = ({ registerData, handleRegisterChange, handleRegister, load
               <IconButton
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 edge="end"
+                className="text-gray-600 hover:text-gray-900"
               >
                 {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             </InputAdornment>
           ),
+        }}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#d1d5db',
+            },
+            '&:hover fieldset': {
+              borderColor: '#9ca3af',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#22c55e',
+            },
+            '& input': {
+              color: '#111827',
+            },
+            '& input::placeholder': {
+              color: '#6b7280',
+            },
+          },
+          '& .MuiInputLabel-root': {
+            color: '#374151',
+            '&.Mui-focused': {
+              color: '#22c55e',
+            },
+          },
         }}
       />
       <Button
@@ -200,7 +360,14 @@ const RegisterForm = ({ registerData, handleRegisterChange, handleRegister, load
         variant="contained"
         disabled={loading}
         startIcon={<PersonAddIcon />}
-        className="bg-green-600 hover:bg-green-700 py-3"
+        className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+        sx={{
+          backgroundColor: '#16a34a',
+          '&:hover': {
+            backgroundColor: '#15803d',
+          },
+          textTransform: 'none',
+        }}
       >
         {loading ? "Creating account..." : "Create Account"}
       </Button>
@@ -234,6 +401,31 @@ const ForgotPasswordForm = ({ forgotEmail, setForgotEmail, handleForgotPassword,
         disabled={loading}
         variant="outlined"
         helperText="Enter your email address to receive a password reset link"
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#d1d5db',
+            },
+            '&:hover fieldset': {
+              borderColor: '#9ca3af',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#8b5cf6',
+            },
+            '& input': {
+              color: '#111827',
+            },
+            '& input::placeholder': {
+              color: '#6b7280',
+            },
+          },
+          '& .MuiInputLabel-root': {
+            color: '#374151',
+            '&.Mui-focused': {
+              color: '#8b5cf6',
+            },
+          },
+        }}
       />
       <Button
         type="submit"
@@ -241,7 +433,14 @@ const ForgotPasswordForm = ({ forgotEmail, setForgotEmail, handleForgotPassword,
         variant="contained"
         disabled={loading}
         startIcon={<EmailIcon />}
-        className="bg-purple-600 hover:bg-purple-700 py-3"
+        className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+        sx={{
+          backgroundColor: '#7c3aed',
+          '&:hover': {
+            backgroundColor: '#6d28d9',
+          },
+          textTransform: 'none',
+        }}
       >
         {loading ? "Sending..." : "Send Reset Email"}
       </Button>
@@ -362,9 +561,11 @@ const LoginPage = ({ handlePage, scrollToTop }: LoginPageProps) => {
 
           if (userError) {
             console.error("Error creating user record:", userError);
+            // Don't fail the registration if user profile creation fails
           }
         } catch (userErr) {
           console.error("Error in user creation:", userErr);
+          // Don't fail the registration if user profile creation fails
         }
 
         setMessage({
@@ -374,7 +575,9 @@ const LoginPage = ({ handlePage, scrollToTop }: LoginPageProps) => {
         setTimeout(() => setMode('login'), 3000);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'An unexpected error occurred' });
+      console.error("Registration error:", error);
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+      setMessage({ type: 'error', text: errorMessage });
       clearMessage();
     } finally {
       setLoading(false);
@@ -438,13 +641,7 @@ const LoginPage = ({ handlePage, scrollToTop }: LoginPageProps) => {
         className="gradient-hero py-8 text-center"
       >
         <div className="max-w-7xl mx-auto px-4 flex items-center">
-          <Button
-            onClick={() => handlePage('Home')}
-            startIcon={<ArrowBackIcon />}
-            className="text-white hover:bg-white/10 mr-4"
-          >
-            Back to Home
-          </Button>
+        
           <div className="flex-1">
             <h1 className="text-3xl font-bold text-white mb-2">
               {mode === 'login' && 'Welcome Back'}
@@ -470,21 +667,21 @@ const LoginPage = ({ handlePage, scrollToTop }: LoginPageProps) => {
         >
           {/* Mode Tabs */}
           {mode !== 'forgot' && (
-            <div className="flex mb-6 theme-bg-secondary rounded-full p-1">
+            <div className="flex mb-6 bg-gray-100 rounded-full p-1">
               <button
                 onClick={() => setMode('login')}
-                className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-colors ${mode === 'login'
-                  ? 'bg-blue-600 text-white'
-                  : 'theme-text-secondary hover:text-blue-600'
+                className={`flex-1 py-3 px-4 rounded-full text-sm font-semibold transition-all duration-200 ${mode === 'login'
+                  ? 'bg-teal-600 text-white shadow-md'
+                  : 'text-gray-600 hover:text-teal-600 hover:bg-gray-200'
                   }`}
               >
                 Sign In
               </button>
               <button
                 onClick={() => setMode('register')}
-                className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-colors ${mode === 'register'
-                  ? 'bg-green-600 text-white'
-                  : 'theme-text-secondary hover:text-green-600'
+                className={`flex-1 py-3 px-4 rounded-full text-sm font-semibold transition-all duration-200 ${mode === 'register'
+                  ? 'bg-teal-600 text-white shadow-md'
+                  : 'text-gray-600 hover:text-teal-600 hover:bg-gray-200'
                   }`}
               >
                 Sign Up
@@ -551,7 +748,15 @@ const LoginPage = ({ handlePage, scrollToTop }: LoginPageProps) => {
                 variant="outlined"
                 startIcon={<GoogleIcon />}
                 disabled={loading}
-                className="py-3 border-gray-300 text-gray-700 hover:bg-gray-50"
+                className="py-3 border-gray-400 text-gray-800 hover:bg-gray-100 font-medium"
+                sx={{
+                  borderColor: '#9ca3af',
+                  '&:hover': {
+                    backgroundColor: '#f3f4f6',
+                    borderColor: '#6b7280',
+                  },
+                  textTransform: 'none',
+                }}
               >
                 Continue with Google
               </Button>
@@ -563,7 +768,7 @@ const LoginPage = ({ handlePage, scrollToTop }: LoginPageProps) => {
             {mode === 'login' && (
               <button
                 onClick={() => setMode('forgot')}
-                className="text-blue-600 hover:text-blue-800 text-sm underline"
+                className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors duration-200"
               >
                 Forgot your password?
               </button>
@@ -572,14 +777,14 @@ const LoginPage = ({ handlePage, scrollToTop }: LoginPageProps) => {
             {mode === 'forgot' && (
               <button
                 onClick={() => setMode('login')}
-                className="text-blue-600 hover:text-blue-800 text-sm underline"
+                className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors duration-200"
               >
                 Back to Sign In
               </button>
             )}
           </div>
 
-          <div className="mt-4 text-xs theme-text-secondary text-center">
+          <div className="mt-4 text-xs text-gray-500 text-center">
             By continuing, you agree to our Terms of Service and Privacy Policy
           </div>
         </motion.div>
