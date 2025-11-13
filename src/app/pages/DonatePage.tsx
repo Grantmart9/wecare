@@ -763,7 +763,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
       )
     }
 
-    const DonateElectronics = () => {
+    const DonateElectronics = ({ category }: { category: string }) => {
       const [formData, setFormData] = useState<FormData>({
         delivery_type: "Pick", // Default to valid value
         description: "",
@@ -824,7 +824,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
             .from("donations")
             .insert([{
               user_id: user.id,
-              category: "Hygiene",
+              category: category,
               ...formData
             }]);
 
@@ -861,10 +861,10 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
                 </svg>
               </div>
               <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-2">
-                Donate Hygiene Products
+                Donate {category}
               </h2>
               <p className="text-gray-600">
-                Help others maintain good health and hygiene
+                Help others with your {category.toLowerCase()} donation
               </p>
             </div>
   
@@ -1214,7 +1214,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
               damping: 35,
               mass: 5,
               duration: 0.2,
-            }}><DonateElectronics />
+            }}><DonateElectronics category="Clothing" />
           </motion.div> : null}
         {selectedGoods === "Non - perishable food" ?
           <motion.div
@@ -1228,7 +1228,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
               damping: 35,
               mass: 20,
               duration: 0.2,
-            }}><DonateElectronics />
+            }}><DonateElectronics category="Non - perishable food" />
           </motion.div> : null}
         {selectedGoods === "Books & educatutional materials" ?
           <motion.div
@@ -1242,7 +1242,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
               damping: 35,
               mass: 20,
               duration: 0.2,
-            }}><DonateElectronics />
+            }}><DonateElectronics category="Books & educatutional materials" />
           </motion.div> : null}
         {selectedGoods === "Electronics" ? <motion.div
           initial={{ opacity: 0, }}
@@ -1255,7 +1255,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
             damping: 35,
             mass: 20,
             duration: 0.2,
-          }}><DonateElectronics /></motion.div> : null}
+          }}><DonateElectronics category="Electronics" /></motion.div> : null}
         {selectedGoods === "Furniture" ? <motion.div
           initial={{ opacity: 0, }}
           animate={{ opacity: 1, }}
@@ -1267,7 +1267,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
             damping: 35,
             mass: 20,
             duration: 0.2,
-          }}><DonateElectronics /></motion.div> : null}
+          }}><DonateElectronics category="Furniture" /></motion.div> : null}
         {selectedGoods === "Medical supplies" ? <motion.div
           initial={{ opacity: 0, }}
           animate={{ opacity: 1, }}
@@ -1279,7 +1279,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
             damping: 35,
             mass: 20,
             duration: 0.2,
-          }}><DonateElectronics /></motion.div> : null}
+          }}><DonateElectronics category="Medical supplies" /></motion.div> : null}
         {selectedGoods === "Toys & games" ? <motion.div
           initial={{ opacity: 0, }}
           animate={{ opacity: 1, }}
@@ -1291,7 +1291,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
             damping: 35,
             mass: 20,
             duration: 0.2,
-          }}><DonateElectronics /></motion.div> : null}
+          }}><DonateElectronics category="Toys & games" /></motion.div> : null}
         {selectedGoods === "Hygiene" ? <motion.div
           initial={{ opacity: 0, }}
           animate={{ opacity: 1, }}
@@ -1303,7 +1303,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
             damping: 35,
             mass: 20,
             duration: 0.2,
-          }}><DonateElectronics /></motion.div> : null}
+          }}><DonateElectronics category="Hygiene" /></motion.div> : null}
         {selectedGoods === "Household" ? <motion.div
           initial={{ opacity: 0, }}
           animate={{ opacity: 1, }}
@@ -1315,7 +1315,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
             damping: 35,
             mass: 20,
             duration: 0.2,
-          }}><DonateElectronics /></motion.div> : null}
+          }}><DonateElectronics category="Household" /></motion.div> : null}
       </div>
     )
   }
@@ -1345,22 +1345,6 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
 
     return (
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-6">
-            Choose Your Payment Method
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full mx-auto mb-6"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Select a secure and convenient way to make your financial contribution
-          </p>
-        </motion.div>
-
         {/* Navigation */}
         {selectedCash === "none" ? (
           <GoBackMain />
@@ -1379,6 +1363,22 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
             )}
           </div>
         )}
+
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-6">
+            Choose Your Payment Method
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full mx-auto mb-6"></div>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Select a secure and convenient way to make your financial contribution
+          </p>
+        </motion.div>
 
         {/* Payment Methods Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -1719,11 +1719,12 @@ const DonatePage: React.FC<DonatePageProps> = ({ handlePage, scrollToTop }) => {
 
     return (
       <div className="max-w-4xl mx-auto">
+        <GoBackMain />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="bg-white rounded-3xl shadow-xl border border-teal-100 p-10"
+          className="bg-white rounded-3xl shadow-xl border border-teal-100 p-10 mt-4"
         >
           {/* Header */}
           <div className="text-center mb-10">
