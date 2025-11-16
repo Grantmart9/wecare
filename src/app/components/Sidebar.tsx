@@ -96,7 +96,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPage, handlePage, isOpen, setI
               className="flex items-center space-x-2"
             >
               <div className="bg-blue-600 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold">
-                W
+                WC
               </div>
               <span className="text-xl font-bold theme-text-primary">WeCare</span>
             </motion.div>
