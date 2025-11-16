@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import TopNavbar from "./components/TopNavbar";
-import { useTheme } from "./layout";
+import { useTheme } from "./ClientLayout";
 
 // Import page components
 import Homepage from "./pages/Homepage";

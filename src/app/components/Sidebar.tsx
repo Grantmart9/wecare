@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import { Button } from "@mui/material";
 import { createClient, SupabaseClient, User } from "@supabase/supabase-js";
 import { SUPABASE_URL, API_KEY } from "../supabase";
-import { useTheme } from "../layout";
+import { useTheme } from "../ClientLayout";
 
 const supabase: SupabaseClient = createClient(SUPABASE_URL, API_KEY);
 
